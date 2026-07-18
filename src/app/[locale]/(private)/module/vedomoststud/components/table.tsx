@@ -55,8 +55,8 @@ export default function SessionTable({ termResults }: { termResults: TermResults
           </TableRow>
         </TableHeader>
         <TableBody>
-          {sortedRows.map((discipline, index) => (
-            <TableRow key={index}>
+          {sortedRows.map((discipline) => (
+            <TableRow key={discipline.name}>
               <TableCell className="w-[120px]">{discipline.date}</TableCell>
               <TableCell className="w-[300px]">{discipline.name}</TableCell>
               <TableCell className="w-[109px] text-center">

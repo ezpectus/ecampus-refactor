@@ -59,8 +59,8 @@ export default async function CuratorPage() {
                   <div className="flex flex-col gap-1 sm:gap-2">
                     <Show when={result?.contacts.length > 0}>
                       <Paragraph className="m-0 text-lg font-semibold text-neutral-400">{t('contacts')}</Paragraph>
-                      {result?.contacts?.map((contact, index) => (
-                        <div className="flex flex-col gap-1 sm:flex-row sm:gap-6" key={index}>
+                      {result?.contacts?.map((contact) => (
+                        <div className="flex flex-col gap-1 sm:flex-row sm:gap-6" key={contact.name}>
                           <Paragraph className="m-0 w-full text-lg font-semibold text-neutral-400 sm:w-[170px] sm:pl-4">
                             {contact.name}
                           </Paragraph>

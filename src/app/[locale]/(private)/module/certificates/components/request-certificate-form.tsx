@@ -74,8 +74,8 @@ export function RequestCertificateForm({ certificateTypes }: Props) {
                   </FormControl>
                   <SelectContent>
                     <SelectGroup>
-                      {certificateTypes.map((type, index) => (
-                        <SelectItem key={index} value={type.toString()}>
+                      {certificateTypes.map((type) => (
+                        <SelectItem key={type.toString()} value={type.toString()}>
                           {tEnums(dash(type))}
                         </SelectItem>
                       ))}

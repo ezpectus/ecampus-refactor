@@ -37,8 +37,8 @@ const Client = (basePath: string) => {
         Authorization: jwt ? `Bearer ${jwt}` : '',
         'Content-Type': contentType,
         'Accept-Language': locale,
-        'X-Forwarded-For': resolvedHeaders.get('x-forwarded-for') || '',
-        'X-Real-IP': resolvedHeaders.get('x-real-ip') || '',
+        'X-Forwarded-For': sanitizedForwardedFor,
+        'X-Real-IP': sanitizedRealIp,
         ...headers,
       },
       ...otherOptions,
@@ -48,4 +48,4 @@ const Client = (basePath: string) => {
   };
 };
 
-export const campusFetch = Client(process.env.CAMPUS_API_BASE_PATH!);
+export const campusFetch = Client(env.CAMPUS_API_BASE_PATH);

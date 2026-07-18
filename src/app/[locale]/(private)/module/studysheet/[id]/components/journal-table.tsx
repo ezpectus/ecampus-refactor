@@ -41,8 +41,8 @@ export function JournalTable({ journal }: Props) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {sortedRows.map((row, index) => (
-            <TableRow key={index}>
+          {sortedRows.map((row) => (
+            <TableRow key={`${row.date}-${row.controlType ?? ''}`}>
               <TableCell className="w-[116px] text-sm font-medium">{row.date ?? ''}</TableCell>
               <TableCell className="w-[109px] text-center">
                 {(row.presence || row.score) && (

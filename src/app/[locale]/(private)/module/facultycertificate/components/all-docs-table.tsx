@@ -88,7 +88,7 @@ export const AllDocsTable = memo(function DocsTable({ certificates, totalCount }
           </TableRow>
         </TableHeader>
         <TableBody>
-          {sortedRows.map((row, index) => {
+          {sortedRows.map((row) => {
             const {
               shouldDisableRejectButton,
               shouldDisableSignButton,
@@ -96,7 +96,7 @@ export const AllDocsTable = memo(function DocsTable({ certificates, totalCount }
               shouldDisableApproveButton,
             } = buttonDisableController(row);
             return (
-              <TableRow key={index}>
+              <TableRow key={row.documentNumber}>
                 <TableCell>{row.documentNumber}</TableCell>
                 <TableCell>{dayjs(row.created).format('DD.MM.YYYY')}</TableCell>
                 <TableCell>{row.requestedBy.fullName}</TableCell>

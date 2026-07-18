@@ -34,8 +34,8 @@ export async function LecturerInfo({ employeeProfile }: Props) {
       <Show when={employeeProfile.positions.length !== 0}>
         <Heading6>{t('info.positions')}</Heading6>
       </Show>
-      {employeeProfile.positions.map((position, index) => (
-        <React.Fragment key={index}>
+      {employeeProfile.positions.map((position) => (
+        <React.Fragment key={position.name}>
           <Separator />
           <InfoList items={formatPositions(position)} />
         </React.Fragment>

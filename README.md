@@ -54,7 +54,7 @@ Applied prioritized fixes — P0 critical security first, then P1, then quality 
 Every fix is documented with before/after code, problem description, impact, and solution:
 
 - [`docs/`](./docs/) — 5 audit documents (architecture, refactoring plan, code-level audit)
-- [`changelogs/`](./changelogs/) — 7 changelogs with CWE mapping and code diffs
+- [`changelogs/`](./changelogs/) — 8 changelogs with CWE mapping and code diffs
 
 ---
 
@@ -106,6 +106,7 @@ Every fix is documented with before/after code, problem description, impact, and
 | [`changelogs/05-dead-code-cleanup.md`](./changelogs/05-dead-code-cleanup.md) | Dead code: `contants.ts` rename, `useEffect` deps fix, unused `types.ts` deletion |
 | [`changelogs/06-code-quality-and-error-handling.md`](./changelogs/06-code-quality-and-error-handling.md) | Phase 3: `any` types, `FC` → direct props, error boundary UI, `response.ok` checks, error preservation, Suspense fallbacks, SVG config dedup |
 | [`changelogs/07-env-validation-and-deps.md`](./changelogs/07-env-validation-and-deps.md) | `env.ts` with Zod validation, file upload timeout, removed 3 unused npm deps (`date-fns`, `react-day-picker`, `@tanstack/react-table`) |
+| [`changelogs/08-accessibility-security-react-antipatterns.md`](./changelogs/08-accessibility-security-react-antipatterns.md) | `html lang`, code-of-honor fail-safe, IP header sanitization, `key={index}` → stable keys (12 files), conditional GA |
 
 ---
 

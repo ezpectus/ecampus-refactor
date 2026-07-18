@@ -28,8 +28,8 @@ export function EventPlanTable({ eventsPlan }: Props) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {sortedRows.map((row, index) => (
-          <TableRow key={index}>
+        {sortedRows.map((row) => (
+          <TableRow key={`${row.date}-${row.controlType}`}>
             <TableCell>{row.date}</TableCell>
             <TableCell>{row.controlType}</TableCell>
             <TableCell className="max-w-[360px]">

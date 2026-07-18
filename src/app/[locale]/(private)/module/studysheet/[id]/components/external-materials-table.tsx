@@ -32,8 +32,8 @@ export function ExternalMaterialsTable({ externalMaterials }: Props) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {sortedRows.map((row, index) => (
-          <TableRow key={index}>
+        {sortedRows.map((row) => (
+          <TableRow key={row.url}>
             <TableCell>{row.date}</TableCell>
             <TableCell>
               <Link href={String(row.url)}>{row.name}</Link>

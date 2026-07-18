@@ -32,8 +32,8 @@ export function InternalMaterialsTable({ internalMaterials }: Props) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {sortedRows.map((row, index) => (
-          <TableRow key={index}>
+        {sortedRows.map((row) => (
+          <TableRow key={row.resourceId}>
             <TableCell>{row.date}</TableCell>
             <TableCell>
               <Link href={`https://campus.kpi.ua/student/index.php?mode=mob&show&irid=${row.resourceId}`}>

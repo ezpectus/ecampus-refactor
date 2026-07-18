@@ -13,3 +13,4 @@ This folder documents every fix applied during the refactoring process. Each cha
 | [05-dead-code-cleanup.md](./05-dead-code-cleanup.md) | Dead code cleanup: contants.ts rename, useEffect deps fix, unused types.ts deletion |
 | [06-code-quality-and-error-handling.md](./06-code-quality-and-error-handling.md) | Phase 3: any types, FC→direct props, error boundary UI, response.ok checks, error preservation, Suspense fallbacks, SVG config dedup |
 | [07-env-validation-and-deps.md](./07-env-validation-and-deps.md) | env.ts with Zod validation, file upload timeout, removed 3 unused npm deps |
+| [08-accessibility-security-react-antipatterns.md](./08-accessibility-security-react-antipatterns.md) | html lang, code-of-honor fail-safe, IP header sanitization, key={index}→stable keys (12 files), conditional GA |

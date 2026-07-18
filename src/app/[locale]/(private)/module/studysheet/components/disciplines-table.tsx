@@ -45,8 +45,8 @@ export function DisciplinesTable({ disciplines }: Props) {
               </Badge>
             </TableCell>
             <TableCell className="flex max-w-[360px] flex-col gap-1">
-              {d?.lecturers?.map((lecturer, index) => (
-                <LecturerItemCell key={index} photo={lecturer.photo} fullName={lecturer.fullName} />
+              {d?.lecturers?.map((lecturer) => (
+                <LecturerItemCell key={lecturer.fullName} photo={lecturer.photo} fullName={lecturer.fullName} />
               ))}
             </TableCell>
           </TableRow>
