@@ -27,6 +27,11 @@ const Client = (basePath: string) => {
     const contentType = new Headers(headers).get('Content-type') ?? 'application/json';
     const resolvedHeaders = await nextHeaders();
 
+    const rawForwardedFor = resolvedHeaders.get('x-forwarded-for') || '';
+    const rawRealIp = resolvedHeaders.get('x-real-ip') || '';
+    const sanitizedForwardedFor = rawForwardedFor.split(',')[0]?.trim().slice(0, 45) || '';
+    const sanitizedRealIp = rawRealIp.trim().slice(0, 45) || '';
+
     const cacheOption =
       'next' in otherOptions || 'cache' in otherOptions
         ? {}

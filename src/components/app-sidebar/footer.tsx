@@ -1,16 +1,11 @@
 import { Paragraph } from '../typography/paragraph';
 import { TextButton } from '../ui/text-button';
-import { Link } from '@/i18n/routing';
 import dayjs from 'dayjs';
 import RichText from '../typography/rich-text';
 import { getTranslations } from 'next-intl/server';
-import { env } from '@/lib/env';
 import React from 'react';
 
 const createFooterLinks = (t: Awaited<ReturnType<typeof getTranslations>>) => [
-  { title: t('about'), url: '/about' },
-  { title: t('documents'), url: '/documents' },
-  { title: t('terms-of-service'), url: '/terms-of-service' },
   { title: t('contacts'), url: '/contacts' },
 ];
 
@@ -35,11 +30,6 @@ export const Footer = async () => {
           {(tags) =>
             footerT.rich('footer', {
               ...tags,
-              kbislink: (chunks) => (
-                <Link href={env.NEXT_PUBLIC_KBIS_URL} target="_blank" rel="noopener noreferrer">
-                  {chunks}
-                </Link>
-              ),
               year: dayjs().year(),
               paragraph: (chunks) => <Paragraph className="m-0 text-sm">{chunks}</Paragraph>,
             })

@@ -24,3 +24,5 @@ This folder documents every fix applied during the refactoring process. Each cha
 | [16-saas-rebrand-docker-modernization.md](./16-saas-rebrand-docker-modernization.md) | Rebrand as Student Portal SaaS, rewrite README, modernize Docker with PostgreSQL, add .env.example |
 | [17-de-kpi-fy-codebase.md](./17-de-kpi-fy-codebase.md) | Remove KPI ID login, 37 external redirects, rename campusFetch->apiFetch, rename cookies, clean up CSP/translations/env |
 | [18-remove-kpi-urls-cleanup-logging.md](./18-remove-kpi-urls-cleanup-logging.md) | Remove hardcoded KPI URLs, rename kpi-documents->documents, remove 13 console.error calls, clean up env |
+| [19-final-security-audit-fixes.md](./19-final-security-audit-fixes.md) | SEC-01 JWT validation, SEC-10 IP header sanitization, CSP KPI domain removal — 37/38 audit findings resolved |
+| [20-phase2-cleanup-phase3-registration.md](./20-phase2-cleanup-phase3-registration.md) | Remove KPI pages/cards/code-of-honor, clean footer translations, add registration page with form + server action |

@@ -3,6 +3,7 @@ export const NOT_FOUND_PATH = '/not-found';
 export const LOGIN_PATH = '/login';
 export const PUBLIC_PATHS = [
   '/login',
+  '/register',
   '/password-reset',
   '/curator-search',
   '/suggestions',
@@ -11,4 +12,3 @@ export const PUBLIC_PATHS = [
   '/validate-certificate',
 ];
 export const MODULES_BASE_PATH = '/module';
-export const CODE_OF_HONOR_PATH = '/accept-code-of-honor';

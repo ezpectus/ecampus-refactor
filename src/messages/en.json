@@ -28,7 +28,7 @@
       "title": "Page not found",
       "description": "We're sorry, but we can't find the page you requested. It may have been moved or deleted.",
       "return": "Back to the main page",
-      "footer": "<paragraph>All rights reserved.© {year} Igor Sikorsky Kyiv Polytechnic Institute</paragraph> <paragraph>Developer: <kbislink>KBIS</kbislink></paragraph>"
+      "footer": "<paragraph>All rights reserved. © {year} Student Portal</paragraph>"
     },
     "modules": {
       "directory": "Contact list",
@@ -83,15 +83,12 @@
       "main": "Home",
       "profile": "Profile",
       "settings": "Settings",
-      "about": "About",
-      "documents": "KPI documents",
-      "terms-of-service": "Terms of service",
-      "contacts": "Contacts",
-      "notice-board": "Notice board"
+      "contacts": "Contacts"
     },
     "user-category": {
       "student": "Student",
-      "spw": "SPW"
+      "spw": "SPW",
+      "admin": "Administrator"
     },
     "enums": {
       "academic-degree": {
@@ -181,7 +178,7 @@
         "studying-certificate": "Studying Certificate"
       }
     },
-    "footer": "<paragraph>Developer: <kbislink>KBIS</kbislink></paragraph><paragraph>© {year} Igor Sikorsky Kyiv Polytechnic Institute</paragraph>"
+    "footer": "<paragraph>© {year} Student Portal</paragraph>"
   },
   "auth": {
     "login": {
@@ -190,6 +187,7 @@
       "or": "or",
       "rememberMe": "Remember me",
       "passwordReset": "Forgot my password",
+      "register": "Don't have an account? Sign up",
       "publicLink": {
         "support": "User support",
         "curator-search": "Find curator",
@@ -203,6 +201,33 @@
       "button": {
         "login": "Sign in",
         "kpi-id": "Sign in with KPI ID"
+      }
+    },
+    "register": {
+      "header": "Create account",
+      "description": "Sign up to access your courses, grades, schedule, and more.",
+      "field": {
+        "name": "Full name",
+        "email": "Email address",
+        "password": "Password",
+        "passwordConfirm": "Confirm password",
+        "error": {
+          "email-taken": "An account with this email already exists",
+          "generic": "Registration failed. Please try again."
+        }
+      },
+      "button": {
+        "register": "Sign up",
+        "login": "Already have an account? Sign in"
+      },
+      "validation": {
+        "name-required": "Full name is required",
+        "email-required": "Email is required",
+        "email-invalid": "Please enter a valid email address",
+        "password-required": "Password is required",
+        "password-min": "Password must be at least 8 characters",
+        "password-confirm-required": "Please confirm your password",
+        "password-match": "Passwords do not match"
       }
     },
     "kpi-id": {
@@ -243,7 +268,7 @@
         "loading": "Loading..."
       }
     },
-    "footer": "All rights reserved. © {year} Igor Sikorsky Kyiv Polytechnic Institute<br></br>Developer: <kbislink>Design bureau of information systems</kbislink>"
+    "footer": "All rights reserved. © {year} Student Portal"
   },
   "public": {
     "verification": {

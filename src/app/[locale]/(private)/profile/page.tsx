@@ -42,7 +42,6 @@ export default async function Page() {
             <CardContent className="flex flex-col gap-6 space-y-1.5 p-9">
               <Contacts contacts={contacts} contactTypes={contactTypes} />
               {user.intellectProfile && <IntellectPublicationInfo user={user} />}
-              <CodeOfHonor user={user} />
             </CardContent>
           </Card>
         </div>

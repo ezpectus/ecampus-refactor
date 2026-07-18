@@ -1,10 +1,10 @@
 'use server';
 
 import qs from 'query-string';
-import JWT from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { apiFetch } from '@/lib/client';
+import { getJWTPayload } from '@/lib/jwt';
 import { User } from '@/types/models/user';
 import { AuthResponse } from '@/types/models/auth-response';
 import { SID_COOKIE_NAME, TOKEN_COOKIE_NAME } from '@/lib/constants/cookies';
@@ -15,7 +15,7 @@ const MAIN_COOKIE_DOMAIN = env.MAIN_COOKIE_DOMAIN;
 const ROOT_COOKIE_DOMAIN = env.ROOT_COOKIE_DOMAIN;
 
 export async function setLoginCookies(token: string, sessionId: string, rememberMe: boolean) {
-  const tokenData = JWT.decode(token) as { exp: number };
+  const tokenData = getJWTPayload<{ exp: number }>(token);
   // exp is in seconds, Date expects milliseconds
   const tokenExpiresAt = new Date(tokenData.exp * 1000);
 
@@ -137,5 +137,28 @@ export async function redirectToEmploymentSystem() {
   }
 
   redirect(url);
+}
+
+export async function registerUser(name: string, email: string, password: string) {
+  const payload = {
+    name,
+    email,
+    password,
+  };
+
+  const response = await apiFetch('account/register', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+
+  if (response.status === 409) {
+    return { ok: false, error: 'email-taken' } as const;
+  }
+
+  if (!response.ok) {
+    return { ok: false, error: 'generic' } as const;
+  }
+
+  return { ok: true } as const;
 }
 

@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { NextRequest } from 'next/server';
 import { getAuthInfo, gotoLogin, matchesAnyUrl } from './utils';
-import { codeOfHonorMiddleware } from './code-of-honor.middleware';
+import { authorizationMiddleware } from './authorization.middleware';
 import { PUBLIC_PATHS } from './constants';
 import { intlMiddleware } from './intl.middleware';
 
@@ -19,7 +19,7 @@ export const authenticationMiddleware = (request: NextRequest) => {
   const userAuthenticated = isAuthenticated(request);
 
   if (userAuthenticated) {
-    return codeOfHonorMiddleware(request);
+    return authorizationMiddleware(request);
   }
 
   if (matchesAnyUrl(request, PUBLIC_PATHS, false)) {

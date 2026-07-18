@@ -57,7 +57,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https: blob:",
               "font-src 'self' data:",
-              "connect-src 'self' https://api.campus.kpi.ua https://ecampus.cloud.kpi.ua https://www.google-analytics.com https://www.gstatic.com",
+              "connect-src 'self' https://www.google-analytics.com https://www.gstatic.com",
               "frame-src 'self' https://www.google.com/recaptcha/ https://docs.google.com/",
               "object-src 'none'",
               "base-uri 'self'",

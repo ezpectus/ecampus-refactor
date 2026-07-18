@@ -1,10 +1,9 @@
 import { Heading2, Description } from '@/components/typography';
-import { CredentialsLogin } from './credentials-login';
+import { RegisterForm } from './register-form';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { LocaleProps } from '@/types/locale-props';
-import { Link } from '@/i18n/routing';
 
-const INTL_NAMESPACE = 'auth.login';
+const INTL_NAMESPACE = 'auth.register';
 
 export async function generateMetadata({ params }: LocaleProps) {
   const { locale } = await params;
@@ -16,7 +15,7 @@ export async function generateMetadata({ params }: LocaleProps) {
   };
 }
 
-export default async function LoginPage({ params }: LocaleProps) {
+export default async function RegisterPage({ params }: LocaleProps) {
   const { locale } = await params;
 
   setRequestLocale(locale);
@@ -27,10 +26,7 @@ export default async function LoginPage({ params }: LocaleProps) {
     <>
       <Heading2>{t('header')}</Heading2>
       <Description>{t('description')}</Description>
-      <CredentialsLogin />
-      <Link className="mt-4 text-sm" href="/register">
-        {t('register')}
-      </Link>
+      <RegisterForm />
     </>
   );
 }

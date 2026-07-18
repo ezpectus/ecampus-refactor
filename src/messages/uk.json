@@ -28,7 +28,7 @@
       "title": "Сторінку не знайдено",
       "description": "Вибачте, але ми не можемо знайти запитувану сторінку. Можливо, її було переміщено або видалено.",
       "return": "Повернутися на головну сторінку",
-      "footer": "<paragraph>Усі права захищено. © {year} КПІ ім. Ігоря Сікорського</paragraph><paragraph>Розробник: <kbislink>Конструкторське бюро інформаційних систем</kbislink></paragraph>"
+      "footer": "<paragraph>Усі права захищено. © {year} Student Portal</paragraph>"
     },
     "modules": {
       "directory": "Список контактів",
@@ -83,15 +83,12 @@
       "main": "Головна",
       "profile": "Профіль",
       "settings": "Налаштування",
-      "about": "Про систему",
-      "documents": "Документи КПІ",
-      "terms-of-service": "Правила використання",
-      "contacts": "Контакти",
-      "notice-board": "Оголошення"
+      "contacts": "Контакти"
     },
     "user-category": {
       "student": "Студент",
-      "spw": "НПП"
+      "spw": "НПП",
+      "admin": "Адміністратор"
     },
     "enums": {
       "academic-degree": {
@@ -181,7 +178,7 @@
         "studying-certificate": "Довідка про навчання"
       }
     },
-    "footer": "<paragraph>Розробник: <kbislink>КБІС</kbislink></paragraph><paragraph>© {year} КПІ ім. Ігоря Сікорського</paragraph>"
+    "footer": "<paragraph>© {year} Student Portal</paragraph>"
   },
   "auth": {
     "login": {
@@ -190,6 +187,7 @@
       "or": "або",
       "rememberMe": "Запам’ятати мене",
       "passwordReset": "Відновити пароль",
+      "register": "Немає акаунта? Зареєструватися",
       "publicLink": {
         "support": "Підтримка користувачiв",
         "curator-search": "Знайти куратора групи",
@@ -203,6 +201,33 @@
       "button": {
         "login": "Увійти",
         "kpi-id": "Вхід через KPI ID"
+      }
+    },
+    "register": {
+      "header": "Створити акаунт",
+      "description": "Зареєструйтеся, щоб отримати доступ до ваших курсів, оцінок, розкладу та іншого.",
+      "field": {
+        "name": "Повне ім'я",
+        "email": "Електронна пошта",
+        "password": "Пароль",
+        "passwordConfirm": "Підтвердіть пароль",
+        "error": {
+          "email-taken": "Акаунт з цією поштою вже існує",
+          "generic": "Реєстрація не вдалася. Спробуйте ще раз."
+        }
+      },
+      "button": {
+        "register": "Зареєструватися",
+        "login": "Вже маєте акаунт? Увійти"
+      },
+      "validation": {
+        "name-required": "Введіть повне ім'я",
+        "email-required": "Електронна пошта обов'язкова",
+        "email-invalid": "Введіть коректну електронну пошту",
+        "password-required": "Пароль обов'язковий",
+        "password-min": "Пароль має бути не менше 8 символів",
+        "password-confirm-required": "Підтвердіть пароль",
+        "password-match": "Паролі не співпадають"
       }
     },
     "kpi-id": {
@@ -243,7 +268,7 @@
         "loading": "Завантаження..."
       }
     },
-    "footer": "Усі права захищені. © {year} КПІ ім. Ігоря Сікорського<br></br>Розробник: <kbislink>Конструкторське бюро інформаційних систем</kbislink>"
+    "footer": "Усі права захищені. © {year} Student Portal"
   },
   "public": {
     "verification": {

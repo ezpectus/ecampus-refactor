@@ -15,7 +15,6 @@ export interface User {
   modules: string[];
   intellectProfile?: string;
   userCategories: UserCategory[];
-  codeOfHonorSignDate: string;
   privacyConsentDate?: string | null;
   studentProfile?: StudentProfile;
   employeeProfile?: EmployeeProfile;

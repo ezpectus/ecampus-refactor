@@ -20,7 +20,6 @@ export async function AppSidebar() {
           </MenuSection>
           <MenuSection>
             <MenuItem name="profile" url="/profile" title={t('profile')} />
-            <MenuItem name="notice-board" url="/notice-board" title={t('notice-board')} />
             <MenuItem name="settings" url="/settings" title={t('settings')} />
           </MenuSection>
           <MenuSection>
