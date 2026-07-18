@@ -12,7 +12,7 @@ import { Paragraph } from '@/components/typography/paragraph';
 import { PaginationWithLinks } from '@/components/ui/pagination-with-links';
 import { useTranslations } from 'next-intl';
 import { Show } from '@/components/utils/show';
-import MagnifyingGlassRegular from '../../../../images/icons/MagnifyingGlassRegular.svg';
+import { MagnifyingGlassRegular } from '@/app/images';
 import { Announcement } from '@/types/models/announcement';
 import { PAGE_SIZE_SMALL } from '@/lib/constants/page-size';
 import React from 'react';

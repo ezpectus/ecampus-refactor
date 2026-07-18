@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Slot, Slottable } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
-import SpinnerGap from '@/app/images/icons/SpinnerGap.svg';
+import { SpinnerGap } from '@/app/images';
 import { cn } from '@/lib/utils';
 import { IconPosition } from '../types';
 

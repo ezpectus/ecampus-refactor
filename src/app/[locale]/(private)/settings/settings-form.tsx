@@ -18,7 +18,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { PhotoUploader } from '@/app/[locale]/(private)/settings/photo-uploader';
 import { toast } from '@/hooks/use-toast';
 import { getUniqueUserPhotoUrl } from '@/lib/utils';
-import EnvelopeSimple from '@/app/images/icons/EnvelopeSimple.svg';
+import { EnvelopeSimple } from '@/app/images';
 
 interface Props {
   user: User;

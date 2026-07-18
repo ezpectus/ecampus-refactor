@@ -18,7 +18,6 @@ const FileUpload = (basePath: string) => {
 
     const response = await fetch(input, {
       method: 'POST',
-      cache: 'no-cache',
       signal: AbortSignal.timeout(30000),
       body: formData,
       headers: {

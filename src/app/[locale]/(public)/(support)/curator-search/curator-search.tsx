@@ -3,7 +3,7 @@
 import { CuratorSearchItem } from './curator-search-item';
 import { Input } from '@/components/ui/input';
 import { EmptyPlaceholder } from './empty-placeholder';
-import MagnifyingGlassRegular from '@/app/images/icons/MagnifyingGlassRegular.svg';
+import { MagnifyingGlassRegular } from '@/app/images';
 import { useServerErrorToast } from '@/hooks/use-server-error-toast';
 import { searchByGroupName } from '@/actions/group.actions';
 import { useCallback, useEffect, useRef, useState } from 'react';

@@ -1,10 +1,5 @@
-import SpinnerGap from '../../../../images/icons/SpinnerGap.svg';
-import React from 'react';
+import { LoadingScreen } from '@/components/loading-screen';
 
-export default async function MsgLoading() {
-  return (
-    <div className="flex h-full items-center justify-center">
-      <SpinnerGap />
-    </div>
-  );
+export default function Loading() {
+  return <LoadingScreen />;
 }

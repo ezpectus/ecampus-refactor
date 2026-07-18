@@ -1,5 +1,4 @@
-import CaretUp from '@/app/images/icons/CaretUp.svg';
-import CaretDown from '@/app/images/icons/CaretDown.svg';
+import { CaretUp, CaretDown } from '@/app/images';
 
 export function SortIcon({ dir }: { dir: 'asc' | 'desc' | null }) {
   if (!dir) return null;

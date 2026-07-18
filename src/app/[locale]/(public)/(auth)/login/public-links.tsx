@@ -1,8 +1,6 @@
 import { PublicLink } from './public-link';
-import LifebuoyOutline from '@/app/images/icons/LifebuoyOutline.svg';
-import Student from '@/app/images/icons/Student.svg';
+import { LifebuoyOutline, Student, Chats } from '@/app/images';
 import { getTranslations } from 'next-intl/server';
-import { Chats } from '@/app/images';
 import { env } from '@/lib/env';
 
 export const PublicLinks = async () => {

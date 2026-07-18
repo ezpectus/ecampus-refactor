@@ -1,5 +1,5 @@
 import { TextButton } from '@/components/ui/text-button';
-import CaretLeftRegular from '@/app/images/icons/CaretLeftRegular.svg';
+import { CaretLeftRegular } from '@/app/images';
 import { Heading2 } from '@/components/typography/headers';
 import { getTranslations } from 'next-intl/server';
 

@@ -9,6 +9,7 @@ import Binary from './icons/Binary.svg';
 import Books from './icons/Books.svg';
 import CalendarBlank from './icons/CalendarBlank.svg';
 import Camera from './icons/Camera.svg';
+import CaretDown from './icons/CaretDown.svg';
 import CaretDownBold from './icons/CaretDownBold.svg';
 import CaretDownLight from './icons/CaretDownLight.svg';
 import CaretDownRegular from './icons/CaretDownRegular.svg';
@@ -18,6 +19,7 @@ import CaretLeftRegular from './icons/CaretLeftRegular.svg';
 import CaretRightBold from './icons/CaretRightBold.svg';
 import CaretRightLight from './icons/CaretRightLight.svg';
 import CaretRightRegular from './icons/CaretRightRegular.svg';
+import CaretUp from './icons/CaretUp.svg';
 import CaretUpBold from './icons/CaretUpBold.svg';
 import CaretUpLight from './icons/CaretUpLight.svg';
 import CaretUpRegular from './icons/CaretUpRegular.svg';
@@ -173,6 +175,7 @@ export {
   Books,
   CalendarBlank,
   Camera,
+  CaretDown,
   CaretDownBold,
   CaretDownLight,
   CaretDownRegular,
@@ -182,6 +185,7 @@ export {
   CaretRightBold,
   CaretRightLight,
   CaretRightRegular,
+  CaretUp,
   CaretUpBold,
   CaretUpLight,
   CaretUpRegular,

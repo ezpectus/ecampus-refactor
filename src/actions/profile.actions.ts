@@ -31,10 +31,14 @@ export async function getContactTypes() {
 
 export async function createContact(typeId: number, value: string) {
   try {
-    await campusFetch('profile/contacts', {
+    const response = await campusFetch('profile/contacts', {
       method: 'POST',
       body: JSON.stringify({ typeId, value }),
     });
+
+    if (!response.ok) {
+      throw new Error(`Failed to create contact: ${response.status}`);
+    }
 
     revalidateTag(USER_PROFILE_CACHE_TAG);
   } catch (error) {
@@ -44,10 +48,14 @@ export async function createContact(typeId: number, value: string) {
 
 export async function updateContact(id: number, typeId: number, value: string) {
   try {
-    await campusFetch(`profile/contacts/${id}`, {
+    const response = await campusFetch(`profile/contacts/${id}`, {
       method: 'PUT',
       body: JSON.stringify({ typeId, value }),
     });
+
+    if (!response.ok) {
+      throw new Error(`Failed to update contact: ${response.status}`);
+    }
 
     revalidateTag(USER_PROFILE_CACHE_TAG);
   } catch (error) {
@@ -57,9 +65,13 @@ export async function updateContact(id: number, typeId: number, value: string) {
 
 export async function deleteContact(id: number) {
   try {
-    await campusFetch(`profile/contacts/${id}`, {
+    const response = await campusFetch(`profile/contacts/${id}`, {
       method: 'DELETE',
     });
+
+    if (!response.ok) {
+      throw new Error(`Failed to delete contact: ${response.status}`);
+    }
 
     revalidateTag(USER_PROFILE_CACHE_TAG);
   } catch (error) {
@@ -70,10 +82,14 @@ export async function deleteContact(id: number) {
 
 export async function updateIntellectInfo(credo: string, scientificInterests: string) {
   try {
-    await campusFetch('profile/intellect', {
+    const response = await campusFetch('profile/intellect', {
       method: 'PUT',
       body: JSON.stringify({ credo, scientificInterests }),
     });
+
+    if (!response.ok) {
+      throw new Error(`Failed to update intellect info: ${response.status}`);
+    }
     revalidateTag(USER_PROFILE_CACHE_TAG);
   } catch (error) {
     throw new Error('Error while updating intellect info', { cause: error });
@@ -82,9 +98,13 @@ export async function updateIntellectInfo(credo: string, scientificInterests: st
 
 export async function acceptCodeOfHonor() {
   try {
-    await campusFetch('profile/code-of-honor', {
+    const response = await campusFetch('profile/code-of-honor', {
       method: 'PUT',
     });
+
+    if (!response.ok) {
+      throw new Error(`Failed to accept code of honor: ${response.status}`);
+    }
   } catch (error) {
     throw new Error('Error while accepting code of honor', { cause: error });
   }
@@ -93,9 +113,13 @@ export async function acceptCodeOfHonor() {
 
 export async function acceptPrivacyConsent() {
   try {
-    await campusFetch('profile/privacy-consent', {
+    const response = await campusFetch('profile/privacy-consent', {
       method: 'POST',
     });
+
+    if (!response.ok) {
+      throw new Error(`Failed to accept privacy consent: ${response.status}`);
+    }
     revalidateTag(USER_PROFILE_CACHE_TAG);
   } catch (error) {
     throw new Error('Error while accepting privacy consent', { cause: error });

@@ -1,5 +1,7 @@
+import { getMonitoring } from '@/actions/monitoring.actions';
+import { StudySheetContent } from '@/app/[locale]/(private)/module/studysheet/components/study-sheet-content';
+import { LoadingScreen } from '@/components/loading-screen';
 import { getTranslations } from 'next-intl/server';
-import { StudySheet } from '@/app/[locale]/(private)/module/studysheet/components/study-sheet';
 import { LocaleProps } from '@/types/locale-props';
 
 export async function generateMetadata({ params }: LocaleProps) {
@@ -13,5 +15,16 @@ export async function generateMetadata({ params }: LocaleProps) {
 }
 
 export default async function StudySheetPage() {
-  return <StudySheet />;
+  let sheet;
+  try {
+    sheet = await getMonitoring();
+  } catch (error) {
+    console.error('Failed to load study sheet:', error);
+  }
+
+  if (!sheet) {
+    return <LoadingScreen />;
+  }
+
+  return <StudySheetContent sheet={sheet} />;
 }

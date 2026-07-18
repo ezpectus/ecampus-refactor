@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import { Input, InputProps } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import EyeRegular from '@/app/images/icons/EyeRegular.svg';
-import EyeClosedRegular from '@/app/images/icons/EyeClosedRegular.svg';
+import { EyeRegular, EyeClosedRegular } from '@/app/images';
 import { cn } from '@/lib/utils';
 
 const PasswordInput = ({ className, type, ref, ...props }: InputProps) => {
