@@ -1,6 +1,6 @@
 # Student Portal — Modern Student Management Platform
 
-A production-grade SaaS web application for educational institutions. Built with Next.js 15, React 19, and TypeScript. Features grades management, messaging, announcements, certificates, profiles, and an admin panel. Dockerized, multi-tenant ready, and fully typed.
+A production-grade SaaS web application for educational institutions. Built with Next.js 15, React 19, and TypeScript. Features grades management, messaging, announcements, certificates, profiles, user registration, and a marketing landing page. Dockerized, multi-tenant ready, and fully typed.
 
 ---
 
@@ -26,7 +26,7 @@ A production-grade SaaS web application for educational institutions. Built with
 - **System Settings** — configure app name, logo, locales, feature flags
 
 ### Platform
-- **Authentication** — JWT-based with httpOnly cookies, middleware route protection
+- **Authentication** — JWT-based with httpOnly cookies, middleware route protection, user registration
 - **Multi-locale** — Ukrainian (default) and English, extensible to any locale
 - **Server-Side Rendering** — all pages SSR with ISR caching (5-min revalidate)
 - **Security** — CSP headers, HSTS, cookie security flags, env validation (Zod), URL allow-listing
@@ -136,10 +136,10 @@ src/
 │   │   │   ├── module/        # Core modules (grades, messages, etc.)
 │   │   │   ├── profile/       # User profile
 │   │   │   ├── settings/      # Account settings
-│   │   │   └── notice-board/  # Announcements
+│   │   │   └── contacts/      # Contact directory
 │   │   └── (public)/          # Unauthenticated pages
-│   │       ├── (auth)/        # Login, registration
-│   │       └── (support)/     # Curator search
+│   │       ├── (auth)/        # Login, registration, password reset
+│   │       └── landing/       # Marketing landing page
 │   ├── images/                # Centralized SVG icon index
 │   └── layout.tsx             # Root layout
 ├── actions/                   # Server Actions (API calls)
@@ -183,11 +183,13 @@ All environment variables are validated through a Zod schema at startup. No `pro
 ## Security
 
 - **JWT** stored in httpOnly cookies (not accessible via JavaScript)
+- **JWT validation** — Zod-validated token payload extraction (no unverified decode)
 - **Cookie flags** — `secure` and `sameSite: 'lax'` in production
 - **CSP** — Content-Security-Policy header on all routes
 - **HSTS** — Strict-Transport-Security with preload
 - **Environment validation** — Zod schema, no unvalidated env access
 - **URL allow-listing** — external redirects validated against trusted domains
+- **IP header sanitization** — X-Forwarded-For and X-Real-IP headers sanitized against spoofing
 - **Rate limiting** — planned (Redis-backed) for auth endpoints
 
 ---
