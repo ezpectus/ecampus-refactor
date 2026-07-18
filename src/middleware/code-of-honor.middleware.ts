@@ -1,7 +1,7 @@
 import { getUserDetails } from '@/actions/auth.actions';
 import { NextRequest } from 'next/server';
 import { gotoLogin, gotoRoot, matchesUrl, redirectWithIntl } from './utils';
-import { CODE_OF_HONOR_PATH } from './contants';
+import { CODE_OF_HONOR_PATH } from './constants';
 import { authorizationMiddleware } from './authorization.middleware';
 import { intlMiddleware } from './intl.middleware';
 

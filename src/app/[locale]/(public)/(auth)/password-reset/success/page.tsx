@@ -42,7 +42,7 @@ export default function PasswordRestoreSuccessPage() {
   return (
     <>
       <Heading2>{t('header')}</Heading2>
-      <Suspense>
+      <Suspense fallback={<div className="py-4">{t('loading')}</div>}>
         <PageContents />
       </Suspense>
     </>

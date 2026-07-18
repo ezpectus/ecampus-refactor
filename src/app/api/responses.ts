@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-export const okResponse = (data?: any) =>
+export const okResponse = <T = unknown>(data?: T) =>
   new NextResponse(JSON.stringify(data), {
     status: 200,
     headers: {

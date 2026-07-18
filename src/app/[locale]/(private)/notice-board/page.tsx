@@ -30,7 +30,7 @@ export default async function NoticeBoardPage({ params }: LocaleProps) {
       <div className="col-span-6">
         <Heading2>{t('title')}</Heading2>
         <Description>{t('subtitle')}</Description>
-        <Suspense>
+        <Suspense fallback={<div className="py-12 text-center text-sm text-muted-foreground">{t('loading')}</div>}>
           <NoticeList announcements={announcements} />
         </Suspense>
       </div>

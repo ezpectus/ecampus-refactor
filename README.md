@@ -1,17 +1,24 @@
 # eCampus KPI — Legacy Refactoring
 
 > Production university portal refactored from prototype to maintainable product.
-> 200+ files, 48 modules, ~50k users. Security audit, architecture redesign, code quality overhaul.
+> 200+ files, 48 modules, ~50k users. Security audit (CWE-mapped), architecture redesign, code quality overhaul.
 
 ---
 
 ## Why This Repo Exists
 
-I'm a frontend developer building a portfolio of real-world refactoring work. This is not a toy project — it's a **production application** used by ~50,000 students and staff at Igor Sikorsky Kyiv Polytechnic Institute (KPI).
+I'm a Software Engineering student at Igor Sikorsky Kyiv Polytechnic Institute (KPI) — the same university that runs this portal. I've solved 3000+ algorithm problems across LeetCode, HackerRank, and Codeforces, and built full-stack projects in .NET and React. But algorithm problems are clean — they have a single correct answer. **Real codebases don't.**
 
-I took the existing codebase and treated it like a client engagement: audited every file, mapped vulnerabilities to CWE IDs, documented architectural weaknesses, and applied fixes with full transparency. Every change is documented with before/after code, root cause analysis, and rationale.
+That's why I picked the hardest thing I had access to: my own university's production portal. eCampus KPI serves ~50,000 students and staff. It works. People use it daily. And like most legacy systems, it accumulated technical debt — security gaps, inconsistent patterns, architectural shortcuts that made sense at the time but don't hold up.
 
-**My goal:** demonstrate that I can walk into a messy legacy codebase, understand it, find what's broken, and fix it without breaking anything else.
+I didn't fork a tutorial repo or generate a starter project. I took a system that real people depend on and treated it the way a senior engineer would treat a client engagement:
+
+1. **Audit first** — read every file, trace every data flow, map every vulnerability to its CWE ID
+2. **Document before touching code** — 5 audit documents, 66 issues with exact `file:line` references
+3. **Fix in priority order** — P0 security first (things that could get users hurt), then P1, then quality
+4. **Prove every change** — before/after code, root cause, rationale, and changelog for every single fix
+
+**This is the work I want to do professionally.** Not write new features from scratch — take systems that already exist, understand them deeply, and make them robust. That's harder than greenfield development, and it's what most engineering jobs actually involve.
 
 ---
 
@@ -19,7 +26,7 @@ I took the existing codebase and treated it like a client engagement: audited ev
 
 ### Phase 1: Audit
 
-Conducted a FAANG-level code audit covering security, architecture, code quality, and accessibility:
+Conducted a systematic code audit covering security, architecture, code quality, and accessibility:
 
 - **66 code-level issues** identified with exact `file:line` references
 - **38 architectural issues** documented with diagrams
@@ -36,13 +43,18 @@ Applied prioritized fixes — P0 critical security first, then P1, then quality 
 | **P1 High** | 4 | CSP/HSTS security headers, fetch timeout (10s), open redirect validation, `rel="noopener noreferrer"` on 7 files |
 | **Quality** | 3 | Toast memory leak (1M ms → 5s), misplaced import, `notFound()` → `redirect()` |
 | **Architecture** | 2 | `<div onClick>` → `<button>` + `aria-label` (a11y), removed `setTimeout` leak |
+| **Dead Code** | 3 | `contants.ts` → `constants.ts` rename (4 imports), `useEffect` deps fix, unused `types.ts` deleted |
+| **Error Handling** | 7 | `any` → generics, `FC` → direct props, error boundary UI, `response.ok` checks, error preservation (`cause`), `resetPassword` re-throw, Suspense fallbacks (3 files) |
+| **Code Quality** | 3 | `sleep(5000)` → `setTimeout` with cleanup, `aria-label` on logout button, SVG config dedup |
+| **Env Validation** | 3 | `env.ts` with Zod schema, `process.env.X!` → `env.X` in 4 files, file upload 30s timeout |
+| **Dependency Cleanup** | 3 | Removed `date-fns`, `react-day-picker`, `@tanstack/react-table` (zero imports) |
 
 ### Phase 3: Documentation
 
 Every fix is documented with before/after code, problem description, impact, and solution:
 
 - [`docs/`](./docs/) — 5 audit documents (architecture, refactoring plan, code-level audit)
-- [`changelogs/`](./changelogs/) — 4 changelogs with CWE mapping and code diffs
+- [`changelogs/`](./changelogs/) — 7 changelogs with CWE mapping and code diffs
 
 ---
 
@@ -91,6 +103,9 @@ Every fix is documented with before/after code, problem description, impact, and
 | [`changelogs/02-security-p1.md`](./changelogs/02-security-p1.md) | P1 high: fetch timeout, open redirect, CSP headers, `rel=noopener` (7 files) |
 | [`changelogs/03-code-quality.md`](./changelogs/03-code-quality.md) | Quality: toast delay, import placement, `notFound` → `redirect` |
 | [`changelogs/04-architecture.md`](./changelogs/04-architecture.md) | Architecture: `div onClick` → `button`, `setTimeout` removal |
+| [`changelogs/05-dead-code-cleanup.md`](./changelogs/05-dead-code-cleanup.md) | Dead code: `contants.ts` rename, `useEffect` deps fix, unused `types.ts` deletion |
+| [`changelogs/06-code-quality-and-error-handling.md`](./changelogs/06-code-quality-and-error-handling.md) | Phase 3: `any` types, `FC` → direct props, error boundary UI, `response.ok` checks, error preservation, Suspense fallbacks, SVG config dedup |
+| [`changelogs/07-env-validation-and-deps.md`](./changelogs/07-env-validation-and-deps.md) | `env.ts` with Zod validation, file upload timeout, removed 3 unused npm deps (`date-fns`, `react-day-picker`, `@tanstack/react-table`) |
 
 ---
 
@@ -120,9 +135,11 @@ Every fix is documented with before/after code, problem description, impact, and
 
 ## Author
 
-**Denys Stepanenko** — Frontend Developer
+**Denys Stepanenko** — Software Engineer (.NET | Full-Stack)
 
-I specialize in taking legacy codebases and making them production-grade. This project demonstrates my approach: audit first, document everything, fix in priority order, and never break existing functionality.
+Software Engineering student at KPI. Background in .NET backend, full-stack React, and algorithms (3000+ problems solved across LeetCode, HackerRank, Codeforces). Cybersecurity internship experience at JCB (threat modeling, secure software development).
+
+I take legacy systems and make them production-grade. This project demonstrates my approach: audit first, document everything, fix in priority order, and never break existing functionality.
 
 ---
 

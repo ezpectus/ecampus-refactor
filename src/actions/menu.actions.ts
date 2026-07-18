@@ -10,9 +10,10 @@ import { MODULES } from '@/lib/constants/modules';
 import { ProfileArea } from '@/types/enums/profile-area';
 import { Module } from '@/types/module';
 import { TOKEN_COOKIE_NAME } from '@/lib/constants/cookies';
+import { env } from '@/lib/env';
 import { group } from 'radash';
 
-const OLD_CAMPUS_URL = process.env.OLD_CAMPUS_URL;
+const OLD_CAMPUS_URL = env.OLD_CAMPUS_URL;
 const OLD_CAMPUS_PROFILE_AREA = {
   [ProfileArea.Employee]: 'tutor',
   [ProfileArea.Student]: 'student',

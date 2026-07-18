@@ -11,7 +11,7 @@ export const Header = ({ className }: HeaderProps) => {
   return (
     <header className={cn('flex items-center justify-between', className)}>
       <Logo />
-      <Suspense>
+      <Suspense fallback={<div className="h-8 w-8" />}>
         <LocaleSwitch />
       </Suspense>
     </header>

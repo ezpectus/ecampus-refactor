@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { NextRequest } from 'next/server';
 import { getAuthInfo, gotoLogin, matchesAnyUrl } from './utils';
 import { codeOfHonorMiddleware } from './code-of-honor.middleware';
-import { PUBLIC_PATHS } from './contants';
+import { PUBLIC_PATHS } from './constants';
 import { intlMiddleware } from './intl.middleware';
 
 const isAuthenticated = (request: NextRequest) => {

@@ -2,6 +2,19 @@ import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin();
 
+const svgoConfig = {
+  plugins: [
+    {
+      name: 'preset-default',
+      params: {
+        overrides: {
+          removeViewBox: false,
+        },
+      },
+    },
+  ],
+};
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   turbopack: {
@@ -11,18 +24,7 @@ const nextConfig = {
           {
             loader: '@svgr/webpack',
             options: {
-              svgoConfig: {
-                plugins: [
-                  {
-                    name: 'preset-default',
-                    params: {
-                      overrides: {
-                        removeViewBox: false,
-                      },
-                    },
-                  },
-                ],
-              },
+              svgoConfig,
             },
           },
         ],
@@ -106,18 +108,7 @@ const nextConfig = {
         use: {
           loader: '@svgr/webpack',
           options: {
-            svgoConfig: {
-              plugins: [
-                {
-                  name: 'preset-default',
-                  params: {
-                    overrides: {
-                      removeViewBox: false,
-                    },
-                  },
-                },
-              ],
-            },
+            svgoConfig,
           },
         },
       },

@@ -3,6 +3,7 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { TOKEN_COOKIE_NAME } from './constants/cookies';
+import { env } from './env';
 
 const FileUpload = (basePath: string) => {
   return async (url: string | URL, formData: FormData) => {
@@ -18,6 +19,7 @@ const FileUpload = (basePath: string) => {
     const response = await fetch(input, {
       method: 'POST',
       cache: 'no-cache',
+      signal: AbortSignal.timeout(30000),
       body: formData,
       headers: {
         Authorization: `Bearer ${jwt}`,

@@ -10,9 +10,10 @@ import { AuthResponse } from '@/types/models/auth-response';
 import { KPIIDAccount } from '@/types/models/kpi-id-account';
 import { SID_COOKIE_NAME, TOKEN_COOKIE_NAME } from '@/lib/constants/cookies';
 import { USER_PROFILE_CACHE_TAG } from '@/lib/constants/cache-tags';
+import { env } from '@/lib/env';
 
-const MAIN_COOKIE_DOMAIN = process.env.MAIN_COOKIE_DOMAIN;
-const ROOT_COOKIE_DOMAIN = process.env.ROOT_COOKIE_DOMAIN;
+const MAIN_COOKIE_DOMAIN = env.MAIN_COOKIE_DOMAIN;
+const ROOT_COOKIE_DOMAIN = env.ROOT_COOKIE_DOMAIN;
 
 export async function setLoginCookies(token: string, sessionId: string, rememberMe: boolean) {
   const tokenData = JWT.decode(token) as { exp: number };
@@ -22,7 +23,7 @@ export async function setLoginCookies(token: string, sessionId: string, remember
   const expires = rememberMe ? tokenExpiresAt : undefined;
   const resolvedCookies = await cookies();
 
-  const isProduction = process.env.NODE_ENV === 'production';
+  const isProduction = env.NODE_ENV === 'production';
 
   resolvedCookies.set(SID_COOKIE_NAME, sessionId, {
     domain: ROOT_COOKIE_DOMAIN,
@@ -55,7 +56,8 @@ export async function loginWithCredentials(username: string, password: string, r
     body: qs.stringify(payload),
   });
 
-  if (response.status < 200 || response.status >= 300) {
+  if (!response.ok) {
+    console.error('Login failed:', response.status);
     return null;
   }
 
@@ -98,7 +100,8 @@ export async function resetPassword(username: string, recaptchaToken: string) {
 
     return null;
   } catch (error) {
-    throw new Error('Bad request');
+    if (error instanceof Error) throw error;
+    throw new Error('Unknown error during password reset');
   }
 }
 

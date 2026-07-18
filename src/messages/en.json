@@ -8,6 +8,11 @@
       "title": "Something went wrong",
       "description": "There was a problem with your request"
     },
+    "error": {
+      "title": "An error occurred",
+      "description": "An unexpected error occurred. Please try again or refresh the page.",
+      "retry": "Try again"
+    },
     "navigation": {
       "back": "Back"
     },
@@ -234,7 +239,8 @@
         "header": "Check your inbox",
         "description": "We've sent you a link to reset your password on email {username}. Click below to sign in to your account.",
         "retryMessage": "Didn't get an email? <link>Click to resend.</link>",
-        "button": "Continue"
+        "button": "Continue",
+        "loading": "Loading..."
       }
     },
     "footer": "All rights reserved. © {year} Igor Sikorsky Kyiv Polytechnic Institute<br></br>Developer: <kbislink>Design bureau of information systems</kbislink>"
@@ -391,7 +397,8 @@
       "input": {
         "placeholder": "Search",
         "not-found": "No results found"
-      }
+      },
+      "loading": "Loading..."
     },
     "announcementseditor": {
       "title": "Announcement Management",

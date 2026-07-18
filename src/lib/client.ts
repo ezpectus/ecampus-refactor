@@ -5,6 +5,7 @@ import { getLocale } from 'next-intl/server';
 import { TOKEN_COOKIE_NAME } from './constants/cookies';
 import { DEFAULT_LOCALE } from '@/i18n/routing';
 import { headers as nextHeaders } from 'next/headers';
+import { env } from './env';
 
 const getLocaleSafe = async () => {
   try {

@@ -1,7 +1,6 @@
 'use client';
 
-import { FC, useEffect, useRef, useState } from 'react';
-import { sleep } from 'radash';
+import { useEffect, useRef, useState } from 'react';
 import { LocaleSwitch } from '@/components/ui/locale-switch';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { ProfilePicture } from '@/components/ui/profile-picture';
@@ -21,7 +20,7 @@ interface Props {
   user: User;
 }
 
-export const Header: FC<Props> = ({ user }) => {
+export const Header = ({ user }: Props) => {
   const isMobile = useIsMobile();
 
   const t = useTranslations('private.profile');
@@ -37,16 +36,12 @@ export const Header: FC<Props> = ({ user }) => {
   useEffect(() => {
     const setProfilePhotoUrl = () => setProfilePhoto(getUniqueUserPhotoUrl(user.photo));
 
-    const deferProfileImageUpdate = async () => {
-      await sleep(5000);
-      setProfilePhotoUrl();
-    };
-
     if (firstRender.current) {
       setProfilePhotoUrl();
       firstRender.current = false;
     } else {
-      deferProfileImageUpdate();
+      const timer = setTimeout(() => setProfilePhotoUrl(), 5000);
+      return () => clearTimeout(timer);
     }
   }, [user]);
 
@@ -79,7 +74,7 @@ export const Header: FC<Props> = ({ user }) => {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="secondary" icon={<SignOut />} onClick={handleLogout} />
+              <Button variant="secondary" icon={<SignOut />} onClick={handleLogout} aria-label={t('button.logout')} />
             </TooltipTrigger>
             <TooltipContent>
               <p>{t('button.logout')}</p>

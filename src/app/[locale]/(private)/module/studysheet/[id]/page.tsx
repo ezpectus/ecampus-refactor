@@ -39,6 +39,7 @@ export default function InfoPageClient() {
         setCreditModule(data);
         setIsLoading(false);
       } catch (error) {
+        console.error('Failed to load study sheet:', error);
         setIsLoading(false);
       }
     }
