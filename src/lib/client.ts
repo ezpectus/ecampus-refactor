@@ -51,4 +51,4 @@ const Client = (basePath: string) => {
   };
 };
 
-export const campusFetch = Client(env.CAMPUS_API_BASE_PATH);
+export const apiFetch = Client(env.API_BASE_URL);

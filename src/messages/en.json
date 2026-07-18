@@ -1,8 +1,8 @@
 {
   "global": {
     "metadata": {
-      "title": "Campus KPI",
-      "description": "Campus KPI"
+      "title": "Student Portal",
+      "description": "Student Portal"
     },
     "server-error": {
       "title": "Something went wrong",

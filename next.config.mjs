@@ -71,15 +71,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'api.campus.kpi.ua',
-      },
-      {
-        protocol: 'https',
-        hostname: 'ecampus.cloud.kpi.ua',
-      },
-      {
-        protocol: 'https',
-        hostname: 'cdn.cloud.kpi.ua',
+        hostname: '**',
       },
     ],
     // Disable Next.js image optimization and caching; let CDN/browser handle it
@@ -87,7 +79,6 @@ const nextConfig = {
   },
   env: {
     NEXT_PUBLIC_ENV: process.env.NEXT_PUBLIC_ENV,
-    NEXT_PUBLIC_KPI_ID_APP_ID: process.env.NEXT_PUBLIC_KPI_ID_APP_ID,
   },
   webpack(config) {
     // Grab the existing rule that handles SVG imports

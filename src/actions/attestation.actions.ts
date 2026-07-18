@@ -1,10 +1,10 @@
 'use server';
 
-import { campusFetch } from '@/lib/client';
+import { apiFetch } from '@/lib/client';
 import { AttestationResult } from '@/types/models/attestation-results/attestation-result';
 
 export async function getAttestationResults() {
-  const response = await campusFetch<AttestationResult[]>('/attestation');
+  const response = await apiFetch<AttestationResult[]>('/attestation');
   if (!response.ok) {
     throw new Error(`${response.status} Error`);
   }

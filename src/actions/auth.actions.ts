@@ -4,10 +4,9 @@ import qs from 'query-string';
 import JWT from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { campusFetch } from '@/lib/client';
+import { apiFetch } from '@/lib/client';
 import { User } from '@/types/models/user';
 import { AuthResponse } from '@/types/models/auth-response';
-import { KPIIDAccount } from '@/types/models/kpi-id-account';
 import { SID_COOKIE_NAME, TOKEN_COOKIE_NAME } from '@/lib/constants/cookies';
 import { USER_PROFILE_CACHE_TAG } from '@/lib/constants/cache-tags';
 import { env } from '@/lib/env';
@@ -48,7 +47,7 @@ export async function loginWithCredentials(username: string, password: string, r
     grant_type: 'password',
   };
 
-  const response = await campusFetch<AuthResponse>('oauth/token', {
+  const response = await apiFetch<AuthResponse>('oauth/token', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -89,7 +88,7 @@ export async function resetPassword(username: string, recaptchaToken: string) {
       UserIdentifier: username,
     };
 
-    const response = await campusFetch('account/recovery', {
+    const response = await apiFetch('account/recovery', {
       method: 'POST',
       body: JSON.stringify(payload),
     });
@@ -108,7 +107,7 @@ export async function resetPassword(username: string, recaptchaToken: string) {
 
 
 export async function getUserDetails() {
-  const userResponse = await campusFetch<User>('profile', {
+  const userResponse = await apiFetch<User>('profile', {
     next: { tags: [USER_PROFILE_CACHE_TAG] },
   });
 
@@ -120,7 +119,7 @@ export async function getUserDetails() {
 }
 
 export async function redirectToEmploymentSystem() {
-  const response = await campusFetch<string>('employment-system/auth');
+  const response = await apiFetch<string>('employment-system/auth');
 
   if (!response.ok) {
     throw new Error(`Failed to get employment system URL: ${response.status}`);
@@ -140,12 +139,3 @@ export async function redirectToEmploymentSystem() {
   redirect(url);
 }
 
-export async function getKPIIDAccounts(ticketId: string) {
-  const response = await campusFetch<KPIIDAccount[]>(`/auth/kpi-id?ticketId=${ticketId}`);
-
-  if (!response.ok) {
-    return null;
-  }
-
-  return response.json();
-}

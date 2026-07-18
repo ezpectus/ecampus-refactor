@@ -1,7 +1,7 @@
 'use server';
 
 import { Contact, ContactType } from '@/types/models/contact';
-import { campusFetch } from '@/lib/client';
+import { apiFetch } from '@/lib/client';
 import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 
@@ -9,7 +9,7 @@ import { USER_PROFILE_CACHE_TAG } from '@/lib/constants/cache-tags';
 
 export async function getContacts() {
   try {
-    const response = await campusFetch<Contact[]>('profile/contacts');
+    const response = await apiFetch<Contact[]>('profile/contacts');
 
     if (!response.ok) return [];
     return response.json();
@@ -20,7 +20,7 @@ export async function getContacts() {
 
 export async function getContactTypes() {
   try {
-    const response = await campusFetch<ContactType[]>('profile/contacts/types');
+    const response = await apiFetch<ContactType[]>('profile/contacts/types');
 
     if (!response.ok) return [];
     return response.json();
@@ -31,7 +31,7 @@ export async function getContactTypes() {
 
 export async function createContact(typeId: number, value: string) {
   try {
-    const response = await campusFetch('profile/contacts', {
+    const response = await apiFetch('profile/contacts', {
       method: 'POST',
       body: JSON.stringify({ typeId, value }),
     });
@@ -48,7 +48,7 @@ export async function createContact(typeId: number, value: string) {
 
 export async function updateContact(id: number, typeId: number, value: string) {
   try {
-    const response = await campusFetch(`profile/contacts/${id}`, {
+    const response = await apiFetch(`profile/contacts/${id}`, {
       method: 'PUT',
       body: JSON.stringify({ typeId, value }),
     });
@@ -65,7 +65,7 @@ export async function updateContact(id: number, typeId: number, value: string) {
 
 export async function deleteContact(id: number) {
   try {
-    const response = await campusFetch(`profile/contacts/${id}`, {
+    const response = await apiFetch(`profile/contacts/${id}`, {
       method: 'DELETE',
     });
 
@@ -82,7 +82,7 @@ export async function deleteContact(id: number) {
 
 export async function updateIntellectInfo(credo: string, scientificInterests: string) {
   try {
-    const response = await campusFetch('profile/intellect', {
+    const response = await apiFetch('profile/intellect', {
       method: 'PUT',
       body: JSON.stringify({ credo, scientificInterests }),
     });
@@ -98,7 +98,7 @@ export async function updateIntellectInfo(credo: string, scientificInterests: st
 
 export async function acceptCodeOfHonor() {
   try {
-    const response = await campusFetch('profile/code-of-honor', {
+    const response = await apiFetch('profile/code-of-honor', {
       method: 'PUT',
     });
 
@@ -113,7 +113,7 @@ export async function acceptCodeOfHonor() {
 
 export async function acceptPrivacyConsent() {
   try {
-    const response = await campusFetch('profile/privacy-consent', {
+    const response = await apiFetch('profile/privacy-consent', {
       method: 'POST',
     });
 

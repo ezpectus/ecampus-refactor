@@ -1,5 +1,5 @@
 declare global {
-  declare function fetch<ResponseType = any>(
+  declare function fetch<ResponseType = unknown>(
     input: RequestInfo | URL,
     init?: TypedRequestInit,
   ): Promise<TypedResponse<ResponseType>>;
@@ -8,14 +8,6 @@ declare global {
 
   interface TypedResponse<T> extends Response {
     json(): Promise<T>;
-  }
-
-  interface KPI_ID {
-    init(): void;
-  }
-
-  interface Window {
-    KPIID: KPI_ID;
   }
 }
 

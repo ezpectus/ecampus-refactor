@@ -1,7 +1,7 @@
 'use server';
 
 import { Message } from '@/types/models/message';
-import { campusFetch } from '@/lib/client';
+import { apiFetch } from '@/lib/client';
 import { MailFilter } from '@/types/enums/mail-filter';
 import { Group } from '@/types/models/group';
 import { revalidatePath } from 'next/cache';
@@ -9,7 +9,7 @@ import queryString from 'query-string';
 import { EntityIdName } from '@/types/models/entity-id-name';
 
 export async function getMails(filter: MailFilter = MailFilter.Incoming) {
-  const response = await campusFetch<Message[]>(`/mail?filter=${filter}`);
+  const response = await apiFetch<Message[]>(`/mail?filter=${filter}`);
   if (!response.ok) {
     throw new Error(`${response.status} Error`);
   }
@@ -17,7 +17,7 @@ export async function getMails(filter: MailFilter = MailFilter.Incoming) {
 }
 
 export async function getMail(mailId: number) {
-  const response = await campusFetch<Message>(`/mail/${mailId}`);
+  const response = await apiFetch<Message>(`/mail/${mailId}`);
   if (!response.ok) {
     throw new Error(`${response.status} Error`);
   }
@@ -25,7 +25,7 @@ export async function getMail(mailId: number) {
 }
 
 export async function getFacultyOptions() {
-  const response = await campusFetch<EntityIdName[]>('/mail/faculty-options');
+  const response = await apiFetch<EntityIdName[]>('/mail/faculty-options');
   if (!response.ok) {
     throw new Error(`${response.status} Error`);
   }
@@ -36,7 +36,7 @@ export async function getAllGroups() {
   const allFaculties = await getFacultyOptions();
   const allFacultiesIds = allFaculties.map((faculty) => faculty.id);
   const query = queryString.stringify({ faculties: allFacultiesIds }, { arrayFormat: 'none' });
-  const response = await campusFetch<EntityIdName[]>(`/mail/group-options?${query}`);
+  const response = await apiFetch<EntityIdName[]>(`/mail/group-options?${query}`);
   if (!response.ok) {
     throw new Error(`${response.status} Error`);
   }
@@ -50,7 +50,7 @@ export async function deleteMail(mailIds: number[], deleteForRecipient: boolean)
     { arrayFormat: 'none' },
   );
 
-  const response = await campusFetch<Message>(`/mail?${query}`, {
+  const response = await apiFetch<Message>(`/mail?${query}`, {
     method: 'DELETE',
   });
 
@@ -62,7 +62,7 @@ export async function deleteMail(mailIds: number[], deleteForRecipient: boolean)
 }
 
 export async function markAsImportant(mailIds: number[], isImportant: boolean) {
-  const response = await campusFetch<Message>(`/mail/important`, {
+  const response = await apiFetch<Message>(`/mail/important`, {
     method: 'PATCH',
     body: JSON.stringify({ mailIds: mailIds, isImportant: isImportant }),
   });
@@ -76,7 +76,7 @@ export async function markAsImportant(mailIds: number[], isImportant: boolean) {
 
 export async function getGroupOptions(facultyIds: number[]) {
   const query = queryString.stringify({ faculties: facultyIds }, { arrayFormat: 'none' });
-  const response = await campusFetch<Group[]>(`/mail/group-options?${query}`);
+  const response = await apiFetch<Group[]>(`/mail/group-options?${query}`);
   if (!response.ok) {
     throw new Error(`${response.status} Error`);
   }
@@ -86,7 +86,7 @@ export async function getGroupOptions(facultyIds: number[]) {
 
 export async function getStudentOptions(groups: number[]) {
   const query = queryString.stringify({ groups }, { arrayFormat: 'none' });
-  const response = await campusFetch<EntityIdName[]>(`/mail/student-options?${query}`);
+  const response = await apiFetch<EntityIdName[]>(`/mail/student-options?${query}`);
   if (!response.ok) {
     throw new Error(`${response.status} Error`);
   }
@@ -94,7 +94,7 @@ export async function getStudentOptions(groups: number[]) {
 }
 
 export async function getEmployeeOptions(search: string) {
-  const response = await campusFetch<EntityIdName[]>(`/mail/employee-options?search=${search}`);
+  const response = await apiFetch<EntityIdName[]>(`/mail/employee-options?search=${search}`);
   if (!response.ok) {
     throw new Error(`${response.status} Error`);
   }
@@ -107,7 +107,7 @@ type SendMailParams = {
   content: string;
 };
 export async function sendMail(params: SendMailParams) {
-  const response = await campusFetch<Message>('/mail', {
+  const response = await apiFetch<Message>('/mail', {
     method: 'POST',
     body: JSON.stringify(params),
   });

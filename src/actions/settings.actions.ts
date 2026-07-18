@@ -1,11 +1,11 @@
 'use server';
 
-import { campusFetch } from '@/lib/client';
+import { apiFetch } from '@/lib/client';
 import { fileUpload } from '@/lib/file-upload';
 import { revalidatePath } from 'next/cache';
 
 export async function changeEmail(email: string) {
-  const response = await campusFetch('settings/email', {
+  const response = await apiFetch('settings/email', {
     method: 'PUT',
     body: JSON.stringify({ email }),
   });
@@ -23,7 +23,7 @@ export async function changePhoto(formData: FormData) {
 }
 
 export async function changePassword(password: string, currentPassword: string) {
-  const response = await campusFetch('settings/password', {
+  const response = await apiFetch('settings/password', {
     method: 'PUT',
     body: JSON.stringify({ password, currentPassword }),
   });

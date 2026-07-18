@@ -1,6 +1,6 @@
 'use server';
 
-import { campusFetch } from '@/lib/client';
+import { apiFetch } from '@/lib/client';
 import { Certificate } from '@/types/models/certificate/certificate';
 import { revalidatePath } from 'next/cache';
 import { CertificateVerificationResult } from '@/types/models/certificate/certificate-verification-result';
@@ -9,7 +9,7 @@ import { CertificateStatus } from '@/types/models/certificate/status';
 import qs from 'query-string';
 
 export async function getCertificateTypes() {
-  const response = await campusFetch<string[]>('/certificates/types');
+  const response = await apiFetch<string[]>('/certificates/types');
   if (!response.ok) {
     throw new Error(`${response.status} Error`);
   }
@@ -22,7 +22,7 @@ export type UpdateCertificateBody = {
 };
 
 export async function updateCertificate(id: number, body: UpdateCertificateBody) {
-  const res = await campusFetch(`/certificates/${id}/status`, {
+  const res = await apiFetch(`/certificates/${id}/status`, {
     method: 'PUT',
     body: JSON.stringify({ ...body }),
   });
@@ -40,7 +40,7 @@ type CertificateRequestBody = {
 };
 
 export async function createCertificateRequest(body: CertificateRequestBody) {
-  const response = await campusFetch('/certificates', {
+  const response = await apiFetch('/certificates', {
     method: 'POST',
     body: JSON.stringify({ ...body }),
   });
@@ -53,7 +53,7 @@ export async function createCertificateRequest(body: CertificateRequestBody) {
 }
 
 export async function getCertificateList() {
-  const response = await campusFetch<Certificate[]>('/certificates');
+  const response = await apiFetch<Certificate[]>('/certificates');
   if (!response.ok) {
     throw new Error(`${response.status} Error`);
   }
@@ -63,7 +63,7 @@ export async function getCertificateList() {
 
 export async function getAllFacultyCertificates(query: FacultyCertificatesQuery = {}) {
   const queryParams = qs.stringify(query);
-  const res = await campusFetch<Certificate[]>(`/certificates/all?${queryParams}`);
+  const res = await apiFetch<Certificate[]>(`/certificates/all?${queryParams}`);
   if (!res.ok) {
     throw new Error(`${res.status} Error`);
   }
@@ -75,7 +75,7 @@ export async function getAllFacultyCertificates(query: FacultyCertificatesQuery 
 
 export async function getCertificatePDF(id: number) {
   try {
-    const response = await campusFetch(`/certificates/${id}/pdf`, {
+    const response = await apiFetch(`/certificates/${id}/pdf`, {
       headers: {
         Accept: 'application/pdf',
       },
@@ -99,7 +99,7 @@ export async function getCertificatePDF(id: number) {
 }
 
 export async function getCertificate(id: number) {
-  const res = await campusFetch<Certificate>(`/certificates/${id}`);
+  const res = await apiFetch<Certificate>(`/certificates/${id}`);
   if (!res.ok) {
     throw new Error(`${res.status} Error`);
   }
@@ -107,7 +107,7 @@ export async function getCertificate(id: number) {
 }
 
 export async function verifyCertificate(id: string) {
-  const response = await campusFetch<CertificateVerificationResult>(`/certificates/validate/${id}`);
+  const response = await apiFetch<CertificateVerificationResult>(`/certificates/validate/${id}`);
   if (!response.ok) {
     return 'error';
   }
@@ -123,7 +123,7 @@ export interface FacultyCertificatesQuery {
 }
 
 export async function getOtherFacultyCertificate() {
-  const res = await campusFetch<Certificate[]>('/certificates/all');
+  const res = await apiFetch<Certificate[]>('/certificates/all');
 
   if (!res.ok) {
     throw new Error(`${res.status} Error`);
@@ -142,7 +142,7 @@ export async function getOtherFacultyCertificate() {
 }
 
 export async function signCertificate(id: number) {
-  const response = await campusFetch(`/certificates/${id}/signed`, {
+  const response = await apiFetch(`/certificates/${id}/signed`, {
     method: 'PUT',
   });
 

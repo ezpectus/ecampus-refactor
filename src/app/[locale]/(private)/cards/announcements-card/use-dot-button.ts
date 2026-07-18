@@ -15,11 +15,11 @@ export const useDotButton = (api: CarouselApi) => {
     [api],
   );
 
-  const onInit = useCallback((api: any) => {
+  const onInit = useCallback((api: CarouselApi) => {
     setScrollSnaps(api.scrollSnapList());
   }, []);
 
-  const onSelect = useCallback((api: any) => {
+  const onSelect = useCallback((api: CarouselApi) => {
     setSelectedIndex(api.selectedScrollSnap());
   }, []);
 

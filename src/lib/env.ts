@@ -3,16 +3,13 @@ import { z } from 'zod';
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
 
-  CAMPUS_API_BASE_PATH: z.string().url(),
-  OLD_CAMPUS_URL: z.string().url().optional(),
+  API_BASE_URL: z.string().url(),
   MAIN_COOKIE_DOMAIN: z.string().optional(),
   ROOT_COOKIE_DOMAIN: z.string().optional(),
 
   NEXT_PUBLIC_GA_ID: z.string().optional(),
   NEXT_PUBLIC_BETA_LOGO: z.string().optional(),
   NEXT_PUBLIC_ENV: z.string().optional(),
-  NEXT_PUBLIC_KPI_ID_APP_ID: z.string().optional(),
-  NEXT_PUBLIC_KPI_ID_BUTTON: z.string().url().optional(),
   NEXT_PUBLIC_RECAPTCHA_KEY: z.string().optional(),
   NEXT_PUBLIC_CAROUSEL_CDN_BASE_URL: z.string().url().optional(),
 

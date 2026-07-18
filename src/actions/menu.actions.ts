@@ -7,45 +7,29 @@ import { cookies } from 'next/headers';
 import { getUserDetails } from './auth.actions';
 import { MenuGroup } from '@/types/menu-item-meta';
 import { MODULES } from '@/lib/constants/modules';
-import { ProfileArea } from '@/types/enums/profile-area';
 import { Module } from '@/types/module';
 import { TOKEN_COOKIE_NAME } from '@/lib/constants/cookies';
-import { env } from '@/lib/env';
 import { group } from 'radash';
 
-const OLD_CAMPUS_URL = env.OLD_CAMPUS_URL;
-const OLD_CAMPUS_PROFILE_AREA = {
-  [ProfileArea.Employee]: 'tutor',
-  [ProfileArea.Student]: 'student',
-};
 type Translation = Awaited<ReturnType<typeof getTranslations>>;
 
 const byTitle = (a: MenuGroup, b: MenuGroup) => a.title.localeCompare(b.title);
 
-const getIsExternal = (module: Module, profileArea: ProfileArea) =>
-  typeof module.isExternal === 'function' ? module.isExternal(profileArea) : module.isExternal;
-
-const composeUrl = (module: Module, profileArea: ProfileArea) => {
-  if (getIsExternal(module, profileArea)) {
-    return `${OLD_CAMPUS_URL}/${OLD_CAMPUS_PROFILE_AREA[profileArea]}/index.php?mode=${module.name}`;
-  }
-
-  return `/module/${module.name}`;
-};
+const composeUrl = (module: Module) => `/module/${module.name}`;
 
 const getModuleMenuItemComposer =
   (translation: Translation) =>
-  (module: Module, profileArea: ProfileArea): MenuGroup => ({
+  (module: Module): MenuGroup => ({
     name: module.name,
     title: translation(module.name),
-    url: composeUrl(module, profileArea),
-    external: getIsExternal(module, profileArea),
+    url: composeUrl(module),
+    external: false,
   });
 
-const getMenuGroupComposer = (translation: Translation) => (modules: Module[], profileArea: ProfileArea) => {
+const getMenuGroupComposer = (translation: Translation) => (modules: Module[]) => {
   const composeModuleMenuItem = getModuleMenuItemComposer(translation);
 
-  return modules.map((module) => composeModuleMenuItem(module, profileArea));
+  return modules.map((module) => composeModuleMenuItem(module));
 };
 
 export const getModuleMenuSection = async (): Promise<MenuGroup[]> => {
@@ -70,8 +54,7 @@ export const getModuleMenuSection = async (): Promise<MenuGroup[]> => {
     }
 
     const t = await getTranslations('global.modules');
-    const profileArea = userDetails.studentProfile ? ProfileArea.Student : ProfileArea.Employee;
-    const isEmployee = profileArea === ProfileArea.Employee;
+    const isEmployee = !userDetails.studentProfile;
     const availableModules = MODULES.filter((module) => jwtPayload.modules.includes(module.name));
     const groups = group(availableModules, (module) => module.group || module.name);
 
@@ -84,10 +67,10 @@ export const getModuleMenuSection = async (): Promise<MenuGroup[]> => {
       }
 
       if (modules.length === 1) {
-        return [...acc, composeModuleMenuItem(modules[0], profileArea)];
+        return [...acc, composeModuleMenuItem(modules[0])];
       }
 
-      const menuGroupItems = composeMenuGroup(modules, profileArea);
+      const menuGroupItems = composeMenuGroup(modules);
 
       return [
         ...acc,

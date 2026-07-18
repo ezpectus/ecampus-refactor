@@ -2,11 +2,11 @@
 
 import { ColleagueContact } from '@/types/models/colleague-contact';
 import { ContactType } from '@/types/models/contact';
-import { campusFetch } from '@/lib/client';
+import { apiFetch } from '@/lib/client';
 
 export async function getColleagueContacts() {
   try {
-    const response = await campusFetch<ColleagueContact[]>('contacts');
+    const response = await apiFetch<ColleagueContact[]>('contacts');
 
     if (!response.ok) {
       console.error('Failed to fetch colleague contacts:', response.status, response.statusText);
@@ -22,7 +22,7 @@ export async function getColleagueContacts() {
 
 export async function getColleagueContactTypes() {
   try {
-    const response = await campusFetch<ContactType[]>('contacts/types');
+    const response = await apiFetch<ContactType[]>('contacts/types');
 
     if (!response.ok) {
       console.error('Failed to fetch contact types:', response.status, response.statusText);

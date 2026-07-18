@@ -36,4 +36,4 @@ const FileUpload = (basePath: string) => {
   };
 };
 
-export const fileUpload = FileUpload(env.CAMPUS_API_BASE_PATH);
+export const fileUpload = FileUpload(env.API_BASE_URL);

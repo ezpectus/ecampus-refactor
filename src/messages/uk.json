@@ -1,8 +1,8 @@
 {
   "global": {
     "metadata": {
-      "title": "Кампус КПІ",
-      "description": "Кампус КПІ"
+      "title": "Student Portal",
+      "description": "Student Portal"
     },
     "server-error": {
       "title": "Щось пішло не так",

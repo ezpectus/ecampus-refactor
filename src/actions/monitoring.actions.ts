@@ -1,11 +1,11 @@
 'use server';
 
-import { campusFetch } from '@/lib/client';
+import { apiFetch } from '@/lib/client';
 import { Sheet } from '@/types/models/current-control/sheet';
 import { CreditModule } from '@/types/models/current-control/credit-module';
 
 export async function getMonitoring() {
-  const response = await campusFetch<Sheet>('monitoring');
+  const response = await apiFetch<Sheet>('monitoring');
 
   if (!response.ok) {
     throw new Error(`${response.status} Error`);
@@ -15,7 +15,7 @@ export async function getMonitoring() {
 }
 
 export async function getMonitoringById(id: string) {
-  const response = await campusFetch<CreditModule>(`monitoring/${id}`);
+  const response = await apiFetch<CreditModule>(`monitoring/${id}`);
 
   if (!response.ok) {
     throw new Error(`${response.status} Error`);

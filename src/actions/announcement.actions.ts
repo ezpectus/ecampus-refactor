@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { AnnouncementCreate } from '@/app/[locale]/(private)/module/announcementseditor/types';
-import { campusFetch } from '@/lib/client';
+import { apiFetch } from '@/lib/client';
 import { isOutdated } from '@/lib/date.utils';
 import { AdminAnnouncementItem, Announcement } from '@/types/models/announcement';
 import { LOCALE } from '@/i18n/routing';
@@ -37,7 +37,7 @@ export const getAdminAnnouncements = async (query: AdminAnnouncementsQuery): Pro
 
     const qs = params.toString();
     const url = qs ? `announcements/admin?${qs}` : 'announcements/admin';
-    const response = await campusFetch<AdminAnnouncementItem[]>(url);
+    const response = await apiFetch<AdminAnnouncementItem[]>(url);
 
     if (!response.ok) {
       return { items: [], total: 0 };
@@ -55,7 +55,7 @@ export const getAdminAnnouncements = async (query: AdminAnnouncementsQuery): Pro
 
 export const getAdminAnnouncementById = async (id: number): Promise<AdminAnnouncementItem> => {
   try {
-    const response = await campusFetch<AdminAnnouncementItem>(`announcements/admin/${id}`);
+    const response = await apiFetch<AdminAnnouncementItem>(`announcements/admin/${id}`);
 
     if (!response.ok) {
       throw new Error("Failed to fetch announcement");
@@ -70,7 +70,7 @@ export const getAdminAnnouncementById = async (id: number): Promise<AdminAnnounc
 
 export const getAnnouncements = async ({ excludeOutdated = false }: { excludeOutdated?: boolean } = {}) => {
   try {
-    const response = await campusFetch<Announcement[]>('announcements');
+    const response = await apiFetch<Announcement[]>('announcements');
 
     if (!response.ok) {
       return [];
@@ -95,7 +95,7 @@ export const getAnnouncements = async ({ excludeOutdated = false }: { excludeOut
 export const createAnnouncement = async (data: AnnouncementCreate): Promise<number> => {
   try {
     const body = JSON.stringify(data);
-    const response = await campusFetch('announcements', {
+    const response = await apiFetch('announcements', {
       method: 'POST',
       body,
     });
@@ -113,7 +113,7 @@ export const createAnnouncement = async (data: AnnouncementCreate): Promise<numb
 
 export const updateAnnouncement = async (id: number, data: AnnouncementCreate): Promise<void> => {
   try {
-    const response = await campusFetch(`announcements/${id}`, {
+    const response = await apiFetch(`announcements/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
@@ -129,7 +129,7 @@ export const updateAnnouncement = async (id: number, data: AnnouncementCreate): 
 
 export const deleteAnnouncement = async (id: number): Promise<void> => {
   try {
-    const response = await campusFetch(`announcements/${id}`, {
+    const response = await apiFetch(`announcements/${id}`, {
       method: 'DELETE',
     });
 
@@ -144,7 +144,7 @@ export const deleteAnnouncement = async (id: number): Promise<void> => {
 
 export const getRoles = async () => {
   try {
-    const response = await campusFetch<string[]>('roles');
+    const response = await apiFetch<string[]>('roles');
     if (!response.ok) {
       return [];
     }
@@ -157,7 +157,7 @@ export const getRoles = async () => {
 
 export const getStudyForms = async () => {
   try {
-    const response = await campusFetch<string[]>('study-forms');
+    const response = await apiFetch<string[]>('study-forms');
     if (!response.ok) {
       return [];
     }
@@ -170,7 +170,7 @@ export const getStudyForms = async () => {
 
 export const getCourses = async () => {
   try {
-    const response = await campusFetch<number[]>('courses');
+    const response = await apiFetch<number[]>('courses');
     if (!response.ok) {
       return [];
     }
