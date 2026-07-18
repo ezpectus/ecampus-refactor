@@ -321,6 +321,25 @@
     "main": {
       "welcome": "Welcome, {name}!",
       "welcome-short": "Welcome!",
+      "dashboard": {
+        "title": "Academic Overview",
+        "gpa-trend": "GPA by Semester",
+        "grade-distribution": "Grade Distribution",
+        "attendance": "Attendance Rate",
+        "metrics": {
+          "average-score": "Average Score",
+          "credits-earned": "Credits Earned",
+          "courses-active": "Active Courses",
+          "attendance-rate": "Attendance Rate"
+        },
+        "semester": "Semester",
+        "gpa": "GPA",
+        "grade": "Grade",
+        "count": "Count",
+        "attended": "Attended",
+        "missed": "Missed",
+        "rate": "Rate"
+      },
       "cards": {
         "information": {
           "title": "Information",
@@ -908,6 +927,22 @@
     },
     "footer": {
       "copyright": "© {year} Student Portal. All rights reserved."
+    }
+  },
+  "commandPalette": {
+    "placeholder": "Search pages and actions...",
+    "empty": "No results found.",
+    "hint": "Search",
+    "groups": {
+      "navigation": "Navigation",
+      "modules": "Modules"
+    },
+    "items": {
+      "grades": "Grades",
+      "schedule": "Schedule",
+      "messages": "Messages",
+      "materials": "Study Materials",
+      "announcements": "Announcements"
     }
   }
 }

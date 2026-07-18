@@ -4,6 +4,7 @@ import { Header } from './header';
 import { getUserDetails } from '@/actions/auth.actions';
 import { redirect } from 'next/navigation';
 import { Footer } from '@/components/app-sidebar/footer';
+import { CommandPalette } from '@/components/command-palette/command-palette';
 import React from 'react';
 
 import { PrivacyConsentDialog } from '@/components/privacy-consent-dialog';
@@ -30,6 +31,7 @@ export default async function MainPageLayout({
         <Footer />
       </SidebarInset>
 
+      <CommandPalette />
       {showPrivacyConsent && <PrivacyConsentDialog />}
     </SidebarProvider>
   );

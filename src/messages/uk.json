@@ -321,6 +321,25 @@
     "main": {
       "welcome": "Вітаємо, {name}!",
       "welcome-short": "Вітаємо!",
+      "dashboard": {
+        "title": "Академічний огляд",
+        "gpa-trend": "Середній бал за семестр",
+        "grade-distribution": "Розподіл оцінок",
+        "attendance": "Відвідуваність",
+        "metrics": {
+          "average-score": "Середній бал",
+          "credits-earned": "Зароблені кредити",
+          "courses-active": "Активні курси",
+          "attendance-rate": "Відвідуваність"
+        },
+        "semester": "Семестр",
+        "gpa": "Середній бал",
+        "grade": "Оцінка",
+        "count": "Кількість",
+        "attended": "Відвідано",
+        "missed": "Пропущено",
+        "rate": "Відсоток"
+      },
       "cards": {
         "information": {
           "title": "Інформація",
@@ -908,6 +927,22 @@
     },
     "footer": {
       "copyright": "© {year} Student Portal. Всі права захищені."
+    }
+  },
+  "commandPalette": {
+    "placeholder": "Пошук сторінок та дій...",
+    "empty": "Нічого не знайдено.",
+    "hint": "Пошук",
+    "groups": {
+      "navigation": "Навігація",
+      "modules": "Модулі"
+    },
+    "items": {
+      "grades": "Оцінки",
+      "schedule": "Розклад",
+      "messages": "Повідомлення",
+      "materials": "Навчальні матеріали",
+      "announcements": "Оголошення"
     }
   }
 }

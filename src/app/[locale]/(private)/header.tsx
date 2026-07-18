@@ -59,6 +59,7 @@ export const Header = ({ user }: Props) => {
         <SidebarTrigger />
       </Show>
       <div className="flex items-center gap-8">
+        <ThemeToggle />
         <LocaleSwitch />
         <div className="flex items-center gap-3">
           <ProfilePicture size="sm" src={profilePhoto} />
