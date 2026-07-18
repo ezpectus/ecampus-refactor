@@ -15,3 +15,4 @@ This folder documents every fix applied during the refactoring process. Each cha
 | [07-env-validation-and-deps.md](./07-env-validation-and-deps.md) | env.ts with Zod validation, file upload timeout, removed 3 unused npm deps |
 | [08-accessibility-security-react-antipatterns.md](./08-accessibility-security-react-antipatterns.md) | html lang, code-of-honor fail-safe, IP header sanitization, key={index}→stable keys (12 files), conditional GA |
 | [09-race-conditions-and-error-handling.md](./09-race-conditions-and-error-handling.md) | 6 race conditions: curator-search request ID, individual.tsx cleanup, multi-select async cancel, intellect-info try/catch, certificate-verifier error state, studysheet/[id] id dep |
+| [10-cookie-security-aria-labels-env-validation.md](./10-cookie-security-aria-labels-env-validation.md) | Sidebar cookie security flags, 9 icon-only button aria-labels, 30+ process.env.X! → validated env.X (18 files) |

@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Link } from '@/i18n/routing';
 import RichText from '@/components/typography/rich-text';
+import { env } from '@/lib/env';
 
 export default function CodeOfHonorAlert() {
   const t = useTranslations('private.profile');
@@ -31,7 +32,7 @@ export default function CodeOfHonorAlert() {
               t.rich('codeOfHonor.content', {
                 ...tags,
                 documentsLink: (chunks) => (
-                  <Link target="_blank" rel="noopener noreferrer" href={process.env.NEXT_PUBLIC_CODE_OF_HONOR!}>
+                  <Link target="_blank" rel="noopener noreferrer" href={env.NEXT_PUBLIC_CODE_OF_HONOR}>
                     {chunks}
                   </Link>
                 ),

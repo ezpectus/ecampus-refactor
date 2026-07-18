@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import { Logo } from './logo';
 import RichText from './typography/rich-text';
 import { getTranslations } from 'next-intl/server';
+import { env } from '@/lib/env';
 
 export default async function NotFoundPage() {
   const t = await getTranslations('global.not-found');
@@ -30,7 +31,7 @@ export default async function NotFoundPage() {
               ...tags,
               paragraph: (chunks) => <Paragraph className="m-0 text-sm font-medium">{chunks}</Paragraph>,
               kbislink: (chunks) => (
-                <Link href={process.env.NEXT_PUBLIC_KBIS_URL!} className="text-sm font-medium" target="_blank" rel="noopener noreferrer">
+                <Link href={env.NEXT_PUBLIC_KBIS_URL} className="text-sm font-medium" target="_blank" rel="noopener noreferrer">
                   {chunks}
                 </Link>
               ),

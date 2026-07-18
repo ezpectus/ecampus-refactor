@@ -4,6 +4,7 @@
 // This version of recaptcha library should be replace with official one,
 // when it starts to support React 19
 import { GoogleReCaptchaProvider } from 'react19-google-recaptcha-v3';
+import { env } from '@/lib/env';
 
 interface Props
   extends Readonly<{
@@ -12,7 +13,7 @@ interface Props
 
 export default function PasswordResetLayout({ children }: Props) {
   return (
-    <GoogleReCaptchaProvider reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY || ''}>
+    <GoogleReCaptchaProvider reCaptchaKey={env.NEXT_PUBLIC_RECAPTCHA_KEY || ''}>
       {children}
     </GoogleReCaptchaProvider>
   );

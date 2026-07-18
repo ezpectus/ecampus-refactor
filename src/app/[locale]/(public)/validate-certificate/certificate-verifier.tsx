@@ -18,6 +18,7 @@ import { CertificateDetails } from '@/app/[locale]/(public)/validate-certificate
 import { Warning } from '@/app/images';
 import { Paragraph } from '@/components/typography';
 import Link from 'next/link';
+import { env } from '@/lib/env';
 
 export function CertificateVerifier() {
   const autoSubmittedRef = useRef(false);
@@ -128,7 +129,7 @@ export function CertificateVerifier() {
               <Paragraph className="m-0 font-medium text-neutral-500">{tResultCard('again')}</Paragraph>
               {tResultCard.rich('contact-support', {
                 link: (chunks) => (
-                  <Link href={process.env.NEXT_PUBLIC_WHATSAPP_SUPPORT_LINK!} target="_blank" rel="noopener noreferrer">
+                  <Link href={env.NEXT_PUBLIC_WHATSAPP_SUPPORT_LINK} target="_blank" rel="noopener noreferrer">
                     {chunks}
                   </Link>
                 ),

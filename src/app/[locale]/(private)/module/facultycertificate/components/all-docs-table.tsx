@@ -111,6 +111,7 @@ export const AllDocsTable = memo(function DocsTable({ certificates, totalCount }
                     <Button
                       variant="secondary"
                       size="small"
+                      aria-label={tTable('button.sign')}
                       disabled={shouldDisableSignButton}
                       onClick={() => handleSignClick(row.id)}
                     >
@@ -121,6 +122,7 @@ export const AllDocsTable = memo(function DocsTable({ certificates, totalCount }
                     <Button
                       variant="secondary"
                       size="small"
+                      aria-label={tTable('button.approve')}
                       onClick={() => handleUpdateCertificate(row.id, { approve: true, reason: '' })}
                       disabled={shouldDisableApproveButton}
                     >
@@ -134,7 +136,7 @@ export const AllDocsTable = memo(function DocsTable({ certificates, totalCount }
                     shouldDisable={shouldDisableRejectButton}
                     triggerButton={
                       <div>
-                        <Button variant="secondary" size="small" disabled={shouldDisableRejectButton}>
+                        <Button variant="secondary" size="small" aria-label={tTable('button.reject')} disabled={shouldDisableRejectButton}>
                           <X />
                         </Button>
                       </div>
@@ -144,6 +146,7 @@ export const AllDocsTable = memo(function DocsTable({ certificates, totalCount }
                     <Button
                       variant="secondary"
                       size="small"
+                      aria-label={tTable('button.print')}
                       disabled={shouldDisablePrintButton}
                       onClick={() => handlePrintClick(row.id)}
                     >
@@ -151,7 +154,7 @@ export const AllDocsTable = memo(function DocsTable({ certificates, totalCount }
                     </Button>
                   </div>
                   <Link href={`/module/facultycertificate/${row.id}`}>
-                    <Button size="small" variant="secondary">
+                    <Button size="small" variant="secondary" aria-label={tTable('button.view')}>
                       <EyeBold />
                     </Button>
                   </Link>

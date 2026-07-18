@@ -6,8 +6,9 @@ import Autoplay from 'embla-carousel-autoplay';
 import Fade from 'embla-carousel-fade';
 import Image from 'next/image';
 import Link from 'next/link';
+import { env } from '@/lib/env';
 
-const CAROUSEL_CDN_BASE_URL = process.env.NEXT_PUBLIC_CAROUSEL_CDN_BASE_URL;
+const CAROUSEL_CDN_BASE_URL = env.NEXT_PUBLIC_CAROUSEL_CDN_BASE_URL;
 
 type CarouselImage = {
   src: string;

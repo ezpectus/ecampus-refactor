@@ -5,8 +5,9 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Show } from '@/components/utils/show';
 import { isIOS } from '@/lib/user-agent';
 import { LocaleProps } from '@/types/locale-props';
+import { env } from '@/lib/env';
 
-const USER_MANUAL_URL = process.env.NEXT_PUBLIC_USER_MANUAL_URL!;
+const USER_MANUAL_URL = env.NEXT_PUBLIC_USER_MANUAL_URL;
 
 const INTL_NAMESPACE = 'private.user-manual';
 

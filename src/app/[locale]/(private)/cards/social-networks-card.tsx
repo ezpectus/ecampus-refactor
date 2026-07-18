@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { TextButton } from '@/components/ui/text-button';
 import { cn } from '@/lib/utils';
 import { getTranslations } from 'next-intl/server';
+import { env } from '@/lib/env';
 
 interface SocialNetworksCardProps {
   className?: string;
@@ -23,7 +24,7 @@ export const SocialNetworksCard = async ({ className }: SocialNetworksCardProps)
         <Paragraph className="mt-8 mb-0 flex flex-wrap gap-8">
           <TextButton
             size="huge"
-            href={process.env.NEXT_PUBLIC_FACEBOOK_URL!}
+            href={env.NEXT_PUBLIC_FACEBOOK_URL}
             target="_blank"
             rel="noopener noreferrer"
             icon={<Facebook />}
@@ -32,7 +33,7 @@ export const SocialNetworksCard = async ({ className }: SocialNetworksCardProps)
           </TextButton>
           <TextButton
             size="huge"
-            href={process.env.NEXT_PUBLIC_TWITTER_URL!}
+            href={env.NEXT_PUBLIC_TWITTER_URL}
             target="_blank"
             rel="noopener noreferrer"
             icon={<TwitterX />}
@@ -41,7 +42,7 @@ export const SocialNetworksCard = async ({ className }: SocialNetworksCardProps)
           </TextButton>
           <TextButton
             size="huge"
-            href={process.env.NEXT_PUBLIC_INSTAGRAM_URL!}
+            href={env.NEXT_PUBLIC_INSTAGRAM_URL}
             target="_blank"
             rel="noopener noreferrer"
             icon={<Instagram />}
@@ -50,7 +51,7 @@ export const SocialNetworksCard = async ({ className }: SocialNetworksCardProps)
           </TextButton>
           <TextButton
             size="huge"
-            href={process.env.NEXT_PUBLIC_GITHUB_URL!}
+            href={env.NEXT_PUBLIC_GITHUB_URL}
             target="_blank"
             rel="noopener noreferrer"
             icon={<GitHub />}

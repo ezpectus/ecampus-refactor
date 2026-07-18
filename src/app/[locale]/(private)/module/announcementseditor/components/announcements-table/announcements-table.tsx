@@ -90,12 +90,12 @@ export const AnnouncementsTable = ({ items, onDelete }: Props) => {
               </TableCell>
               <TableCell>
                 <div className="flex justify-end gap-1">
-                  <Button variant="tertiary" size="small" asChild>
+                  <Button variant="tertiary" size="small" aria-label={t('actions.edit')} asChild>
                     <Link href={`/module/announcementseditor/${announcement.id}/edit`}>
                       <PencilRegular />
                     </Link>
                   </Button>
-                  <Button variant="tertiary" size="small" onClick={() => onDelete(item)}>
+                  <Button variant="tertiary" size="small" aria-label={t('actions.delete')} onClick={() => onDelete(item)}>
                     <Trash2 className="text-other-red" />
                   </Button>
                 </div>

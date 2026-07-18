@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { BookBookmark, BookOpen, Roll } from '@/app/images';
 import { DocumentCard } from './document-card';
 import { LocaleProps } from '@/types/locale-props';
+import { env } from '@/lib/env';
 
 const INTL_NAMESPACE = 'private.documents';
 
@@ -29,25 +30,25 @@ export default async function KPIDocumentsPage({ params }: LocaleProps) {
       <Heading1 className="col-span-full mb-6">{t('header')}</Heading1>
       <DocumentCard
         header={t('code-of-honor')}
-        url={process.env.NEXT_PUBLIC_CODE_OF_HONOR!}
+        url={env.NEXT_PUBLIC_CODE_OF_HONOR}
         BackgroundImage={BookBookmark}
         className="col-span-full lg:col-span-3 xl:col-span-3"
       />
       <DocumentCard
         header={t('internal-regulations')}
-        url={process.env.NEXT_PUBLIC_INTERNAL_REGULATIONS!}
+        url={env.NEXT_PUBLIC_INTERNAL_REGULATIONS}
         BackgroundImage={BookOpen}
         className="col-span-full lg:col-span-3 xl:col-span-3"
       />
       <DocumentCard
         header={t('educational-organization-regulation')}
-        url={process.env.NEXT_PUBLIC_EDUCATIONAL_ORGANIZATION_REGULATION!}
+        url={env.NEXT_PUBLIC_EDUCATIONAL_ORGANIZATION_REGULATION}
         BackgroundImage={Roll}
         className="col-span-full lg:col-span-3 xl:col-span-3"
       />
       <DocumentCard
         header={t('anti-corruption-program')}
-        url={process.env.NEXT_PUBLIC_PROGRAM_ANTICORRUPTION!}
+        url={env.NEXT_PUBLIC_PROGRAM_ANTICORRUPTION}
         BackgroundImage={Roll}
         className="col-span-full lg:col-span-3 xl:col-span-3"
       />

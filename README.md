@@ -51,13 +51,14 @@ Applied prioritized fixes — P0 critical security first, then P1, then quality 
 | **Accessibility & React** | 14 | `html lang` attr, `key={index}` → stable keys in 12 list renders, conditional GA rendering |
 | **Security Hardening** | 2 | Code-of-honor middleware fail-safe (redirect to login on error), IP header sanitization (trim + first-IP-only) |
 | **Race Conditions** | 6 | Curator search request ID tracking, individual.tsx cleanup, multi-select async cancel, intellect-info try/catch, certificate-verifier error state, studysheet/[id] id dependency |
+| **Cookie & A11Y & Env** | 3 | Sidebar cookie `secure` + `samesite`, 9 icon-only button `aria-label`s, 30+ `process.env.X!` → validated `env.X` (18 files) |
 
 ### Phase 3: Documentation
 
 Every fix is documented with before/after code, problem description, impact, and solution:
 
 - [`docs/`](./docs/) — 5 audit documents (architecture, refactoring plan, code-level audit)
-- [`changelogs/`](./changelogs/) — 9 changelogs with CWE mapping and code diffs
+- [`changelogs/`](./changelogs/) — 10 changelogs with CWE mapping and code diffs
 
 ---
 
@@ -111,6 +112,7 @@ Every fix is documented with before/after code, problem description, impact, and
 | [`changelogs/07-env-validation-and-deps.md`](./changelogs/07-env-validation-and-deps.md) | `env.ts` with Zod validation, file upload timeout, removed 3 unused npm deps (`date-fns`, `react-day-picker`, `@tanstack/react-table`) |
 | [`changelogs/08-accessibility-security-react-antipatterns.md`](./changelogs/08-accessibility-security-react-antipatterns.md) | `html lang`, code-of-honor fail-safe, IP header sanitization, `key={index}` → stable keys (12 files), conditional GA |
 | [`changelogs/09-race-conditions-and-error-handling.md`](./changelogs/09-race-conditions-and-error-handling.md) | 6 race conditions: request ID tracking, useEffect cleanup, try/finally loading state, missing error handling |
+| [`changelogs/10-cookie-security-aria-labels-env-validation.md`](./changelogs/10-cookie-security-aria-labels-env-validation.md) | Sidebar cookie security flags, 9 icon-only button aria-labels, 30+ `process.env.X!` → validated `env.X` (18 files) |
 
 ---
 

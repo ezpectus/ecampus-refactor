@@ -91,6 +91,7 @@ export function EditableField({
                     variant="tertiary"
                     className="size-6"
                     icon={<PencilBold className="text-basic-blue" />}
+                    aria-label={tTooltip('edit')}
                     onClick={() => setIsEditing(true)}
                   />
                 </TooltipTrigger>
@@ -110,6 +111,7 @@ export function EditableField({
                           variant="tertiary"
                           className="size-6"
                           icon={<XBold className="text-status-danger-300" />}
+                          aria-label={tTooltip('delete')}
                         />
                       </AlertDialogTrigger>
                     </TooltipTrigger>

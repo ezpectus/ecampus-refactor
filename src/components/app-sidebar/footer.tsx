@@ -4,6 +4,7 @@ import { Link } from '@/i18n/routing';
 import dayjs from 'dayjs';
 import RichText from '../typography/rich-text';
 import { getTranslations } from 'next-intl/server';
+import { env } from '@/lib/env';
 import React from 'react';
 
 const createFooterLinks = (t: Awaited<ReturnType<typeof getTranslations>>) => [
@@ -35,7 +36,7 @@ export const Footer = async () => {
             footerT.rich('footer', {
               ...tags,
               kbislink: (chunks) => (
-                <Link href={process.env.NEXT_PUBLIC_KBIS_URL!} target="_blank" rel="noopener noreferrer">
+                <Link href={env.NEXT_PUBLIC_KBIS_URL} target="_blank" rel="noopener noreferrer">
                   {chunks}
                 </Link>
               ),

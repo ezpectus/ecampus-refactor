@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { TextButton } from '@/components/ui/text-button';
 import { cn } from '@/lib/utils';
 import { getTranslations } from 'next-intl/server';
+import { env } from '@/lib/env';
 import { FC } from 'react';
 
 interface Props {
@@ -22,7 +23,7 @@ export const SupportCard: FC<Props> = async ({ className }) => {
       <CardContent>
         <Paragraph>{t('description')}</Paragraph>
         <Paragraph className="mt-8 mb-0 flex flex-col items-start gap-4">
-          <TextButton size="huge" href={process.env.NEXT_PUBLIC_SUGGESTIONS_FORM!} icon={<ChatsTeardrop />}>
+          <TextButton size="huge" href={env.NEXT_PUBLIC_SUGGESTIONS_FORM} icon={<ChatsTeardrop />}>
             {t('button.suggestions-form')}
           </TextButton>
           <TextButton size="huge" href="mailto:ecampus@kpi.ua" icon={<EnvelopeSimple />}>
@@ -31,7 +32,7 @@ export const SupportCard: FC<Props> = async ({ className }) => {
           <TextButton
             size="huge"
             target="_blank"
-            href={process.env.NEXT_PUBLIC_WHATSAPP_SUPPORT_LINK!}
+            href={env.NEXT_PUBLIC_WHATSAPP_SUPPORT_LINK}
             icon={<Chats />}
           >
             {t('button.chat')}

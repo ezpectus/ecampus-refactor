@@ -5,10 +5,11 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Show } from '@/components/utils/show';
 import { isIOS } from '@/lib/user-agent';
 import { LocaleProps } from '@/types/locale-props';
+import { env } from '@/lib/env';
 
 // TODO: remove this page when the manual is ready for lecturers
 
-const STUDENT_MANUAL_URL = process.env.NEXT_PUBLIC_STUDENT_MANUAL_URL!;
+const STUDENT_MANUAL_URL = env.NEXT_PUBLIC_STUDENT_MANUAL_URL;
 
 const INTL_NAMESPACE = 'private.student-manual';
 

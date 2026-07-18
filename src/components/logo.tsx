@@ -1,10 +1,11 @@
 import { LogoEN, LogoUK, LogoBetaEN, LogoBetaUK } from '@/app/images';
 import { Link, LOCALE } from '@/i18n/routing';
 import { getLocale } from 'next-intl/server';
+import { env } from '@/lib/env';
 
 export const Logo = async () => {
   const locale = await getLocale();
-  const isBeta = process.env.NEXT_PUBLIC_BETA_LOGO === 'true';
+  const isBeta = env.NEXT_PUBLIC_BETA_LOGO === 'true';
 
   const renderLogo = () => {
     if (isBeta) {

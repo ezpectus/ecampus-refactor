@@ -2,6 +2,7 @@ import { Heading4 } from '@/components/typography/headers';
 import RichText from '@/components/typography/rich-text';
 import { Link } from '@/i18n/routing';
 import { getTranslations } from 'next-intl/server';
+import { env } from '@/lib/env';
 
 interface FrequentlyAskedQuestionsProps {
   i18nNamespace: string;
@@ -21,7 +22,7 @@ export const FrequentlyAskedQuestions = async ({ i18nNamespace, sections }: Freq
               t.rich(`sections.${section}.content`, {
                 ...tags,
                 documentlink: (chunks) => (
-                  <Link href={process.env.NEXT_PUBLIC_CAMPUS_DOCUMENT_TEMPLATE!} target="_blank" rel="noopener noreferrer">
+                  <Link href={env.NEXT_PUBLIC_CAMPUS_DOCUMENT_TEMPLATE} target="_blank" rel="noopener noreferrer">
                     {chunks}
                   </Link>
                 ),

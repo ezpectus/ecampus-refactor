@@ -575,7 +575,9 @@
         "approve": "Approve",
         "reject": "Reject",
         "cancel": "Cancel",
-        "signed": "Signed"
+        "signed": "Signed",
+        "sign": "Sign",
+        "view": "View"
       },
       "sheet": {
         "all": "All",

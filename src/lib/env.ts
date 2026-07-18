@@ -12,6 +12,9 @@ const envSchema = z.object({
   NEXT_PUBLIC_BETA_LOGO: z.string().optional(),
   NEXT_PUBLIC_ENV: z.string().optional(),
   NEXT_PUBLIC_KPI_ID_APP_ID: z.string().optional(),
+  NEXT_PUBLIC_KPI_ID_BUTTON: z.string().url().optional(),
+  NEXT_PUBLIC_RECAPTCHA_KEY: z.string().optional(),
+  NEXT_PUBLIC_CAROUSEL_CDN_BASE_URL: z.string().url().optional(),
 
   NEXT_PUBLIC_SUGGESTIONS_FORM: z.string().url().optional(),
   NEXT_PUBLIC_KBIS_URL: z.string().url().optional(),
@@ -21,6 +24,8 @@ const envSchema = z.object({
   NEXT_PUBLIC_DNVR: z.string().url().optional(),
   NEXT_PUBLIC_UNIVERSITY_NOTICE_BOARD_URL: z.string().url().optional(),
   NEXT_PUBLIC_LIBRARY_DISCOVERY_URL: z.string().url().optional(),
+  NEXT_PUBLIC_UNIVERSITY_NEWS: z.string().url().optional(),
+  NEXT_PUBLIC_STUDENT_COUNCIL: z.string().url().optional(),
   NEXT_PUBLIC_ADDRESS_URL: z.string().url().optional(),
   NEXT_PUBLIC_GITHUB_URL: z.string().url().optional(),
   NEXT_PUBLIC_FACEBOOK_URL: z.string().url().optional(),
