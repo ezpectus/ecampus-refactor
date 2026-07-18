@@ -318,11 +318,20 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
     useEffect(() => {
       /** async search */
 
+      let isCancelled = false;
+
       const doSearch = async () => {
         setIsLoading(true);
-        const res = await onSearch?.(debouncedSearchTerm);
-        setOptions(transToGroupOption(res || [], groupBy));
-        setIsLoading(false);
+        try {
+          const res = await onSearch?.(debouncedSearchTerm);
+          if (!isCancelled) {
+            setOptions(transToGroupOption(res || [], groupBy));
+          }
+        } finally {
+          if (!isCancelled) {
+            setIsLoading(false);
+          }
+        }
       };
 
       const exec = async () => {
@@ -338,6 +347,9 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
       };
 
       void exec();
+      return () => {
+        isCancelled = true;
+      };
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedSearchTerm, groupBy, open, triggerSearchOnFocus]);
 

@@ -33,19 +33,28 @@ export default function InfoPageClient() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let isCancelled = false;
+
     async function fetchData() {
       try {
         const data = await getMonitoringById(id as string);
-        setCreditModule(data);
-        setIsLoading(false);
+        if (!isCancelled) {
+          setCreditModule(data);
+          setIsLoading(false);
+        }
       } catch (error) {
-        console.error('Failed to load study sheet:', error);
-        setIsLoading(false);
+        if (!isCancelled) {
+          console.error('Failed to load study sheet:', error);
+          setIsLoading(false);
+        }
       }
     }
 
     fetchData();
-  }, []);
+    return () => {
+      isCancelled = true;
+    };
+  }, [id]);
 
   if (isLoading) {
     return <LoadingScreen />;

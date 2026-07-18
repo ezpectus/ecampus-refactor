@@ -43,9 +43,14 @@ export function CertificateVerifier() {
   const handleFormSubmit = useCallback(
     async (data: FormData) => {
       setResult('');
-      const res = await verifyCertificate(data.certificateId);
-      form.reset();
-      setResult(res);
+      try {
+        const res = await verifyCertificate(data.certificateId);
+        form.reset();
+        setResult(res);
+      } catch {
+        form.reset();
+        setResult('error');
+      }
     },
     [form],
   );

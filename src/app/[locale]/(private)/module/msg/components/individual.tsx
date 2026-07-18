@@ -76,10 +76,16 @@ export function Individual({ groupOptions }: Props) {
 
   useEffect(() => {
     if (recipientType === 'student' && selectedGroups.length > 0) {
+      let isCancelled = false;
       const groupIds = selectedGroups.map((g) => Number(g.value));
       getStudentOptions(groupIds).then((students) => {
-        setUserOptions(students);
+        if (!isCancelled) {
+          setUserOptions(students);
+        }
       });
+      return () => {
+        isCancelled = true;
+      };
     } else if (recipientType === 'student') {
       setUserOptions([]);
     }

@@ -25,12 +25,18 @@ export function IntellectPublicationInfo({ user }: Props) {
   const [scientificInterests, setScientificInterests] = useState(user.scientificInterests || '');
 
   const t = useTranslations('private.profile');
+  const { errorToast } = useServerErrorToast();
 
   const handleSave = async () => {
-    setLoading(true);
-    await updateIntellectInfo(credo, scientificInterests);
-    setLoading(false);
-    setIsEditing(false);
+    try {
+      setLoading(true);
+      await updateIntellectInfo(credo, scientificInterests);
+      setIsEditing(false);
+    } catch {
+      errorToast();
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCancel = () => {
