@@ -6,7 +6,7 @@ echo "[entrypoint] Starting Student Portal container..."
 # Apply database schema (idempotent — safe to run on every start)
 if [ "${RUN_DB_PUSH:-true}" = "true" ]; then
   echo "[database] Applying PostgreSQL schema..."
-  npx prisma db push --schema prisma-postgres/schema.prisma
+  npx prisma db push --config prisma-postgres.config.ts
   echo "[database] Schema applied."
 fi
 

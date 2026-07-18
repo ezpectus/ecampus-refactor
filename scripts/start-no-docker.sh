@@ -14,6 +14,11 @@ if [[ ! -f prisma/dev.db ]]; then
   npm run db:seed
 fi
 
+if [[ ! -d src/generated/prisma ]]; then
+  echo '[setup] Generating Prisma client...'
+  npm run db:generate
+fi
+
 run_log() {
   local title="$1"
   shift

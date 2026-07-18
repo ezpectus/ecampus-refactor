@@ -97,7 +97,9 @@
       "settings": "Settings",
       "contacts": "Contacts",
       "admin": "Admin Panel",
-      "grading": "Grade Book"
+      "grading": "Grade Book",
+      "parent": "Parent Portal",
+      "analytics": "Analytics"
     },
     "user-category": {
       "student": "Student",
@@ -1240,6 +1242,43 @@
         "edit": "Edit",
         "save": "Save",
         "cancel": "Cancel"
+      }
+    },
+    "parent": {
+      "title": "Parent Portal",
+      "empty": "No children linked to your account",
+      "back": "Back",
+      "gpa": "GPA",
+      "study-year": "Year",
+      "courses": "Courses",
+      "loading": "Loading...",
+      "no-courses": "No courses found",
+      "grades-table": "Grades",
+      "attendance-chart": "Attendance",
+      "table": {
+        "course": "Course",
+        "teacher": "Teacher",
+        "credits": "Credits",
+        "grade": "Grade"
+      }
+    },
+    "analytics": {
+      "title": "Analytics Dashboard",
+      "no-data": "No data available",
+      "metrics": {
+        "total-users": "Total Users",
+        "students": "Students",
+        "active-students": "Active Students",
+        "new-this-month": "New (30d)",
+        "avg-gpa": "Avg GPA",
+        "parents": "Parents"
+      },
+      "charts": {
+        "user-activity": "User Activity (30 days)",
+        "role-distribution": "Role Distribution",
+        "registrations": "Monthly Registrations",
+        "faculty-distribution": "Students by Faculty",
+        "grade-distribution": "Grade Distribution"
       }
     }
   }

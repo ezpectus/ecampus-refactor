@@ -5,4 +5,5 @@ npm install
 npm run db:generate
 npm run db:push
 npm run db:seed
-echo 'Local SQLite setup complete.'
+npx playwright install chromium || echo '[warn] Playwright install skipped'
+echo 'Local SQLite setup complete. Playwright browsers installed.'

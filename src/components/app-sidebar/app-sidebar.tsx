@@ -21,6 +21,7 @@ export async function AppSidebar() {
     || false;
 
   const isTeacher = localUser?.role === 'TEACHER' || false;
+  const isParent = localUser?.role === 'PARENT' || false;
 
   return (
     <Sidebar collapsible="offcanvas">
@@ -44,9 +45,15 @@ export async function AppSidebar() {
               <MenuItem name="grading" url="/module/grading" title={t('grading')} />
             </MenuSection>
           )}
+          {isParent && (
+            <MenuSection>
+              <MenuItem name="parent" url="/module/parent" title={t('parent')} />
+            </MenuSection>
+          )}
           {isAdmin && (
             <MenuSection>
               <MenuItem name="admin" url="/module/admin" title={t('admin')} />
+              <MenuItem name="analytics" url="/module/analytics" title={t('analytics')} />
             </MenuSection>
           )}
         </SidebarContent>

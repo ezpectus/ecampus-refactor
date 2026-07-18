@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { Button } from '@/components/ui/button';
+import { useEffect } from 'react';
+
 import { Heading2 } from '@/components/typography/headers';
 import { Paragraph } from '@/components/typography/paragraph';
+import { Button } from '@/components/ui/button';
 import { useServerErrorToast } from '@/hooks/use-server-error-toast';
 
 export default function ModuleError({ reset }: { error: Error & { digest?: string }; reset: () => void }) {

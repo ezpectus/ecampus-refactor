@@ -32,7 +32,7 @@ describe('exportToCsv', () => {
   it('escapes cells containing commas', () => {
     let capturedContent = '';
     const OriginalBlob = globalThis.Blob;
-    vi.stubGlobal('Blob', class {
+    vi.stubGlobal('Blob', class Blob {
       size = 0;
       type = '';
       constructor(parts: BlobPart[]) {
@@ -47,7 +47,7 @@ describe('exportToCsv', () => {
   it('escapes cells containing quotes', () => {
     let capturedContent = '';
     const OriginalBlob = globalThis.Blob;
-    vi.stubGlobal('Blob', class {
+    vi.stubGlobal('Blob', class Blob {
       size = 0;
       type = '';
       constructor(parts: BlobPart[]) {

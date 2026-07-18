@@ -20,7 +20,9 @@ export type FeatureName =
   | 'curator'
   | 'colleagueContacts'
   | 'schedule'
-  | 'grading';
+  | 'grading'
+  | 'parentPortal'
+  | 'analytics';
 
 const DEFAULT_TOGGLES: Record<FeatureName, boolean> = {
   darkMode: true,
@@ -43,6 +45,8 @@ const DEFAULT_TOGGLES: Record<FeatureName, boolean> = {
   colleagueContacts: true,
   schedule: true,
   grading: true,
+  parentPortal: true,
+  analytics: true,
 };
 
 const ENV_OVERRIDES: Partial<Record<FeatureName, boolean>> = {

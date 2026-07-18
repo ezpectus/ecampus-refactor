@@ -97,7 +97,9 @@
       "settings": "Налаштування",
       "contacts": "Контакти",
       "admin": "Адмін Панель",
-      "grading": "Журнал оцінок"
+      "grading": "Журнал оцінок",
+      "parent": "Портал батьків",
+      "analytics": "Аналітика"
     },
     "user-category": {
       "student": "Студент",
@@ -1240,6 +1242,43 @@
         "edit": "Змінити",
         "save": "Зберегти",
         "cancel": "Скасувати"
+      }
+    },
+    "parent": {
+      "title": "Портал батьків",
+      "empty": "До вашого акаунту не прив'язано дітей",
+      "back": "Назад",
+      "gpa": "Сер. бал",
+      "study-year": "Курс",
+      "courses": "Предмети",
+      "loading": "Завантаження...",
+      "no-courses": "Предмети не знайдено",
+      "grades-table": "Оцінки",
+      "attendance-chart": "Відвідуваність",
+      "table": {
+        "course": "Предмет",
+        "teacher": "Викладач",
+        "credits": "Кредити",
+        "grade": "Оцінка"
+      }
+    },
+    "analytics": {
+      "title": "Аналітика",
+      "no-data": "Дані відсутні",
+      "metrics": {
+        "total-users": "Всього користувачів",
+        "students": "Студенти",
+        "active-students": "Активні студенти",
+        "new-this-month": "Нові (30д)",
+        "avg-gpa": "Сер. бал",
+        "parents": "Батьки"
+      },
+      "charts": {
+        "user-activity": "Активність користувачів (30 днів)",
+        "role-distribution": "Розподіл за ролями",
+        "registrations": "Реєстрації по місяцях",
+        "faculty-distribution": "Студенти за факультетами",
+        "grade-distribution": "Розподіл оцінок"
       }
     }
   }

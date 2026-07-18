@@ -15,6 +15,11 @@ if not exist prisma\dev.db (
   call npm run db:seed || exit /b 1
 )
 
+if not exist src\generated\prisma (
+  echo [setup] Generating Prisma client...
+  call npm run db:generate || exit /b 1
+)
+
 if not exist node_modules\playwright-core (
   echo [setup] Installing Playwright browsers...
   call npx playwright install chromium || echo [warn] Playwright install skipped

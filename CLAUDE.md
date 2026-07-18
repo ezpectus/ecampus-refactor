@@ -13,7 +13,7 @@ Student Portal is a SaaS-oriented educational management frontend. It supports s
 - **UI Components**: shadcn/ui (Radix UI primitives)
 - **Forms**: React Hook Form + Zod validation
 - **i18n**: next-intl (Ukrainian default, English)
-- **Data**: Prisma 6.19.3 with SQLite locally and PostgreSQL/Neon in deployment
+- **Data**: Prisma 7.8.0 with SQLite locally and PostgreSQL/Neon in deployment
 - **Auth**: bcryptjs + JWT in httpOnly cookies, with external REST API fallback
 - **Backend**: External REST API is configurable; this repository does not host an API server
 
@@ -29,6 +29,8 @@ npm run db:generate  # Generate local SQLite Prisma client
 npm run db:push      # Apply local schema
 npm run db:seed      # Seed demo users and academic data
 npm run db:studio    # Open Prisma Studio
+npm run db:generate:postgres  # Generate PostgreSQL Prisma client
+npm run db:push:postgres      # Apply PostgreSQL schema
 scripts\\start-no-docker.bat # Start local windows with separate logs
 scripts\\start-docker.bat    # Start Docker stack
 ./scripts/start-no-docker.sh  # Unix no-Docker launcher

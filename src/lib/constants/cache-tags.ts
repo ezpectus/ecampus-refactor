@@ -9,3 +9,5 @@ export const CURATOR_CACHE_TAG = 'curator';
 export const ATTESTATION_CACHE_TAG = 'attestation';
 export const DASHBOARD_CACHE_TAG = 'dashboard';
 export const ADMIN_CACHE_TAG = 'admin';
+export const PARENT_CACHE_TAG = 'parent';
+export const ANALYTICS_CACHE_TAG = 'analytics';

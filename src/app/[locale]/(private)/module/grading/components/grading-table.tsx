@@ -1,16 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
 
-import { getCourseStudents, updateGrade, type CourseStudent } from '@/actions/grading.actions';
-import { EmptyState } from '@/components/utils/empty-state';
+import { type CourseStudent,getCourseStudents, updateGrade } from '@/actions/grading.actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { useToast } from '@/hooks/use-toast';
+import { EmptyState } from '@/components/utils/empty-state';
 import { useServerErrorToast } from '@/hooks/use-server-error-toast';
+import { useToast } from '@/hooks/use-toast';
 import { displayGrade, type GradeType } from '@/lib/grade-utils';
 
 interface Props {

@@ -1,10 +1,11 @@
 'use client';
 
 import { Command } from 'cmdk';
-import { GraduationCap, FileText, Contact, Users, Shield } from 'lucide-react';
+import { BarChart3, Contact, FileText, GraduationCap, Shield, Users } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
-import { Books, CalendarBlank, ChartBarHorizontal, ChatsTeardrop, EnvelopeSimple, Gear, House, MagnifyingGlassBold,UserCircle } from '@/app/images';
+
+import { Books, CalendarBlank, ChartBarHorizontal, ChatsTeardrop, EnvelopeSimple, Gear, House, MagnifyingGlassBold, UserCircle } from '@/app/images';
 import { useRouter } from '@/i18n/routing';
 
 type CommandItem = {
@@ -54,6 +55,8 @@ export const CommandPalette = () => {
     { label: tCmd('items.directory'), icon: <Contact size={16} />, action: () => navigate('/module/directory'), group: tCmd('groups.modules') },
     { label: t('contacts'), icon: <Users size={16} />, action: () => navigate('/contacts'), group: tCmd('groups.navigation') },
     { label: t('admin'), icon: <Shield size={16} />, action: () => navigate('/module/admin'), group: tCmd('groups.navigation') },
+    { label: t('parent'), icon: <Users size={16} />, action: () => navigate('/module/parent'), group: tCmd('groups.navigation') },
+    { label: t('analytics'), icon: <BarChart3 size={16} />, action: () => navigate('/module/analytics'), group: tCmd('groups.navigation') },
   ];
 
   if (!open) return null;

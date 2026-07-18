@@ -6,11 +6,11 @@
 - **AI tutor chatbot** — course-specific Q&A using RAG over course materials
 - **Plagiarism detection** — integrate with open-source plagiarism checkers for assignment submissions
 
-## v2.1 — Parent Portal
-- **Parent accounts** — read-only access to child's grades, attendance, and announcements
-- **Parent-teacher communication** — direct messaging between parents and teachers
-- **Weekly digest emails** — automated summary of student progress sent to parents
-- **Event calendar** — parent-teacher conferences, exam dates, school events
+## v2.1 — Parent Portal ✅ DONE (v1.x)
+- **Parent accounts** — read-only access to child's grades, attendance, and announcements ✅
+- **Parent-teacher communication** — direct messaging between parents and teachers (TODO)
+- **Weekly digest emails** — automated summary of student progress sent to parents (TODO)
+- **Event calendar** — parent-teacher conferences, exam dates, school events (TODO)
 
 ## v2.2 — Mobile App (React Native)
 - **Cross-platform** — iOS + Android from single codebase
@@ -47,12 +47,13 @@
 - **Data warehouse export** — nightly ETL to BigQuery/Snowflake for analytics
 - **High availability** — multi-region deployment, read replicas, automatic failover
 
-## v3.1 — Analytics & Insights
-- **Cohort analysis** — track student groups across semesters
-- **Predictive dropout** — ML model identifying students likely to drop out
-- **Teacher effectiveness** — correlate teaching methods with student outcomes
-- **Curriculum analytics** — identify courses with high failure rates
-- **Custom dashboards** — drag-and-drop dashboard builder for admins
+## v3.1 — Analytics & Insights (partially done ✅)
+- **Admin analytics dashboard** — user activity, role distribution, registrations, faculty breakdown, grade distribution ✅
+- **Cohort analysis** — track student groups across semesters (TODO)
+- **Predictive dropout** — ML model identifying students likely to drop out (TODO)
+- **Teacher effectiveness** — correlate teaching methods with student outcomes (TODO)
+- **Curriculum analytics** — identify courses with high failure rates (TODO)
+- **Custom dashboards** — drag-and-drop dashboard builder for admins (TODO)
 
 ## v3.2 — Communication Hub
 - **In-app video calls** — WebRTC-based teacher-student conferences

@@ -18,7 +18,7 @@ interface AuditLogItem {
   entityId: number | null;
   metadata: string | null;
   ipAddress: string | null;
-  createdAt: string;
+  createdAt: Date;
   user: {
     id: number;
     fullName: string;
@@ -38,7 +38,7 @@ export const AuditLogViewer = () => {
       setLoading(true);
       try {
         const result = await getAuditLogs(1, PAGE_SIZE_DEFAULT);
-        setItems(result.items as AuditLogItem[]);
+        setItems(result.items as unknown as AuditLogItem[]);
         setTotal(result.total);
       } catch {
         setItems([]);

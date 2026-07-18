@@ -194,4 +194,4 @@ const successToast = (title: React.ReactNode, description?: React.ReactNode) =>
 const errorToast = (title: React.ReactNode, description?: React.ReactNode) =>
   toast({ title: title as string, description: description as string, variant: 'destructive' });
 
-export { successToast, errorToast };
+export { errorToast,successToast };

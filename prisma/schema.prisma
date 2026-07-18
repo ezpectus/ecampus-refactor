@@ -51,6 +51,8 @@ model User {
   sentNotifications Notification[] @relation("sender")
   auditLogs    AuditLog[]
   gradeChanges GradeHistory[]
+  children     ParentStudent[] @relation("parent")
+  parents      ParentStudent[] @relation("child")
 
   @@index([role])
   @@index([faculty])
@@ -139,8 +141,22 @@ model GradeHistory {
   @@index([createdAt])
 }
 
+model ParentStudent {
+  id        Int      @id @default(autoincrement())
+  parentId  Int
+  parent    User     @relation("parent", fields: [parentId], references: [id], onDelete: Cascade)
+  studentId Int
+  student   User     @relation("child", fields: [studentId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([parentId, studentId])
+  @@index([parentId])
+  @@index([studentId])
+}
+
 enum Role {
   ADMIN
   TEACHER
   STUDENT
+  PARENT
 }

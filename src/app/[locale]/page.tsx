@@ -1,5 +1,5 @@
-import { setRequestLocale } from 'next-intl/server';
 import { redirect } from 'next/navigation';
+import { setRequestLocale } from 'next-intl/server';
 
 import { getUserDetails } from '@/actions/auth.actions';
 import { LocaleProps } from '@/types/locale-props';

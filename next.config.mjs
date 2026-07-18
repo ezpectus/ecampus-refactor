@@ -17,6 +17,7 @@ const svgoConfig = {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  serverExternalPackages: ['@prisma/adapter-better-sqlite3', '@prisma/adapter-pg', 'better-sqlite3'],
   turbopack: {
     rules: {
       '*.svg': {

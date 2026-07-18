@@ -18,7 +18,13 @@ import { getAuditLogs, logAuditEvent } from '@/actions/audit.actions';
 import { getLocalUser } from '@/actions/local-auth.actions';
 import { prisma } from '@/lib/prisma';
 
-const mockPrisma = vi.mocked(prisma);
+const mockPrisma = vi.mocked(prisma) as unknown as {
+  auditLog: {
+    findMany: ReturnType<typeof vi.fn>;
+    count: ReturnType<typeof vi.fn>;
+    create: ReturnType<typeof vi.fn>;
+  };
+};
 const mockGetLocalUser = vi.mocked(getLocalUser);
 
 describe('getAuditLogs', () => {

@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect,test } from '@playwright/test';
 
 test.describe('Grades / Rating module', () => {
   test.beforeEach(async ({ page }) => {

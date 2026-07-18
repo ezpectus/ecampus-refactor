@@ -1,16 +1,15 @@
 'use client';
 
-import { useState } from 'react';
-import { useTranslations } from 'next-intl';
-
 import { GraduationCap } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 
-import { EmptyState } from '@/components/utils/empty-state';
+import type { TeacherCourse } from '@/actions/grading.actions';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { EmptyState } from '@/components/utils/empty-state';
 
 import { GradingTable } from './grading-table';
-import type { TeacherCourse } from '@/actions/grading.actions';
 
 interface Props {
   courses: TeacherCourse[];
