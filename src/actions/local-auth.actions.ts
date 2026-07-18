@@ -8,13 +8,15 @@ import { redirect } from 'next/navigation';
 import { SID_COOKIE_NAME,TOKEN_COOKIE_NAME } from '@/lib/constants/cookies';
 import { env } from '@/lib/env';
 import { prisma } from '@/lib/prisma';
+import { checkRateLimit, resetRateLimit } from '@/lib/rate-limit';
 
 const JWT_EXPIRES_IN = '7d';
 
 const getModulesForRole = (role: string) => {
   const commonModules = ['studysheet', 'rating', 'certificates', 'announcementseditor'];
-  if (role === 'ADMIN') return ['admin', ...commonModules, 'grading'];
+  if (role === 'ADMIN') return ['admin', ...commonModules, 'grading', 'analytics'];
   if (role === 'TEACHER') return [...commonModules, 'grading'];
+  if (role === 'PARENT') return ['parent'];
   return commonModules;
 };
 
@@ -30,6 +32,12 @@ interface LocalJWTPayload {
 
 export async function localLogin(username: string, password: string, rememberMe: boolean) {
   const identifier = username.trim().toLowerCase();
+
+  const rateLimit = checkRateLimit(identifier, 'login', { maxAttempts: 10, windowMs: 60_000, lockoutMs: 5 * 60_000 });
+  if (!rateLimit.allowed) {
+    return { ok: false, error: 'rate-limited' as const, retryAfterMs: rateLimit.retryAfterMs };
+  }
+
   const user = await prisma.user.findFirst({
     where: {
       OR: [{ username: identifier }, { email: identifier }],
@@ -44,6 +52,8 @@ export async function localLogin(username: string, password: string, rememberMe:
   if (!valid) {
     return null;
   }
+
+  resetRateLimit(identifier, 'login');
 
   const token = JWT.sign(
     { userId: user.id, username: user.username, role: user.role, modules: getModulesForRole(user.role), schoolId: user.schoolId, tokenVersion: user.tokenVersion },
@@ -93,6 +103,11 @@ export async function localRegister(data: {
   const email = data.email.trim().toLowerCase();
   const username = email.split('@')[0];
   const schoolCode = data.schoolCode.trim().toLowerCase();
+
+  const rateLimit = checkRateLimit(email, 'register', { maxAttempts: 5, windowMs: 60 * 60_000, lockoutMs: 60 * 60_000 });
+  if (!rateLimit.allowed) {
+    return { ok: false, error: 'rate-limited' as const };
+  }
 
   const [existing, school] = await Promise.all([
     prisma.user.findFirst({

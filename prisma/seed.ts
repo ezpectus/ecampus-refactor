@@ -1,6 +1,7 @@
-const { PrismaClient } = require('@prisma/client');
-const { PrismaBetterSqlite3 } = require('@prisma/adapter-better-sqlite3');
-const bcrypt = require('bcryptjs');
+import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
+import bcrypt from 'bcryptjs';
+
+import { PrismaClient } from '../src/generated/prisma/client';
 
 const databaseUrl = process.env.DATABASE_URL ?? 'file:./dev.db';
 const adapter = new PrismaBetterSqlite3({ url: databaseUrl });
@@ -19,7 +20,7 @@ const FACULTIES = [
   'Economics',
 ];
 
-const SPECIALITIES = {
+const SPECIALITIES: Record<string, string[]> = {
   'Computer Science': ['Software Engineering', 'Cybersecurity', 'Data Science', 'AI & Machine Learning'],
   'Engineering': ['Mechanical Engineering', 'Electrical Engineering', 'Civil Engineering'],
   'Business Administration': ['Management', 'Marketing', 'International Business'],
@@ -70,7 +71,7 @@ const COURSE_NAMES = [
   'Artificial Intelligence', 'Cybersecurity Fundamentals', 'Cloud Computing',
 ];
 
-function seededRandom(seed) {
+function seededRandom(seed: number) {
   let state = seed;
   return () => {
     state = (state * 1103515245 + 12345) & 0x7fffffff;
@@ -78,16 +79,16 @@ function seededRandom(seed) {
   };
 }
 
-function pick(arr, rng) {
+function pick<T>(arr: T[], rng: () => number): T {
   return arr[Math.floor(rng() * arr.length)];
 }
 
-function generatePhone(rng) {
+function generatePhone(rng: () => number) {
   const d = () => Math.floor(rng() * 10);
   return `+38 (0${d()}${d()}) ${d()}${d()}${d()}-${d()}${d()}-${d()}${d()}`;
 }
 
-function generateDateOfBirth(rng) {
+function generateDateOfBirth(rng: () => number) {
   const year = 2000 + Math.floor(rng() * 8);
   const month = String(1 + Math.floor(rng() * 12)).padStart(2, '0');
   const day = String(1 + Math.floor(rng() * 28)).padStart(2, '0');

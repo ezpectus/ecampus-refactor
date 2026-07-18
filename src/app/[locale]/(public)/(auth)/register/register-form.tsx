@@ -157,7 +157,11 @@ export const RegisterForm = () => {
           {t('button.login')}
         </Link>
       </form>
-      <DemoCredentials />
+      <DemoCredentials onSelect={(_username, password) => {
+        form.setValue('schoolCode', 'demo');
+        form.setValue('password', password);
+        form.setValue('passwordConfirm', password);
+      }} />
     </Form>
   );
 };

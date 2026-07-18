@@ -13,7 +13,7 @@ Student Portal is a SaaS-oriented educational management frontend. It supports s
 - **UI Components**: shadcn/ui (Radix UI primitives)
 - **Forms**: React Hook Form + Zod validation
 - **i18n**: next-intl (Ukrainian default, English)
-- **Data**: Prisma 7.8.0 with SQLite locally and PostgreSQL/Neon in deployment
+- **Data**: Prisma 7.8.0 with SQLite locally (PrismaBetterSqlite3 adapter) and PostgreSQL/Neon in deployment (PrismaPg adapter)
 - **Auth**: bcryptjs + JWT in httpOnly cookies, with external REST API fallback
 - **Backend**: External REST API is configurable; this repository does not host an API server
 
@@ -110,7 +110,8 @@ Required in `.env.development` / `.env.production`:
 
 - JWT stored in cookies
 - Middleware handles auth checks (`src/middleware/`)
-- Multiple account types: student, lecturer, curator, admin
+- Multiple account types: student, lecturer, curator, admin, parent
+- Rate limiting on login (10/min) and registration (5/hour)
 - Code of honor acceptance required for new users
 
 ## Locales
@@ -128,7 +129,17 @@ Required in `.env.development` / `.env.production`:
 
 ## Quality and Testing
 
-The anti-pattern checklist and current risks are tracked in `docs/engineering-quality-baseline.md`. TypeScript and lint scripts are configured. Automated Vitest/Playwright coverage is still planned.
+The anti-pattern checklist and current risks are tracked in `docs/engineering-quality-baseline.md`. TypeScript and lint scripts are configured. Unit tests run via Vitest, E2E tests via Playwright.
+
+### Key Libraries
+
+- **Circuit breaker** (`src/lib/circuit-breaker.ts`) — 5xx errors trip circuit, fast-fail after 5 failures
+- **Smart retry** (`src/lib/retry.ts`) — TransientError retried with backoff, others fast-fail
+- **Rate limiting** (`src/lib/rate-limit.ts`) — in-memory rate limiting with lockout
+- **Feature toggles** (`src/lib/features.ts`) — env-based toggles for all major features
+- **Structured logging** (`src/lib/logger.ts`) — JSON output with scoped loggers and correlation IDs
+- **Error types** (`src/lib/errors.ts`) — typed errors: TransientError, PermanentError, ValidationError, NotFoundError, UnauthorizedError
+- **Health checks** — `/api/healthz` (liveness), `/api/ready` (deep health: DB + API + circuit breaker)
 
 ## Useful Paths
 

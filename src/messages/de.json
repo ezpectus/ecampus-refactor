@@ -270,7 +270,8 @@
       "roles": {
         "admin": "Administrator",
         "teacher": "Teacher",
-        "student": "Student"
+        "student": "Student",
+        "parent": "Parent"
       }
     },
     "kpi-id": {

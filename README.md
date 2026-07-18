@@ -1,6 +1,6 @@
 # Student Portal — Modern Student Management Platform
 
-A production-grade SaaS web application for educational institutions. Built with Next.js 15, React 19, Prisma ORM, and TypeScript. Features grades management, messaging, announcements, certificates, profiles, user registration, admin panel with user management, in-app database viewer, and a marketing landing page. Dockerized, multi-tenant ready, and fully typed.
+A production-grade SaaS web application for educational institutions. Built with Next.js 15, React 19, Prisma 7 ORM, and TypeScript. Features grades management, messaging, announcements, certificates, profiles, user registration, admin panel with user management, in-app database viewer, parent portal, analytics dashboard with charts, and a marketing landing page. Dockerized, multi-tenant ready, and fully typed.
 
 ---
 
@@ -25,21 +25,30 @@ A production-grade SaaS web application for educational institutions. Built with
 - **User Management** — view, filter, search, and delete users (120+ seeded)
 - **User Detail View** — full profile with courses, grades, attendance, contact info
 - **Statistics Dashboard** — total users, active students, average GPA at a glance
+- **Analytics Dashboard** — user activity charts, role distribution pie chart, monthly registrations, faculty breakdown, grade distribution (Recharts)
 - **Role-Based Access** — admin-only sidebar entry, role-aware filtering
 - **Database Viewer** — browse all tables (users, courses, attendance, notifications) in-app
+- **Audit Logs** — all admin and grade mutations logged with user, action, metadata, IP
+
+### Parent Portal
+- **Child Overview** — cards showing each linked child with photo, GPA, faculty, study year
+- **Grades Detail** — full course list with grades, credits, teacher names, grade type (numeric/letter/ECTS)
+- **Attendance Chart** — monthly attendance bar chart with present/total breakdown
+- **Read-Only Access** — parents see child's academic data without edit permissions
 
 ### Authentication
 - **Local Auth System** — Prisma-backed registration and login with JWT
 - **Role Selection** — register as Student or Teacher
 - **School Affiliation** — registration requires a school code; users, courses, and admin data are scoped to that school
 - **Teacher/Course Linkage** — courses are tied to both a school and a teacher
-- **Test Users** — pre-seeded admin, teacher, and student accounts for instant demo
+- **Test Users** — pre-seeded admin, teacher, student, and parent accounts for instant demo
 - **Demo Shortcuts** — optional role buttons on login/register when `NEXT_PUBLIC_SHOW_DEMO_CREDENTIALS=true`
 - **Remote API Fallback** — seamlessly falls back to external API when local auth is disabled
+- **Rate Limiting** — login (10/min) and registration (5/hour) throttled to prevent brute-force attacks
 
 ### Platform
 - **Authentication** — JWT-based with httpOnly cookies, middleware route protection, user registration
-- **Database** — Prisma ORM with SQLite (dev) / Neon Postgres (prod)
+- **Database** — Prisma 7 ORM with SQLite (dev) / Neon Postgres (prod), driver adapters
 - **Multi-locale** — Ukrainian (default) and English, extensible to any locale
 - **Server-Side Rendering** — all pages SSR with ISR caching (5-min revalidate)
 - **Security** — CSP headers, HSTS, cookie security flags, env validation (Zod), URL allow-listing
@@ -57,7 +66,7 @@ A production-grade SaaS web application for educational institutions. Built with
 | Framework | Next.js 15 (App Router, Turbopack, Server Components) |
 | UI | React 19, TailwindCSS 4, Radix UI primitives |
 | Language | TypeScript 5.9 (strict mode) |
-| Database | Prisma ORM + SQLite (dev) / Neon Postgres (prod) |
+| Database | Prisma 7 ORM + SQLite (dev) / Neon Postgres (prod) |
 | Auth | bcryptjs password hashing + JWT in httpOnly cookies |
 | Forms | React Hook Form 7 + Zod 4 validation |
 | i18n | next-intl (Ukrainian / English) |
@@ -70,13 +79,14 @@ A production-grade SaaS web application for educational institutions. Built with
 
 ## Test Credentials
 
-The database is pre-seeded with three test accounts. Use these to log in immediately:
+The database is pre-seeded with four test accounts. Use these to log in immediately:
 
 | Role | Username | Password | School code | Access |
 |------|----------|----------|---------------|--------|
-| Admin | `admin` | `test12345` | `demo` | Admin Panel, all modules |
-| Teacher | `teacher` | `test12345` | `demo` | Modules, student directory |
-| Student | `student` | `test12345` | `demo` | Grades, schedule, messages |
+| Admin | `admin` | `test12345` | `demo` | Admin Panel, Analytics Dashboard, all modules |
+| Teacher | `teacher` | `test12345` | `demo` | Modules, student directory, grade book |
+| Student | `student` | `test12345` | `demo` | Grades, schedule, messages, certificates |
+| Parent | `parent` | `test12345` | `demo` | Parent Portal — view child's grades & attendance |
 
 > 120 additional students and teachers are also seeded under the `demo` school.
 
@@ -324,13 +334,15 @@ All environment variables are validated through a Zod schema at startup. No `pro
 - **Cookie flags** — `secure` and `sameSite: 'lax'` in production
 - **CSP** — Content-Security-Policy header on all routes
 - **HSTS** — Strict-Transport-Security with preload
-- **Rate limiting** — password-reset endpoint throttled per username
+- **Rate limiting** — login (10/min, 5min lockout) and registration (5/hour) throttled
 - **Fetch timeout** — AbortSignal.timeout(10s) on all external API calls
 - **Circuit breaker** — 5xx errors trip circuit, fast-fail after 5 failures
+- **Smart retry** — TransientError retried with backoff, PermanentError/ValidationError/NotFoundError fast-fail
 - **Audit logging** — all admin and grade mutations logged with user, action, metadata
 - **Environment validation** — Zod schema, no unvalidated env access
 - **URL allow-listing** — external redirects validated against trusted domains
 - **IP header sanitization** — X-Forwarded-For and X-Real-IP headers sanitized against spoofing
+- **Feature toggles** — env-based toggles for dark mode, command palette, admin panel, parent portal, analytics
 
 ---
 

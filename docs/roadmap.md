@@ -1,16 +1,30 @@
 # Roadmap — Future Versions
 
+## v1.x — Completed ✅
+
+- **Parent Portal** — parents view child's grades, attendance, courses ✅
+- **Analytics Dashboard** — user activity, role distribution, registrations, faculty breakdown, grade distribution ✅
+- **Circuit breaker** — 5xx errors trip circuit, fast-fail after 5 failures ✅
+- **Smart retry** — TransientError retried with backoff ✅
+- **Rate limiting** — login (10/min) and registration (5/hour) ✅
+- **Feature toggles** — env-based toggles for all major features ✅
+- **Structured logging** — JSON output with scoped loggers and correlation IDs ✅
+- **Audit logging** — all admin and grade mutations logged ✅
+- **Error boundaries** — module, settings, profile error.tsx with retry ✅
+- **Health checks** — `/api/healthz` (liveness), `/api/ready` (deep health) ✅
+- **Docker rewrite** — multi-stage build, .dockerignore, proper healthchecks ✅
+
 ## v2.0 — AI & Intelligence
 - **AI-powered grade predictions** — ML model predicting semester GPA based on current grades, attendance, and course difficulty
 - **Smart early warnings** — automatic alerts for students at risk of failing (low attendance + declining grades)
 - **AI tutor chatbot** — course-specific Q&A using RAG over course materials
 - **Plagiarism detection** — integrate with open-source plagiarism checkers for assignment submissions
 
-## v2.1 — Parent Portal ✅ DONE (v1.x)
-- **Parent accounts** — read-only access to child's grades, attendance, and announcements ✅
-- **Parent-teacher communication** — direct messaging between parents and teachers (TODO)
-- **Weekly digest emails** — automated summary of student progress sent to parents (TODO)
-- **Event calendar** — parent-teacher conferences, exam dates, school events (TODO)
+## v2.1 — Parent Portal Extensions
+- **Parent-teacher communication** — direct messaging between parents and teachers
+- **Weekly digest emails** — automated summary of student progress sent to parents
+- **Event calendar** — parent-teacher conferences, exam dates, school events
+- **Multi-child support** — link multiple students to one parent account (schema already supports this)
 
 ## v2.2 — Mobile App (React Native)
 - **Cross-platform** — iOS + Android from single codebase
@@ -63,9 +77,12 @@
 - **Multi-language announcements** — auto-translate announcements to student's preferred language
 
 ## Technical Debt & Infrastructure
-- **Migrate to PostgreSQL** for production (Prisma already supports it)
-- **Add Redis** for session storage and rate limiting
+- **Add Redis** for session storage and rate limiting (replace in-memory store)
 - **Implement OpenTelemetry** for distributed tracing
 - **Set up Grafana dashboards** for system health monitoring
 - **Add Playwright visual regression tests** for UI components
 - **Migrate to Turborepo** if monorepo is needed (mobile + web + API)
+- **Add CSP nonce-based script-src** — replace 'unsafe-inline' with per-request nonces
+- **Add CSRF tokens** for server action mutations
+- **Implement password reset flow** with email verification (currently only reCAPTCHA)
+- **Add 2FA/TOTP** for admin accounts

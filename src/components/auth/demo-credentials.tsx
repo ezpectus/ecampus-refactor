@@ -1,6 +1,6 @@
 'use client';
 
-import { GraduationCap, KeyRound, Presentation,Shield } from 'lucide-react';
+import { GraduationCap, KeyRound, Presentation, Shield, Users } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components/ui/button';
@@ -14,6 +14,7 @@ const DEMO_USERS = [
   { key: 'admin', username: 'admin', password: 'test12345', icon: Shield },
   { key: 'teacher', username: 'teacher', password: 'test12345', icon: Presentation },
   { key: 'student', username: 'student', password: 'test12345', icon: GraduationCap },
+  { key: 'parent', username: 'parent', password: 'test12345', icon: Users },
 ] as const;
 
 export const DemoCredentials = ({ onSelect }: Props) => {
@@ -31,7 +32,7 @@ export const DemoCredentials = ({ onSelect }: Props) => {
             <p className="text-xs text-muted-foreground">{t('description')}</p>
           </div>
         </div>
-        <div className="grid gap-2 sm:grid-cols-3">
+        <div className="grid gap-2 sm:grid-cols-4">
           {DEMO_USERS.map(({ key, username, password, icon: Icon }) => (
             <Button
               key={key}

@@ -1,0 +1,9 @@
+{
+  "buildCommand": "npm run build",
+  "framework": "nextjs",
+  "regions": ["iad1"],
+  "env": {
+    "NEXT_PUBLIC_LOCAL_AUTH": "true",
+    "NEXT_PUBLIC_SHOW_DEMO_CREDENTIALS": "true"
+  }
+}
