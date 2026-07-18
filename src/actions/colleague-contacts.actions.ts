@@ -9,13 +9,11 @@ export async function getColleagueContacts() {
     const response = await apiFetch<ColleagueContact[]>('contacts');
 
     if (!response.ok) {
-      console.error('Failed to fetch colleague contacts:', response.status, response.statusText);
       return [];
     }
 
     return response.json();
-  } catch (error) {
-    console.error('Error fetching colleague contacts:', error);
+  } catch {
     return [];
   }
 }
@@ -25,13 +23,11 @@ export async function getColleagueContactTypes() {
     const response = await apiFetch<ContactType[]>('contacts/types');
 
     if (!response.ok) {
-      console.error('Failed to fetch contact types:', response.status, response.statusText);
       return [];
     }
 
     return response.json();
-  } catch (error) {
-    console.error('Error fetching contact types:', error);
+  } catch {
     return [];
   }
 }

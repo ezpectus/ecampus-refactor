@@ -30,8 +30,7 @@ export const codeOfHonorMiddleware = async (request: NextRequest) => {
     }
 
     return authorizationMiddleware(request);
-  } catch (error) {
-    console.error('Code of honor middleware error:', error);
+  } catch {
     return gotoLogin(request);
   }
 };

@@ -47,8 +47,7 @@ export const getAdminAnnouncements = async (query: AdminAnnouncementsQuery): Pro
     const total = parseInt(response.headers.get('x-total-count') ?? '0', 10) || 0;
 
     return { items, total };
-  } catch (error) {
-    console.error('Error fetching admin announcements:', error);
+  } catch {
     return { items: [], total: 0 };
   }
 };
@@ -62,8 +61,7 @@ export const getAdminAnnouncementById = async (id: number): Promise<AdminAnnounc
     }
 
     return await response.json();
-  } catch (error) {
-    console.error('Error fetching announcement by id:', error);
+  } catch {
     throw new Error("Failed to fetch announcement");
   }
 };
@@ -149,8 +147,7 @@ export const getRoles = async () => {
       return [];
     }
     return response.json();
-  } catch (error) {
-    console.error('Error fetching roles:', error);
+  } catch {
     return [];
   }
 };
@@ -162,8 +159,7 @@ export const getStudyForms = async () => {
       return [];
     }
     return response.json();
-  } catch (error) {
-    console.error('Error fetching study forms:', error);
+  } catch {
     return [];
   }
 };
@@ -175,8 +171,7 @@ export const getCourses = async () => {
       return [];
     }
     return response.json();
-  } catch (error) {
-    console.error('Error fetching courses:', error);
+  } catch {
     return [];
   }
 };

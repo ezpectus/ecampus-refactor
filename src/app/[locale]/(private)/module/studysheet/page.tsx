@@ -18,8 +18,8 @@ export default async function StudySheetPage() {
   let sheet;
   try {
     sheet = await getMonitoring();
-  } catch (error) {
-    console.error('Failed to load study sheet:', error);
+  } catch {
+    // silently fail — loading screen will show
   }
 
   if (!sheet) {

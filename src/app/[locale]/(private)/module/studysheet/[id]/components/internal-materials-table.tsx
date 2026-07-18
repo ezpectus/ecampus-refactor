@@ -36,7 +36,7 @@ export function InternalMaterialsTable({ internalMaterials }: Props) {
           <TableRow key={row.resourceId}>
             <TableCell>{row.date}</TableCell>
             <TableCell>
-              <Link href={`https://campus.kpi.ua/student/index.php?mode=mob&show&irid=${row.resourceId}`}>
+              <Link href={`/module/studysheet/${row.resourceId}`}>
                 {row.name}
               </Link>
             </TableCell>

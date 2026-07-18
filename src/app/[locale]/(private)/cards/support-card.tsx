@@ -1,4 +1,4 @@
-import { Chats, ChatsTeardrop, EnvelopeSimple } from '@/app/images';
+import { ChatsTeardrop, EnvelopeSimple } from '@/app/images';
 import { Heading3 } from '@/components/typography/headers';
 import { Paragraph } from '@/components/typography/paragraph';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -26,16 +26,8 @@ export const SupportCard: FC<Props> = async ({ className }) => {
           <TextButton size="huge" href={env.NEXT_PUBLIC_SUGGESTIONS_FORM} icon={<ChatsTeardrop />}>
             {t('button.suggestions-form')}
           </TextButton>
-          <TextButton size="huge" href="mailto:ecampus@kpi.ua" icon={<EnvelopeSimple />}>
+          <TextButton size="huge" href="mailto:support@student-portal.app" icon={<EnvelopeSimple />}>
             {t('button.email')}
-          </TextButton>
-          <TextButton
-            size="huge"
-            target="_blank"
-            href={env.NEXT_PUBLIC_WHATSAPP_SUPPORT_LINK}
-            icon={<Chats />}
-          >
-            {t('button.chat')}
           </TextButton>
         </Paragraph>
       </CardContent>

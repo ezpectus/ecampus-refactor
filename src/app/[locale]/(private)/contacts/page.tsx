@@ -67,7 +67,7 @@ export default async function ContactsPage({ params }: LocaleProps) {
                 </TextButton>
               ),
               emaillink: (chunks) => (
-                <TextButton size="huge" href="mailto:ecampus@kpi.ua" icon={<EnvelopeSimple />}>
+                <TextButton size="huge" href="mailto:support@student-portal.app" icon={<EnvelopeSimple />}>
                   {chunks}
                 </TextButton>
               ),

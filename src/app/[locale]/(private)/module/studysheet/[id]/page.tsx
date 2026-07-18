@@ -12,8 +12,8 @@ export default async function InfoPage({ params }: Props) {
   let creditModule;
   try {
     creditModule = await getMonitoringById(id);
-  } catch (error) {
-    console.error('Failed to load study sheet:', error);
+  } catch {
+    // silently fail — loading screen will show
   }
 
   if (!creditModule) {

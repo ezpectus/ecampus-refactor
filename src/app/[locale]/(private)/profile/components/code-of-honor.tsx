@@ -22,7 +22,7 @@ export async function CodeOfHonor({ user }: Props) {
         {(tags) =>
           t.rich('codeOfHonor.content', {
             ...tags,
-            documentsLink: (chunks) => <Link href="/kpi-documents">{chunks}</Link>,
+            documentsLink: (chunks) => <Link href="/documents">{chunks}</Link>,
             paragraph: (chunks) => <Paragraph className="m-0 text-lg">{chunks}</Paragraph>,
           })
         }

@@ -56,7 +56,6 @@ export async function loginWithCredentials(username: string, password: string, r
   });
 
   if (!response.ok) {
-    console.error('Login failed:', response.status);
     return null;
   }
 
@@ -129,7 +128,8 @@ export async function redirectToEmploymentSystem() {
 
   try {
     const parsed = new URL(url);
-    if (!parsed.hostname.endsWith('.kpi.ua')) {
+    const allowedHost = env.API_BASE_URL ? new URL(env.API_BASE_URL).hostname : '';
+    if (allowedHost && !parsed.hostname.endsWith(allowedHost)) {
       throw new Error('Untrusted redirect URL');
     }
   } catch {

@@ -23,3 +23,4 @@ This folder documents every fix applied during the refactoring process. Each cha
 | [15-dead-code-logging-state-antipattern.md](./15-dead-code-logging-state-antipattern.md) | Delete dead study-sheet.tsx, remove redundant console.error in 4 functions, fix useEffect state sync anti-pattern in announcements-filters |
 | [16-saas-rebrand-docker-modernization.md](./16-saas-rebrand-docker-modernization.md) | Rebrand as Student Portal SaaS, rewrite README, modernize Docker with PostgreSQL, add .env.example |
 | [17-de-kpi-fy-codebase.md](./17-de-kpi-fy-codebase.md) | Remove KPI ID login, 37 external redirects, rename campusFetch->apiFetch, rename cookies, clean up CSP/translations/env |
+| [18-remove-kpi-urls-cleanup-logging.md](./18-remove-kpi-urls-cleanup-logging.md) | Remove hardcoded KPI URLs, rename kpi-documents->documents, remove 13 console.error calls, clean up env |

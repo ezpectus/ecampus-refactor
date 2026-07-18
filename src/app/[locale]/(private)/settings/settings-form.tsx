@@ -103,7 +103,7 @@ export function SettingsForm({ user }: Props) {
                 <FormItem className="my-6 grid w-full items-center gap-2">
                   <FormLabel htmlFor="email">E-mail</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="nickname@kpi.ua" />
+                    <Input {...field} placeholder="user@example.com" />
                   </FormControl>
                   {shouldShowEmailAlert && (
                     <FormDescription className="flex flex-col gap-3 md:flex-row md:items-center">

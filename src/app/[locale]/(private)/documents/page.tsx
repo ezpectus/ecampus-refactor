@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: LocaleProps) {
   };
 }
 
-export default async function KPIDocumentsPage({ params }: LocaleProps) {
+export default async function DocumentsPage({ params }: LocaleProps) {
   const { locale } = await params;
 
   setRequestLocale(locale);

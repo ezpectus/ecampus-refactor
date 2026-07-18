@@ -20,63 +20,28 @@ type CarouselImage = {
 const IMAGES: CarouselImage[] = [
   {
     src: 'img1.jpg',
-    description: 'Корпус № 1 КПІ ім. Ігоря Сікорського',
-    credits: '@kpi_look',
-    creditsUrl: 'https://www.instagram.com/kpi_look',
+    description: 'Welcome to Student Portal',
+    credits: 'Student Portal',
   },
   {
     src: 'img2.jpg',
-    description: 'Корпус № 20 КПІ ім. Ігоря Сікорського',
-    credits: '@kpi_look',
-    creditsUrl: 'https://www.instagram.com/kpi_look',
+    description: 'Your campus, simplified',
+    credits: 'Student Portal',
   },
   {
     src: 'img3.jpg',
-    description: 'Науково-технічна бібліотека ім. Г. І. Денисенка КПІ ім. Ігоря Сікорського',
-    credits: '@kpi_look',
-    creditsUrl: 'https://www.instagram.com/kpi_look',
+    description: 'Everything in one place',
+    credits: 'Student Portal',
   },
   {
     src: 'img4.jpg',
-    description: 'Науково-технічна бібліотека ім. Г. І. Денисенка КПІ ім. Ігоря Сікорського',
-    credits: '@kpi_look',
-    creditsUrl: 'https://www.instagram.com/kpi_look',
+    description: 'Grades, schedules, and more',
+    credits: 'Student Portal',
   },
   {
     src: 'img5.jpg',
-    description: 'Корпус № 1 КПІ ім. Ігоря Сікорського',
-    credits: '@kpi_look',
-    creditsUrl: 'https://www.instagram.com/kpi_look',
-  },
-  {
-    src: 'img6.jpg',
-    description: 'Науково-технічна бібліотека ім. Г. І. Денисенка КПІ ім. Ігоря Сікорського',
-    credits: '@kpi_look',
-    creditsUrl: 'https://www.instagram.com/kpi_look',
-  },
-  {
-    src: 'img7.jpg',
-    description: 'Корпус № 1 КПІ ім. Ігоря Сікорського',
-    credits: '@kpi_look',
-    creditsUrl: 'https://www.instagram.com/kpi_look',
-  },
-  {
-    src: 'img8.jpg',
-    description: 'Науково-технічна бібліотека ім. Г. І. Денисенка КПІ ім. Ігоря Сікорського',
-    credits: '@kpi_look',
-    creditsUrl: 'https://www.instagram.com/kpi_look',
-  },
-  {
-    src: 'img9.jpg',
-    description: 'Центр студентського харчування',
-    credits: '@kpi_look',
-    creditsUrl: 'https://www.instagram.com/kpi_look',
-  },
-  {
-    src: 'img10.jpg',
-    description: 'Корпус № 1 КПІ ім. Ігоря Сікорського',
-    credits: '@kpi_look',
-    creditsUrl: 'https://www.instagram.com/kpi_look',
+    description: 'Built for students and faculty',
+    credits: 'Student Portal',
   },
 ];
 

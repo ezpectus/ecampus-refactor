@@ -9,7 +9,7 @@ import React from 'react';
 
 const createFooterLinks = (t: Awaited<ReturnType<typeof getTranslations>>) => [
   { title: t('about'), url: '/about' },
-  { title: t('documents'), url: '/kpi-documents' },
+  { title: t('documents'), url: '/documents' },
   { title: t('terms-of-service'), url: '/terms-of-service' },
   { title: t('contacts'), url: '/contacts' },
 ];
