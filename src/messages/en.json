@@ -753,6 +753,7 @@
       "notesPlaceholder": "For example: with a wet seal",
       "purposePlaceholder": "For example: for the French embassy",
       "submit": "Order",
+      "success": "Request successfully created",
       "status": {
         "created": "Created",
         "pending": "Pending",

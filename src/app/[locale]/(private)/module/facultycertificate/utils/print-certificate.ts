@@ -22,7 +22,9 @@ function printPdfBlob(blob: Blob, filename?: string): Promise<void> {
       try {
         try {
           iframe.contentDocument!.title = filename || 'document.pdf';
-        } catch {}
+        } catch {
+          // Cross-origin iframe — title assignment is best-effort
+        }
         setTimeout(() => {
           iframe.contentWindow?.focus();
           iframe.contentWindow?.print();

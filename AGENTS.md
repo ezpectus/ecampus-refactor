@@ -87,9 +87,10 @@ export const ThingsTable = memo(function ThingsTable({ items, totalCount }: Prop
 - HTTP via `campusFetch<T>(url, init?)` from `@/lib/client` — it injects JWT and base path. Do not write `fetch()` directly.
 - After mutations, call `revalidatePath('/module/<name>')` (or `'layout'` granularity when shared layout data changes). See `certificates.actions.ts` and `announcement.actions.ts`.
 - Error handling has two flavors in the codebase:
-  - **Throw** on non-OK (`certificates.actions.ts`) — caller wraps in try/catch with `useServerErrorToast`.
-  - **Return a safe default** like `{ items: [], total: 0 }` (`announcement.actions.ts`) when the page can render an empty state.
-  Pick one consistently per action and document the contract via the return type.
+  - **Throw** on non-OK (`certificates.actions.ts`, `msg.actions.ts`) — caller wraps in try/catch with `useServerErrorToast`. Use for mutations and reads where the page cannot render without the data.
+  - **Return a safe default** like `{ items: [], total: 0 }` (`announcement.actions.ts`, `profile.actions.ts`) when the page can render an empty state. Use for list/search reads.
+  - **Always check `response.ok`** — never skip it. Every `campusFetch` call must either check `response.ok` or have a try/catch.
+  - Pick one consistently per action and document the contract via the return type.
 
 ## 4. Forms (React Hook Form + Zod)
 

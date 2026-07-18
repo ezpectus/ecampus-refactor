@@ -40,10 +40,14 @@ type CertificateRequestBody = {
 };
 
 export async function createCertificateRequest(body: CertificateRequestBody) {
-  await campusFetch('/certificates', {
+  const response = await campusFetch('/certificates', {
     method: 'POST',
     body: JSON.stringify({ ...body }),
   });
+
+  if (!response.ok) {
+    throw new Error(`${response.status} Error`);
+  }
 
   revalidatePath('/module/certificates');
 }
@@ -60,6 +64,9 @@ export async function getCertificateList() {
 export async function getAllFacultyCertificates(query: FacultyCertificatesQuery = {}) {
   const queryParams = qs.stringify(query);
   const res = await campusFetch<Certificate[]>(`/certificates/all?${queryParams}`);
+  if (!res.ok) {
+    throw new Error(`${res.status} Error`);
+  }
   const allCertificates = await res.json();
 
   const totalCount = parseInt(res.headers.get('x-total-count') || '0', 10);
@@ -94,6 +101,9 @@ export async function getCertificatePDF(id: number) {
 
 export async function getCertificate(id: number) {
   const res = await campusFetch<Certificate>(`/certificates/${id}`);
+  if (!res.ok) {
+    throw new Error(`${res.status} Error`);
+  }
   return res.json();
 }
 

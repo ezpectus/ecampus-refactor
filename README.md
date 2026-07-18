@@ -52,13 +52,14 @@ Applied prioritized fixes — P0 critical security first, then P1, then quality 
 | **Security Hardening** | 2 | Code-of-honor middleware fail-safe (redirect to login on error), IP header sanitization (trim + first-IP-only) |
 | **Race Conditions** | 6 | Curator search request ID tracking, individual.tsx cleanup, multi-select async cancel, intellect-info try/catch, certificate-verifier error state, studysheet/[id] id dependency |
 | **Cookie & A11Y & Env** | 3 | Sidebar cookie `secure` + `samesite`, 9 icon-only button `aria-label`s, 30+ `process.env.X!` → validated `env.X` (18 files) |
+| **Dead Code & Error Handling** | 5 | Delete Storybook + 3 unused UI components, fix empty catch, standardize error handling in actions |
 
 ### Phase 3: Documentation
 
 Every fix is documented with before/after code, problem description, impact, and solution:
 
 - [`docs/`](./docs/) — 5 audit documents (architecture, refactoring plan, code-level audit)
-- [`changelogs/`](./changelogs/) — 10 changelogs with CWE mapping and code diffs
+- [`changelogs/`](./changelogs/) — 11 changelogs with CWE mapping and code diffs
 
 ---
 
@@ -113,6 +114,7 @@ Every fix is documented with before/after code, problem description, impact, and
 | [`changelogs/08-accessibility-security-react-antipatterns.md`](./changelogs/08-accessibility-security-react-antipatterns.md) | `html lang`, code-of-honor fail-safe, IP header sanitization, `key={index}` → stable keys (12 files), conditional GA |
 | [`changelogs/09-race-conditions-and-error-handling.md`](./changelogs/09-race-conditions-and-error-handling.md) | 6 race conditions: request ID tracking, useEffect cleanup, try/finally loading state, missing error handling |
 | [`changelogs/10-cookie-security-aria-labels-env-validation.md`](./changelogs/10-cookie-security-aria-labels-env-validation.md) | Sidebar cookie security flags, 9 icon-only button aria-labels, 30+ `process.env.X!` → validated `env.X` (18 files) |
+| [`changelogs/11-dead-code-error-handling-cleanup.md`](./changelogs/11-dead-code-error-handling-cleanup.md) | Delete Storybook + 3 unused UI components, fix empty catch, standardize error handling in actions |
 
 ---
 

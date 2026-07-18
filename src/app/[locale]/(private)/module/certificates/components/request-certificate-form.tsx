@@ -13,6 +13,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createCertificateRequest } from '@/actions/certificates.actions';
 import { useTranslations } from 'next-intl';
+import { useServerErrorToast } from '@/hooks/use-server-error-toast';
+import { useToast } from '@/hooks/use-toast';
 
 interface Props {
   certificateTypes: string[];
@@ -21,6 +23,8 @@ interface Props {
 export function RequestCertificateForm({ certificateTypes }: Props) {
   const tEnums = useTranslations('global.enums.certificate-type');
   const tCert = useTranslations('private.certificate');
+  const { errorToast } = useServerErrorToast();
+  const { toast } = useToast();
 
   const FormSchema = z.object({
     docType: z.string().trim().min(1),
@@ -42,13 +46,18 @@ export function RequestCertificateForm({ certificateTypes }: Props) {
   });
 
   const handleFormSubmit = async (data: FormData) => {
-    await createCertificateRequest({
-      type: data.docType,
-      purpose: data.purpose,
-      originalRequired: data.originalRequired,
-      notes: data.notes,
-    });
-    form.reset();
+    try {
+      await createCertificateRequest({
+        type: data.docType,
+        purpose: data.purpose,
+        originalRequired: data.originalRequired,
+        notes: data.notes,
+      });
+      toast({ title: tCert('success') });
+      form.reset();
+    } catch {
+      errorToast();
+    }
   };
 
   const isOriginalChecked = form.watch('originalRequired');
