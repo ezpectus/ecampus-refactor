@@ -107,7 +107,6 @@ export const createAnnouncement = async (data: AnnouncementCreate): Promise<numb
     revalidatePath(ANNOUNCEMENTS_EDITOR_PATH, 'layout');
     return responseJson;
   } catch (error) {
-    console.error('Error creating announcement:', error);
     throw error;
   }
 };
@@ -124,7 +123,6 @@ export const updateAnnouncement = async (id: number, data: AnnouncementCreate): 
     }
     revalidatePath(ANNOUNCEMENTS_EDITOR_PATH, 'layout');
   } catch (error) {
-    console.error('Error updating announcement:', error);
     throw error;
   }
 };
@@ -140,7 +138,6 @@ export const deleteAnnouncement = async (id: number): Promise<void> => {
     }
     revalidatePath(ANNOUNCEMENTS_EDITOR_PATH, 'layout');
   } catch (error) {
-    console.error('Error deleting announcement:', error);
     throw error;
   }
 };

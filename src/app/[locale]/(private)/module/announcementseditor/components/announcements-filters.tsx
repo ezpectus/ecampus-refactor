@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { debounce } from 'radash';
@@ -23,10 +23,11 @@ export const AnnouncementsFilters = () => {
     ANNOUNCEMENT_FILTER_LANGUAGES.find((v) => v === rawLanguage) ?? 'all';
 
   const [searchValue, setSearchValue] = useState(search);
-  
-  useEffect(() => {
+  const [prevSearch, setPrevSearch] = useState(search);
+  if (search !== prevSearch) {
+    setPrevSearch(search);
     setSearchValue(search);
-  }, [search]);
+  }
 
   const commitSearchParams = (patch: (params: URLSearchParams) => void) => {
     const params = new URLSearchParams(searchParams.toString());

@@ -74,3 +74,6 @@ build/
 
 # Reference skills library (not part of project)
 hft-skills/
+
+# Client-facing functionality doc (not for repo)
+docs/client-functionality-overview.md

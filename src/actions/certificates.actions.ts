@@ -94,7 +94,6 @@ export async function getCertificatePDF(id: number) {
       blob,
     };
   } catch (error) {
-    console.error('Error downloading PDF:', error);
     throw error;
   }
 }
