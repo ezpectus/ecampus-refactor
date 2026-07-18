@@ -17,3 +17,4 @@ This folder documents every fix applied during the refactoring process. Each cha
 | [09-race-conditions-and-error-handling.md](./09-race-conditions-and-error-handling.md) | 6 race conditions: curator-search request ID, individual.tsx cleanup, multi-select async cancel, intellect-info try/catch, certificate-verifier error state, studysheet/[id] id dep |
 | [10-cookie-security-aria-labels-env-validation.md](./10-cookie-security-aria-labels-env-validation.md) | Sidebar cookie security flags, 9 icon-only button aria-labels, 30+ process.env.X! → validated env.X (18 files) |
 | [11-dead-code-error-handling-cleanup.md](./11-dead-code-error-handling-cleanup.md) | Delete Storybook + 3 unused UI components, fix empty catch, standardize error handling in actions |
+| [12-ssr-cache-strategy-dead-file-cleanup.md](./12-ssr-cache-strategy-dead-file-cleanup.md) | Convert studysheet/[id] to SSR, replace no-cache with ISR revalidate (300s), delete dead contants.ts + Storybook files |

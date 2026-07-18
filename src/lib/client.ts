@@ -27,7 +27,10 @@ const Client = (basePath: string) => {
     const contentType = new Headers(headers).get('Content-type') ?? 'application/json';
     const resolvedHeaders = await nextHeaders();
 
-    const cacheOption = 'next' in otherOptions ? {} : { cache: 'no-cache' as const };
+    const cacheOption =
+      'next' in otherOptions || 'cache' in otherOptions
+        ? {}
+        : { next: { revalidate: 300 } as const };
 
     const response = await fetch<T>(input, {
       ...cacheOption,

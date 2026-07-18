@@ -53,13 +53,14 @@ Applied prioritized fixes — P0 critical security first, then P1, then quality 
 | **Race Conditions** | 6 | Curator search request ID tracking, individual.tsx cleanup, multi-select async cancel, intellect-info try/catch, certificate-verifier error state, studysheet/[id] id dependency |
 | **Cookie & A11Y & Env** | 3 | Sidebar cookie `secure` + `samesite`, 9 icon-only button `aria-label`s, 30+ `process.env.X!` → validated `env.X` (18 files) |
 | **Dead Code & Error Handling** | 5 | Delete Storybook + 3 unused UI components, fix empty catch, standardize error handling in actions |
+| **SSR & Cache** | 3 | Convert studysheet/[id] to server component, ISR revalidate (300s) default, delete dead contants.ts |
 
 ### Phase 3: Documentation
 
 Every fix is documented with before/after code, problem description, impact, and solution:
 
 - [`docs/`](./docs/) — 5 audit documents (architecture, refactoring plan, code-level audit)
-- [`changelogs/`](./changelogs/) — 11 changelogs with CWE mapping and code diffs
+- [`changelogs/`](./changelogs/) — 12 changelogs with CWE mapping and code diffs
 
 ---
 
@@ -115,6 +116,7 @@ Every fix is documented with before/after code, problem description, impact, and
 | [`changelogs/09-race-conditions-and-error-handling.md`](./changelogs/09-race-conditions-and-error-handling.md) | 6 race conditions: request ID tracking, useEffect cleanup, try/finally loading state, missing error handling |
 | [`changelogs/10-cookie-security-aria-labels-env-validation.md`](./changelogs/10-cookie-security-aria-labels-env-validation.md) | Sidebar cookie security flags, 9 icon-only button aria-labels, 30+ `process.env.X!` → validated `env.X` (18 files) |
 | [`changelogs/11-dead-code-error-handling-cleanup.md`](./changelogs/11-dead-code-error-handling-cleanup.md) | Delete Storybook + 3 unused UI components, fix empty catch, standardize error handling in actions |
+| [`changelogs/12-ssr-cache-strategy-dead-file-cleanup.md`](./changelogs/12-ssr-cache-strategy-dead-file-cleanup.md) | Convert studysheet/[id] to SSR, replace no-cache with ISR revalidate (300s), delete dead contants.ts |
 
 ---
 
