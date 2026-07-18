@@ -1,152 +1,224 @@
-# eCampus KPI — Legacy Refactoring
+# Student Portal — Modern Student Management Platform
 
-> Production university portal refactored from prototype to maintainable product.
-> 200+ files, 48 modules, ~50k users. Security audit (CWE-mapped), architecture redesign, code quality overhaul.
-
----
-
-## Why This Repo Exists
-
-I'm a Software Engineering student at Igor Sikorsky Kyiv Polytechnic Institute (KPI) — the same university that runs this portal. I've solved 3000+ algorithm problems across LeetCode, HackerRank, and Codeforces, and built full-stack projects in .NET and React. But algorithm problems are clean — they have a single correct answer. **Real codebases don't.**
-
-That's why I picked the hardest thing I had access to: my own university's production portal. eCampus KPI serves ~50,000 students and staff. It works. People use it daily. And like most legacy systems, it accumulated technical debt — security gaps, inconsistent patterns, architectural shortcuts that made sense at the time but don't hold up.
-
-I didn't fork a tutorial repo or generate a starter project. I took a system that real people depend on and treated it the way a senior engineer would treat a client engagement:
-
-1. **Audit first** — read every file, trace every data flow, map every vulnerability to its CWE ID
-2. **Document before touching code** — 5 audit documents, 66 issues with exact `file:line` references
-3. **Fix in priority order** — P0 security first (things that could get users hurt), then P1, then quality
-4. **Prove every change** — before/after code, root cause, rationale, and changelog for every single fix
-
-**This is the work I want to do professionally.** Not write new features from scratch — take systems that already exist, understand them deeply, and make them robust. That's harder than greenfield development, and it's what most engineering jobs actually involve.
+A production-grade SaaS web application for educational institutions. Built with Next.js 15, React 19, and TypeScript. Features grades management, messaging, announcements, certificates, profiles, and an admin panel. Dockerized, multi-tenant ready, and fully typed.
 
 ---
 
-## What I Did
+## Features
 
-### Phase 1: Audit
+### Student
+- **Grades & Academic Performance** — view grades by semester, GPA, credit modules, attestation results
+- **Schedule** — weekly timetable with course, room, and teacher info
+- **Messages** — send and receive messages with faculty, groups, and individual students
+- **Certificates** — request official documents, track status, download PDF
+- **Profile** — manage contacts, bio, avatar, and account settings
+- **Announcements** — institution-wide and course-level notices
+- **Directory** — search faculty and staff by name, department, or contact type
 
-Conducted a systematic code audit covering security, architecture, code quality, and accessibility:
+### Faculty / Staff
+- **Certificate Management** — approve, reject, sign, and process student certificate requests
+- **Announcement Editor** — create, edit, and publish announcements with audience targeting
+- **Student Directory** — search and view student contact information
 
-- **66 code-level issues** identified with exact `file:line` references
-- **38 architectural issues** documented with diagrams
-- Vulnerabilities mapped to **CWE IDs** (CWE-79 XSS, CWE-614 cookie security, CWE-601 open redirect, CWE-20 input validation, etc.)
-- Architecture diagrams (before/after) for authentication flow, data flow, and module system
+### Admin
+- **User Management** — create, edit, deactivate users; assign roles
+- **Course Management** — create courses, assign teachers, manage enrollments
+- **System Settings** — configure app name, logo, locales, feature flags
 
-### Phase 2: Fixes
-
-Applied prioritized fixes — P0 critical security first, then P1, then quality and architecture:
-
-| Priority | Fixes | Examples |
-|----------|-------|---------|
-| **P0 Critical** | 4 | Cookie `secure`+`sameSite` flags, XSS via `dangerouslySetInnerHTML`, JWT payload validation, `.gitignore` hardening |
-| **P1 High** | 4 | CSP/HSTS security headers, fetch timeout (10s), open redirect validation, `rel="noopener noreferrer"` on 7 files |
-| **Quality** | 3 | Toast memory leak (1M ms → 5s), misplaced import, `notFound()` → `redirect()` |
-| **Architecture** | 2 | `<div onClick>` → `<button>` + `aria-label` (a11y), removed `setTimeout` leak |
-| **Dead Code** | 3 | `contants.ts` → `constants.ts` rename (4 imports), `useEffect` deps fix, unused `types.ts` deleted |
-| **Error Handling** | 7 | `any` → generics, `FC` → direct props, error boundary UI, `response.ok` checks, error preservation (`cause`), `resetPassword` re-throw, Suspense fallbacks (3 files) |
-| **Code Quality** | 3 | `sleep(5000)` → `setTimeout` with cleanup, `aria-label` on logout button, SVG config dedup |
-| **Env Validation** | 3 | `env.ts` with Zod schema, `process.env.X!` → `env.X` in 4 files, file upload 30s timeout |
-| **Dependency Cleanup** | 3 | Removed `date-fns`, `react-day-picker`, `@tanstack/react-table` (zero imports) |
-| **Accessibility & React** | 14 | `html lang` attr, `key={index}` → stable keys in 12 list renders, conditional GA rendering |
-| **Security Hardening** | 2 | Code-of-honor middleware fail-safe (redirect to login on error), IP header sanitization (trim + first-IP-only) |
-| **Race Conditions** | 6 | Curator search request ID tracking, individual.tsx cleanup, multi-select async cancel, intellect-info try/catch, certificate-verifier error state, studysheet/[id] id dependency |
-| **Cookie & A11Y & Env** | 3 | Sidebar cookie `secure` + `samesite`, 9 icon-only button `aria-label`s, 30+ `process.env.X!` → validated `env.X` (18 files) |
-| **Dead Code & Error Handling** | 5 | Delete Storybook + 3 unused UI components, fix empty catch, standardize error handling in actions |
-| **SSR & Cache** | 3 | Convert studysheet/[id] to server component, ISR revalidate (300s) default, delete dead contants.ts |
-| **Loading & Icons** | 13 | Replace inline spinners with LoadingScreen, deduplicate IconPosition type, consolidate all SVG imports to @/app/images index (10 files) |
-| **SSR & Error Checks** | 3 | Convert studysheet list to server component, add response.ok checks to 6 profile.actions mutations, remove dead cache: no-cache from file-upload.ts |
-| **Dead Code & Patterns** | 4 | Delete dead study-sheet.tsx, remove redundant console.error in 4 functions, fix useEffect state sync anti-pattern in announcements-filters |
-
-### Phase 3: Documentation
-
-Every fix is documented with before/after code, problem description, impact, and solution:
-
-- [`docs/`](./docs/) — 5 audit documents (architecture, refactoring plan, code-level audit)
-- [`changelogs/`](./changelogs/) — 15 changelogs with CWE mapping and code diffs
+### Platform
+- **Authentication** — JWT-based with httpOnly cookies, middleware route protection
+- **Multi-locale** — Ukrainian (default) and English, extensible to any locale
+- **Server-Side Rendering** — all pages SSR with ISR caching (5-min revalidate)
+- **Security** — CSP headers, HSTS, cookie security flags, env validation (Zod), URL allow-listing
+- **Responsive** — mobile-first design with TailwindCSS, works on all breakpoints
+- **Accessible** — ARIA labels, keyboard navigation, semantic HTML
 
 ---
 
-## Project Overview
-
-**eCampus KPI** is the frontend of the educational portal of Kyiv Polytechnic Institute. Students use it for grades, certificates, messages, announcements, study sheets, ratings, and more. The backend is a separate REST API (not part of this repo).
-
-- **48 modules** — 11 internal (rendered in Next.js), 37 external (redirect to legacy campus)
-- **2 locales** — Ukrainian (default), English
-- **Auth** — JWT in httpOnly cookies, middleware-based auth/authorization
-- **Users** — students, lecturers, curators, admins
-
-### Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
-| Framework | Next.js 15.4.8 (App Router, Turbopack) |
-| UI | React 19.2.0 (Server Components) |
+| Framework | Next.js 15 (App Router, Turbopack, Server Components) |
+| UI | React 19, TailwindCSS 4, Radix UI primitives |
 | Language | TypeScript 5.9 (strict mode) |
-| Styling | Tailwind CSS 4.1 + shadcn/ui (42 components) |
+| Forms | React Hook Form 7 + Zod 4 validation |
 | i18n | next-intl (Ukrainian / English) |
-| Forms | React Hook Form 7 + Zod 4 |
-| Auth | JWT (httpOnly cookies, middleware) |
-| HTTP | `campusFetch` (custom wrapper over `fetch`) |
-| Deploy | Docker multi-stage (node:22-alpine), GitHub Actions CI/CD |
+| Auth | JWT in httpOnly cookies, middleware-based |
+| Icons | Centralized SVG index (@svgr/webpack) |
+| Deploy | Docker multi-stage (node:22-alpine), standalone output |
+| Testing | Vitest (planned), Playwright (planned) |
 
 ---
 
-## Documentation
+## Architecture
 
-### Audit & Architecture
-
-| File | Description |
-|------|-------------|
-| [`docs/01-audit-findings.md`](./docs/01-audit-findings.md) | Full codebase audit: 38 issues across security, code quality, error handling, performance, a11y, testing, architecture |
-| [`docs/Architecture_Old.md`](./docs/Architecture_Old.md) | Architecture **before** refactoring — diagrams, auth flow, data flow, weak points |
-| [`docs/03-refactoring-plan.md`](./docs/03-refactoring-plan.md) | Refactoring pipeline — 6 phases, sequence, definition of done |
-| [`docs/04-architecture-after.md`](./docs/04-architecture-after.md) | Target architecture **after** refactoring |
-| [`docs/05-code-level-audit.md`](./docs/05-code-level-audit.md) | Line-by-line code audit: 66 issues with exact `file:line` refs, code snippets, root cause, fix |
-
-### Changelogs
-
-| File | Description |
-|------|-------------|
-| [`changelogs/01-security-p0.md`](./changelogs/01-security-p0.md) | P0 critical: `.gitignore`, cookie flags, XSS, JWT validation |
-| [`changelogs/02-security-p1.md`](./changelogs/02-security-p1.md) | P1 high: fetch timeout, open redirect, CSP headers, `rel=noopener` (7 files) |
-| [`changelogs/03-code-quality.md`](./changelogs/03-code-quality.md) | Quality: toast delay, import placement, `notFound` → `redirect` |
-| [`changelogs/04-architecture.md`](./changelogs/04-architecture.md) | Architecture: `div onClick` → `button`, `setTimeout` removal |
-| [`changelogs/05-dead-code-cleanup.md`](./changelogs/05-dead-code-cleanup.md) | Dead code: `contants.ts` rename, `useEffect` deps fix, unused `types.ts` deletion |
-| [`changelogs/06-code-quality-and-error-handling.md`](./changelogs/06-code-quality-and-error-handling.md) | Phase 3: `any` types, `FC` → direct props, error boundary UI, `response.ok` checks, error preservation, Suspense fallbacks, SVG config dedup |
-| [`changelogs/07-env-validation-and-deps.md`](./changelogs/07-env-validation-and-deps.md) | `env.ts` with Zod validation, file upload timeout, removed 3 unused npm deps (`date-fns`, `react-day-picker`, `@tanstack/react-table`) |
-| [`changelogs/08-accessibility-security-react-antipatterns.md`](./changelogs/08-accessibility-security-react-antipatterns.md) | `html lang`, code-of-honor fail-safe, IP header sanitization, `key={index}` → stable keys (12 files), conditional GA |
-| [`changelogs/09-race-conditions-and-error-handling.md`](./changelogs/09-race-conditions-and-error-handling.md) | 6 race conditions: request ID tracking, useEffect cleanup, try/finally loading state, missing error handling |
-| [`changelogs/10-cookie-security-aria-labels-env-validation.md`](./changelogs/10-cookie-security-aria-labels-env-validation.md) | Sidebar cookie security flags, 9 icon-only button aria-labels, 30+ `process.env.X!` → validated `env.X` (18 files) |
-| [`changelogs/11-dead-code-error-handling-cleanup.md`](./changelogs/11-dead-code-error-handling-cleanup.md) | Delete Storybook + 3 unused UI components, fix empty catch, standardize error handling in actions |
-| [`changelogs/12-ssr-cache-strategy-dead-file-cleanup.md`](./changelogs/12-ssr-cache-strategy-dead-file-cleanup.md) | Convert studysheet/[id] to SSR, replace no-cache with ISR revalidate (300s), delete dead contants.ts |
-| [`changelogs/13-loading-consistency-icon-import-consolidation.md`](./changelogs/13-loading-consistency-icon-import-consolidation.md) | Replace inline spinners with LoadingScreen, deduplicate IconPosition, consolidate SVG imports to @/app/images (10 files) |
-| [`changelogs/14-ssr-studysheet-list-error-checks-dead-cache.md`](./changelogs/14-ssr-studysheet-list-error-checks-dead-cache.md) | Convert studysheet list to SSR, add response.ok checks to 6 profile.actions mutations, remove dead cache: no-cache from file-upload.ts |
-| [`changelogs/15-dead-code-logging-state-antipattern.md`](./changelogs/15-dead-code-logging-state-antipattern.md) | Delete dead study-sheet.tsx, remove redundant console.error in 4 functions, fix useEffect state sync anti-pattern in announcements-filters |
+```
+┌─────────────────────────────────────────────────────────┐
+│                    Client (Browser)                      │
+│  React 19 Server Components + Client Components          │
+│  TailwindCSS + Radix UI                                  │
+└──────────────────────┬──────────────────────────────────┘
+                       │
+┌──────────────────────▼──────────────────────────────────┐
+│              Next.js 15 (App Router)                     │
+│                                                         │
+│  Middleware          │  Server Components (SSR/ISR)     │
+│  - Auth check        │  - Data fetching via Server      │
+│  - i18n routing      │    Actions (apiFetch)            │
+│  - Route protection  │  - ISR cache (revalidate: 300s)  │
+│                      │  - Metadata generation           │
+└──────────────────────┬──────────────────────────────────┘
+                       │
+┌──────────────────────▼──────────────────────────────────┐
+│              REST API (Backend)                          │
+│  ASP.NET Core / External API                            │
+│  - JWT authentication                                   │
+│  - User, Course, Grade, Message endpoints               │
+└──────────────────────┬──────────────────────────────────┘
+                       │
+┌──────────────────────▼──────────────────────────────────┐
+│              PostgreSQL                                  │
+│  Users, Organizations, Courses, Grades, Messages,       │
+│  Notifications, Files                                    │
+└─────────────────────────────────────────────────────────┘
+```
 
 ---
 
-## Key Findings (Highlights)
+## Quick Start
 
-### Critical Security
+### Prerequisites
 
-- **XSS** — Email content rendered via `dangerouslySetInnerHTML` without sanitization (`preview-dialog.tsx:47`)
-- **Cookie security** — Auth cookies missing `secure` and `sameSite` flags (`auth.actions.ts:24-25`)
-- **JWT** — Decoded without payload validation; `exp` and `modules` not schema-validated (`jwt.ts:6`)
-- **Secrets in git** — `.gitignore` only ignored `.env`, not `.env.production` or `.env.local`
+- Node.js 22+
+- npm 10+
+- Docker (optional, for containerized deployment)
 
-### Architecture
+### Development
 
-- JWT decoded (not verified) in middleware — payload fully client-controlled
-- `campusFetch` defaults to `cache: 'no-cache'` — no API-level caching
-- 3 different error handling patterns across server actions (throw / return `[]` / return `null`)
-- Error boundary renders `<></>` — user sees blank white screen on errors
+```bash
+# Clone the repo
+git clone https://github.com/yourusername/student-portal.git
+cd student-portal
 
-### Code Quality
+# Copy environment file
+cp .env.example .env.development
 
-- Toast removal delay set to 1,000,000ms (~16 minutes) — memory leak
-- Import statement placed in the middle of a file (between function definitions)
-- Interactive `<div onClick>` instead of `<button>` — not keyboard-accessible
+# Install dependencies
+npm install
+
+# Start dev server
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000)
+
+### Docker
+
+```bash
+# Build and run with Docker Compose
+docker-compose up -d
+
+# Or build manually
+docker build -t student-portal .
+docker run -p 3000:3000 student-portal
+```
+
+---
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── [locale]/              # Locale-prefixed routes
+│   │   ├── (private)/         # Authenticated pages
+│   │   │   ├── module/        # Core modules (grades, messages, etc.)
+│   │   │   ├── profile/       # User profile
+│   │   │   ├── settings/      # Account settings
+│   │   │   └── notice-board/  # Announcements
+│   │   └── (public)/          # Unauthenticated pages
+│   │       ├── (auth)/        # Login, registration
+│   │       └── (support)/     # Curator search
+│   ├── images/                # Centralized SVG icon index
+│   └── layout.tsx             # Root layout
+├── actions/                   # Server Actions (API calls)
+├── components/                # Reusable UI components
+│   ├── ui/                    # Base components (button, table, dialog, etc.)
+│   ├── typography/            # Heading, Paragraph, Description
+│   └── utils/                 # Show (conditional render), etc.
+├── hooks/                     # Custom React hooks
+├── lib/                       # Core libraries
+│   ├── client.ts              # API fetch wrapper
+│   ├── env.ts                 # Zod-validated environment variables
+│   └── constants/             # Shared constants (cookies, cache tags, page sizes)
+├── types/                     # TypeScript types and domain models
+├── middleware/                # Auth and i18n middleware
+└── i18n/                      # Locale routing configuration
+```
+
+---
+
+## Key Design Decisions
+
+### Server-Side Rendering
+All pages are server components that fetch data via Server Actions. No client-side loading spinners — data is ready on first render. Interactive parts (filters, tabs) are isolated into small client components.
+
+### ISR Caching
+GET requests cache for 5 minutes (`revalidate: 300`). Mutations invalidate cache via `revalidateTag` / `revalidatePath`. This eliminates unnecessary API calls while keeping data fresh.
+
+### Centralized Icon System
+All SVG icons are imported from a single index (`@/app/images`). This prevents duplicate imports, simplifies icon management, and ensures consistent SVGO optimization.
+
+### Error Handling
+Two patterns, used consistently:
+- **Throw** on non-OK — for mutations and critical reads (caller shows error toast)
+- **Return safe default** — for list/search reads where the page can render an empty state
+
+### Environment Validation
+All environment variables are validated through a Zod schema at startup. No `process.env.X!` assertions — if a variable is missing, the app fails fast with a clear error.
+
+---
+
+## Security
+
+- **JWT** stored in httpOnly cookies (not accessible via JavaScript)
+- **Cookie flags** — `secure` and `sameSite: 'lax'` in production
+- **CSP** — Content-Security-Policy header on all routes
+- **HSTS** — Strict-Transport-Security with preload
+- **Environment validation** — Zod schema, no unvalidated env access
+- **URL allow-listing** — external redirects validated against trusted domains
+- **Rate limiting** — planned (Redis-backed) for auth endpoints
+
+---
+
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start dev server (Turbopack) |
+| `npm run build` | Production build (Turbopack) |
+| `npm run start` | Start production server |
+| `npm run lint` | Run ESLint |
+| `npm run tsc` | Type-check without emitting |
+
+---
+
+## Docker Configuration
+
+The Dockerfile uses a multi-stage build:
+
+1. **deps** — install npm dependencies
+2. **builder** — build the Next.js standalone output
+3. **runner** — minimal production image (node:22-alpine, non-root user)
+
+`docker-compose.yml` includes the app service with configurable environment variables. PostgreSQL service can be added for self-hosted backend.
+
+---
+
+## License
+
+This project is for portfolio demonstration purposes.
 
 ---
 
@@ -154,12 +226,4 @@ Every fix is documented with before/after code, problem description, impact, and
 
 **Denys Stepanenko** — Software Engineer (.NET | Full-Stack)
 
-Software Engineering student at KPI. Background in .NET backend, full-stack React, and algorithms (3000+ problems solved across LeetCode, HackerRank, Codeforces). Cybersecurity internship experience at JCB (threat modeling, secure software development).
-
-I take legacy systems and make them production-grade. This project demonstrates my approach: audit first, document everything, fix in priority order, and never break existing functionality.
-
----
-
-## License
-
-This project is for portfolio demonstration purposes. The original application belongs to Igor Sikorsky Kyiv Polytechnic Institute.
+Software Engineering student. Background in .NET backend, full-stack React, and algorithms (3000+ problems solved across LeetCode, HackerRank, Codeforces). Cybersecurity internship experience at JCB (threat modeling, secure software development).

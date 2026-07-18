@@ -1,14 +1,38 @@
 services:
-  ecampus:
-    container_name: ecampus-kpi-ua-local
+  student-portal:
+    container_name: student-portal
     build:
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
     ports:
-      - '80:3000'
+      - '3000:3000'
     environment:
-      CAMPUS_API_BASE_PATH: 'https://api.campus.kpi.ua'
-      OLD_CAMPUS_URL: 'https://campus.localtest.me'
-      MAIN_COOKIE_DOMAIN: '.ecampus.localtest.me'
-      ROOT_COOKIE_DOMAIN: '.localtest.me'
+      API_BASE_URL: 'http://localhost:5000'
+      NEXT_PUBLIC_ENV: production
+      MAIN_COOKIE_DOMAIN: 'localhost'
+      ROOT_COOKIE_DOMAIN: 'localhost'
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:17-alpine
+    container_name: student-portal-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: student_portal
+      POSTGRES_USER: portal
+      POSTGRES_PASSWORD: portal_secret
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U portal -d student_portal']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:

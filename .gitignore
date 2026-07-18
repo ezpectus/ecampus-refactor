@@ -77,3 +77,6 @@ hft-skills/
 
 # Client-facing functionality doc (not for repo)
 docs/client-functionality-overview.md
+
+# SaaS transformation roadmap (internal planning, not for repo)
+docs/saas-transformation-roadmap.md
