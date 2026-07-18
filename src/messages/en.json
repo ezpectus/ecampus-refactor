@@ -856,5 +856,58 @@
       "revocation": "This consent is granted indefinitely and may be revoked at any time by submitting a written application.",
       "accept-button": "I give my consent"
     }
+  },
+  "landing": {
+    "meta": {
+      "title": "Student Portal — Modern Student Management Platform",
+      "description": "A comprehensive platform for managing grades, schedules, messages, and more."
+    },
+    "nav": {
+      "login": "Sign in",
+      "register": "Get started"
+    },
+    "hero": {
+      "title": "The modern way to manage student life",
+      "description": "Student Portal brings together grades, schedules, messages, and academic records into one clean, intuitive interface.",
+      "cta": {
+        "register": "Create free account",
+        "login": "Sign in"
+      }
+    },
+    "features": {
+      "title": "Everything you need in one place",
+      "grades": {
+        "title": "Grades & Performance",
+        "description": "Track academic progress with real-time grades, GPA calculations, and semester overviews."
+      },
+      "schedule": {
+        "title": "Schedule & Timetable",
+        "description": "View weekly schedules with course details, room assignments, and teacher information."
+      },
+      "messages": {
+        "title": "Messages",
+        "description": "Communicate with teachers and classmates through a built-in messaging system."
+      },
+      "analytics": {
+        "title": "Analytics",
+        "description": "Visualize academic trends and identify areas for improvement with detailed analytics."
+      },
+      "profile": {
+        "title": "Student Profile",
+        "description": "Manage your personal information, contacts, and academic details in one place."
+      },
+      "notifications": {
+        "title": "Notifications",
+        "description": "Stay informed about new grades, schedule changes, and important announcements."
+      }
+    },
+    "cta": {
+      "title": "Ready to get started?",
+      "description": "Join thousands of students who use Student Portal to manage their academic life.",
+      "button": "Create free account"
+    },
+    "footer": {
+      "copyright": "© {year} Student Portal. All rights reserved."
+    }
   }
 }

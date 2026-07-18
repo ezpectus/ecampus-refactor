@@ -11,9 +11,9 @@ import {
   GraduationCap,
   CalendarBlank,
   EnvelopeSimple,
-  ChartBar,
+  ChartBarHorizontal,
   UserCircle,
-  Bell,
+  ChatsTeardrop,
 } from '@/app/images';
 
 const INTL_NAMESPACE = 'landing';
@@ -38,9 +38,9 @@ export default async function LandingPage({ params }: LocaleProps) {
     { icon: <GraduationCap />, title: t('features.grades.title'), description: t('features.grades.description') },
     { icon: <CalendarBlank />, title: t('features.schedule.title'), description: t('features.schedule.description') },
     { icon: <EnvelopeSimple />, title: t('features.messages.title'), description: t('features.messages.description') },
-    { icon: <ChartBar />, title: t('features.analytics.title'), description: t('features.analytics.description') },
+    { icon: <ChartBarHorizontal />, title: t('features.analytics.title'), description: t('features.analytics.description') },
     { icon: <UserCircle />, title: t('features.profile.title'), description: t('features.profile.description') },
-    { icon: <Bell />, title: t('features.notifications.title'), description: t('features.notifications.description') },
+    { icon: <ChatsTeardrop />, title: t('features.notifications.title'), description: t('features.notifications.description') },
   ];
 
   return (

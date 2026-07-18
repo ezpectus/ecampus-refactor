@@ -4,6 +4,7 @@ export const LOGIN_PATH = '/login';
 export const PUBLIC_PATHS = [
   '/login',
   '/register',
+  '/landing',
   '/password-reset',
   '/curator-search',
   '/suggestions',

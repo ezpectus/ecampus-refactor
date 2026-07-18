@@ -26,3 +26,4 @@ This folder documents every fix applied during the refactoring process. Each cha
 | [18-remove-kpi-urls-cleanup-logging.md](./18-remove-kpi-urls-cleanup-logging.md) | Remove hardcoded KPI URLs, rename kpi-documents->documents, remove 13 console.error calls, clean up env |
 | [19-final-security-audit-fixes.md](./19-final-security-audit-fixes.md) | SEC-01 JWT validation, SEC-10 IP header sanitization, CSP KPI domain removal — 37/38 audit findings resolved |
 | [20-phase2-cleanup-phase3-registration.md](./20-phase2-cleanup-phase3-registration.md) | Remove KPI pages/cards/code-of-honor, clean footer translations, add registration page with form + server action |
+| [21-user-roles-landing-page.md](./21-user-roles-landing-page.md) | Add Admin role, remove codeOfHonorSignDate from User model, clean KPI menu translations, add landing page with hero/features/CTA |
