@@ -10,11 +10,7 @@ import { ValidationError } from '@/lib/errors';
  * const schema = z.object({ email: z.string().email() });
  * const { email } = validateInput(schema, { email }, 'changeEmail');
  */
-export function validateInput<T>(
-  schema: z.ZodSchema<T>,
-  data: unknown,
-  context?: string,
-): T {
+export function validateInput<T>(schema: z.ZodSchema<T>, data: unknown, context?: string): T {
   const result = schema.safeParse(data);
 
   if (!result.success) {
@@ -25,9 +21,7 @@ export function validateInput<T>(
       })
       .join('; ');
 
-    const message = context
-      ? `Validation failed (${context}): ${issues}`
-      : `Validation failed: ${issues}`;
+    const message = context ? `Validation failed (${context}): ${issues}` : `Validation failed: ${issues}`;
 
     throw new ValidationError(message, 'INPUT_VALIDATION', result.error);
   }

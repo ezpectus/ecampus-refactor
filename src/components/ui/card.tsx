@@ -32,4 +32,4 @@ const CardFooter = ({ className, ref, ...props }: React.ComponentProps<'div'>) =
 );
 CardFooter.displayName = 'CardFooter';
 
-export { Card, CardContent,CardDescription, CardFooter, CardHeader, CardTitle };
+export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle };

@@ -1,6 +1,6 @@
 # 05 — Authentication & Security Infrastructure
 
-**Project:** eCampus Student Portal
+**Project:** Student Portal
 **Last updated:** July 2026
 
 ---
@@ -9,10 +9,10 @@
 
 The project supports **two authentication modes**, controlled by `NEXT_PUBLIC_LOCAL_AUTH`:
 
-| Mode | Env | User store | Password store | JWT signing |
-|------|-----|-----------|----------------|-------------|
-| **Local auth** | `NEXT_PUBLIC_LOCAL_AUTH=true` | Prisma DB | bcrypt hash in DB | `jsonwebtoken` with `JWT_SECRET` |
-| **External auth** | `NEXT_PUBLIC_LOCAL_AUTH=false` | External API | External API | External API (verified via JWKS if configured) |
+| Mode              | Env                            | User store   | Password store    | JWT signing                                    |
+| ----------------- | ------------------------------ | ------------ | ----------------- | ---------------------------------------------- |
+| **Local auth**    | `NEXT_PUBLIC_LOCAL_AUTH=true`  | Prisma DB    | bcrypt hash in DB | `jsonwebtoken` with `JWT_SECRET`               |
+| **External auth** | `NEXT_PUBLIC_LOCAL_AUTH=false` | External API | External API      | External API (verified via JWKS if configured) |
 
 ---
 
@@ -117,12 +117,12 @@ The project supports **two authentication modes**, controlled by `NEXT_PUBLIC_LO
 
 ## Cookie Configuration
 
-| Cookie | Name | httpOnly | secure | sameSite | domain | Purpose |
-|--------|------|----------|--------|----------|--------|---------|
-| Access token | `TOKEN_COOKIE_NAME` | ✅ | prod only | lax | `MAIN_COOKIE_DOMAIN` | JWT access token |
-| Session ID | `SID_COOKIE_NAME` | ✅ | prod only | lax | `ROOT_COOKIE_DOMAIN` | External session ID |
-| Refresh token | `sp-refresh` | ✅ | prod only | lax | `MAIN_COOKIE_DOMAIN` | Refresh token (30d) |
-| CSRF token | `CSRF_COOKIE_NAME` | ❌ | — | lax | `/` | Double-submit CSRF token |
+| Cookie        | Name                | httpOnly | secure    | sameSite | domain               | Purpose                  |
+| ------------- | ------------------- | -------- | --------- | -------- | -------------------- | ------------------------ |
+| Access token  | `TOKEN_COOKIE_NAME` | ✅       | prod only | lax      | `MAIN_COOKIE_DOMAIN` | JWT access token         |
+| Session ID    | `SID_COOKIE_NAME`   | ✅       | prod only | lax      | `ROOT_COOKIE_DOMAIN` | External session ID      |
+| Refresh token | `sp-refresh`        | ✅       | prod only | lax      | `MAIN_COOKIE_DOMAIN` | Refresh token (30d)      |
+| CSRF token    | `CSRF_COOKIE_NAME`  | ❌       | —         | lax      | `/`                  | Double-submit CSRF token |
 
 ### Why httpOnly?
 
@@ -193,7 +193,7 @@ export async function requireCsrf() {
 
 // Usage in server actions:
 export async function updateGrade(input) {
-  await requireCsrf();  // ← first line of every mutation
+  await requireCsrf(); // ← first line of every mutation
   // ... rest of action
 }
 ```
@@ -202,22 +202,22 @@ export async function updateGrade(input) {
 
 All mutation server actions now call `await requireCsrf()`:
 
-| Action file | Function | Status |
-|-------------|----------|--------|
-| `auth.actions.ts` | `loginWithCredentials`, `registerUser`, `logout` | ✅ (auth exempt) |
-| `settings.actions.ts` | `changeEmail`, `changePhoto`, `changePassword`, `updateNotificationPreferences` | ✅ |
-| `profile.actions.ts` | `createContact`, `updateContact`, `deleteContact`, `updateIntellectInfo`, `acceptCodeOfHonor`, `acceptPrivacyConsent` | ✅ (fixed) |
-| `certificates.actions.ts` | `updateCertificate`, `createCertificateRequest`, `signCertificate` | ✅ (fixed) |
-| `announcement.actions.ts` | `createAnnouncement`, `updateAnnouncement`, `deleteAnnouncement` | ✅ (fixed) |
-| `calendar.actions.ts` | `createEvent`, `updateEvent`, `deleteEvent` | ✅ |
-| `chat.actions.ts` | `createChatRoom`, `sendChatMessage` | ✅ |
-| `feed.actions.ts` | `createFeedPost`, `deleteFeedPost`, `createFeedComment`, `toggleFeedLike` | ✅ |
-| `msg.actions.ts` | `sendMail`, `sendMailToParents`, `deleteMail`, `markAsImportant` | ✅ |
-| `notification.actions.ts` | `markNotificationRead`, `markAllNotificationsRead` | ✅ |
-| `onboarding.actions.ts` | `updateOnboardingProfile`, `uploadOnboardingPhoto`, `completeOnboarding` | ✅ |
-| `qr-attendance.actions.ts` | `generateAttendanceQR`, `verifyAttendanceQR` | ✅ |
-| `grading.actions.ts` | `updateGrade` | ✅ |
-| `admin.actions.ts` | `deleteUser`, `updateUserStatus` | ✅ |
+| Action file                | Function                                                                                                              | Status           |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| `auth.actions.ts`          | `loginWithCredentials`, `registerUser`, `logout`                                                                      | ✅ (auth exempt) |
+| `settings.actions.ts`      | `changeEmail`, `changePhoto`, `changePassword`, `updateNotificationPreferences`                                       | ✅               |
+| `profile.actions.ts`       | `createContact`, `updateContact`, `deleteContact`, `updateIntellectInfo`, `acceptCodeOfHonor`, `acceptPrivacyConsent` | ✅ (fixed)       |
+| `certificates.actions.ts`  | `updateCertificate`, `createCertificateRequest`, `signCertificate`                                                    | ✅ (fixed)       |
+| `announcement.actions.ts`  | `createAnnouncement`, `updateAnnouncement`, `deleteAnnouncement`                                                      | ✅ (fixed)       |
+| `calendar.actions.ts`      | `createEvent`, `updateEvent`, `deleteEvent`                                                                           | ✅               |
+| `chat.actions.ts`          | `createChatRoom`, `sendChatMessage`                                                                                   | ✅               |
+| `feed.actions.ts`          | `createFeedPost`, `deleteFeedPost`, `createFeedComment`, `toggleFeedLike`                                             | ✅               |
+| `msg.actions.ts`           | `sendMail`, `sendMailToParents`, `deleteMail`, `markAsImportant`                                                      | ✅               |
+| `notification.actions.ts`  | `markNotificationRead`, `markAllNotificationsRead`                                                                    | ✅               |
+| `onboarding.actions.ts`    | `updateOnboardingProfile`, `uploadOnboardingPhoto`, `completeOnboarding`                                              | ✅               |
+| `qr-attendance.actions.ts` | `generateAttendanceQR`, `verifyAttendanceQR`                                                                          | ✅               |
+| `grading.actions.ts`       | `updateGrade`                                                                                                         | ✅               |
+| `admin.actions.ts`         | `deleteUser`, `updateUserStatus`                                                                                      | ✅               |
 
 ---
 
@@ -250,8 +250,8 @@ let jwksCache: ReturnType<typeof createRemoteJWKSet> | null = null;
 function getJwks() {
   if (!jwksCache) {
     jwksCache = createRemoteJWKSet(new URL(env.JWKS_URI!), {
-      cooldownDuration: 30_000,   // 30s between fetches
-      cacheMaxAge: 600_000,       // 10min cache for keys
+      cooldownDuration: 30_000, // 30s between fetches
+      cacheMaxAge: 600_000, // 10min cache for keys
     });
   }
   return jwksCache;
@@ -274,13 +274,13 @@ export async function verifyRemoteJWT<T>(token: string): Promise<T> {
 
 ```typescript
 interface JwtPayload {
-  exp: number;       // Expiration time (Unix seconds)
-  iss: string;       // Issuer
-  iat: number;       // Issued at (Unix seconds)
+  exp: number; // Expiration time (Unix seconds)
+  iss: string; // Issuer
+  iat: number; // Issued at (Unix seconds)
   modules: string[]; // Authorized module names
-  userId?: number;   // Local auth only
+  userId?: number; // Local auth only
   username?: string; // Local auth only
-  role?: string;     // Local auth only
+  role?: string; // Local auth only
   schoolId?: number; // Local auth only
   tokenVersion?: number; // Local auth only (for logout-all-devices)
 }
@@ -292,8 +292,8 @@ interface JwtPayload {
 
 ```typescript
 // src/lib/rate-limit.ts
-const WINDOW_MS = 15 * 60 * 1000;  // 15 minutes
-const MAX_ATTEMPTS = 10;            // 10 attempts per window
+const WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+const MAX_ATTEMPTS = 10; // 10 attempts per window
 
 export function checkRateLimit(identifier: string, type: 'login' | 'password-reset' = 'login') {
   const key = `${type}:${identifier}`;
@@ -313,11 +313,11 @@ export function checkRateLimit(identifier: string, type: 'login' | 'password-res
 }
 ```
 
-| Action | Limit | Window |
-|--------|-------|--------|
-| Login | 10 attempts | 15 minutes |
-| Password reset | 5 attempts | 15 minutes |
-| Registration | 5 attempts | 1 hour |
+| Action         | Limit       | Window     |
+| -------------- | ----------- | ---------- |
+| Login          | 10 attempts | 15 minutes |
+| Password reset | 5 attempts  | 15 minutes |
+| Registration   | 5 attempts  | 1 hour     |
 
 ### Limitations
 
@@ -345,14 +345,14 @@ function buildCspHeader(nonce: string): string {
 }
 ```
 
-| Directive | Value | Purpose |
-|-----------|-------|---------|
-| `default-src` | `'self'` | Block all external resources by default |
-| `script-src` | `'self' 'nonce-{random}' 'strict-dynamic'` | Only scripts with nonce or dynamically loaded by nonce'd scripts |
-| `style-src` | `'self' 'unsafe-inline'` | Allow inline styles (Tailwind, Radix) |
-| `img-src` | `'self' data: https: blob:` | Allow images from any HTTPS + data URIs |
-| `object-src` | `'none'` | Block Flash/Java/plugins |
-| `base-uri` | `'self'` | Prevent `<base>` tag injection |
+| Directive     | Value                                      | Purpose                                                          |
+| ------------- | ------------------------------------------ | ---------------------------------------------------------------- |
+| `default-src` | `'self'`                                   | Block all external resources by default                          |
+| `script-src`  | `'self' 'nonce-{random}' 'strict-dynamic'` | Only scripts with nonce or dynamically loaded by nonce'd scripts |
+| `style-src`   | `'self' 'unsafe-inline'`                   | Allow inline styles (Tailwind, Radix)                            |
+| `img-src`     | `'self' data: https: blob:`                | Allow images from any HTTPS + data URIs                          |
+| `object-src`  | `'none'`                                   | Block Flash/Java/plugins                                         |
+| `base-uri`    | `'self'`                                   | Prevent `<base>` tag injection                                   |
 
 ### Nonce-based script loading
 
@@ -394,15 +394,15 @@ export async function logAuditEvent(params: {
 
 ### Audited actions
 
-| Action | Entity | Triggered by |
-|--------|--------|-------------|
-| `change_email` | User | Settings → change email |
-| `change_photo` | User | Settings → change photo |
-| `change_password` | User | Settings → change password |
-| `change_notifications` | User | Settings → notification preferences |
-| `update_grade` | Course | Grading → update grade |
-| `update_status` | User | Admin → update user status |
-| `delete_user` | User | Admin → delete user |
+| Action                 | Entity | Triggered by                        |
+| ---------------------- | ------ | ----------------------------------- |
+| `change_email`         | User   | Settings → change email             |
+| `change_photo`         | User   | Settings → change photo             |
+| `change_password`      | User   | Settings → change password          |
+| `change_notifications` | User   | Settings → notification preferences |
+| `update_grade`         | Course | Grading → update grade              |
+| `update_status`        | User   | Admin → update user status          |
+| `delete_user`          | User   | Admin → delete user                 |
 
 ### Non-blocking design
 

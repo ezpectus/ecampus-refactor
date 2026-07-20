@@ -1,4 +1,4 @@
-import { beforeEach,describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { exportToCsv } from '@/lib/utils/csv-export';
 
@@ -32,13 +32,16 @@ describe('exportToCsv', () => {
   it('escapes cells containing commas', () => {
     let capturedContent = '';
     const OriginalBlob = globalThis.Blob;
-    vi.stubGlobal('Blob', class Blob {
-      size = 0;
-      type = '';
-      constructor(parts: BlobPart[]) {
-        capturedContent = parts.map((p) => String(p)).join('');
-      }
-    });
+    vi.stubGlobal(
+      'Blob',
+      class Blob {
+        size = 0;
+        type = '';
+        constructor(parts: BlobPart[]) {
+          capturedContent = parts.map((p) => String(p)).join('');
+        }
+      },
+    );
     exportToCsv('test.csv', ['Name', 'Value'], [['Hello, World', '42']]);
     expect(capturedContent).toContain('"Hello, World"');
     vi.stubGlobal('Blob', OriginalBlob);
@@ -47,13 +50,16 @@ describe('exportToCsv', () => {
   it('escapes cells containing quotes', () => {
     let capturedContent = '';
     const OriginalBlob = globalThis.Blob;
-    vi.stubGlobal('Blob', class Blob {
-      size = 0;
-      type = '';
-      constructor(parts: BlobPart[]) {
-        capturedContent = parts.map((p) => String(p)).join('');
-      }
-    });
+    vi.stubGlobal(
+      'Blob',
+      class Blob {
+        size = 0;
+        type = '';
+        constructor(parts: BlobPart[]) {
+          capturedContent = parts.map((p) => String(p)).join('');
+        }
+      },
+    );
     exportToCsv('test.csv', ['Name', 'Value'], [['He said "hi"', '42']]);
     expect(capturedContent).toContain('"He said ""hi"""');
     vi.stubGlobal('Blob', OriginalBlob);

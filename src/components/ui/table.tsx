@@ -44,7 +44,7 @@ const TableRow = ({ className, ref, ...props }: React.ComponentProps<'tr'>) => (
   <tr
     ref={ref}
     className={cn(
-      'data-[state=selected]:bg-muted active:bg-brand-00 border-b bg-card text-card-foreground transition-colors hover:bg-muted',
+      'data-[state=selected]:bg-muted active:bg-brand-00 bg-card text-card-foreground hover:bg-muted border-b transition-colors',
       className,
     )}
     {...props}
@@ -59,7 +59,7 @@ const TableHead = React.forwardRef<HTMLTableCellElement, TableHeadProps>(
       <th
         ref={ref}
         className={cn(
-          'h-12 bg-muted px-4 text-left align-middle text-sm font-semibold text-foreground uppercase [&:has([role=checkbox])]:pr-0',
+          'bg-muted text-foreground h-12 px-4 text-left align-middle text-sm font-semibold uppercase [&:has([role=checkbox])]:pr-0',
           className,
           isSortable && 'cursor-pointer',
         )}
@@ -90,4 +90,4 @@ const TableCaption = ({ className, ref, ...props }: React.ComponentProps<'captio
 );
 TableCaption.displayName = 'TableCaption';
 
-export { Table, TableBody, TableCaption,TableCell, TableFooter, TableHead, TableHeader, TableRow };
+export { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow };

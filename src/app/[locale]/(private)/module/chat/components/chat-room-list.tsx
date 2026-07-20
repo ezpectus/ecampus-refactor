@@ -35,9 +35,7 @@ export const ChatRoomList = memo(function ChatRoomList({ rooms, selectedId, onSe
   }
 
   if (rooms.length === 0) {
-    return (
-      <p className="text-muted-foreground py-8 text-center text-sm">{t('no-rooms')}</p>
-    );
+    return <p className="text-muted-foreground py-8 text-center text-sm">{t('no-rooms')}</p>;
   }
 
   return (
@@ -47,13 +45,13 @@ export const ChatRoomList = memo(function ChatRoomList({ rooms, selectedId, onSe
           <button
             key={room.id}
             onClick={() => onSelect(room.id)}
-            className={`flex flex-col gap-1 rounded-lg border p-3 text-left transition-colors hover:bg-accent ${
+            className={`hover:bg-accent flex flex-col gap-1 rounded-lg border p-3 text-left transition-colors ${
               selectedId === room.id ? 'border-primary bg-accent' : 'border-border'
             }`}
           >
-            <span className="font-medium text-sm">{room.name}</span>
+            <span className="text-sm font-medium">{room.name}</span>
             {room.lastMessage ? (
-              <span className="text-muted-foreground text-xs truncate">
+              <span className="text-muted-foreground truncate text-xs">
                 {room.lastMessage.senderName}: {room.lastMessage.content}
               </span>
             ) : (

@@ -1,4 +1,4 @@
-import { describe, expect,it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
 
 import { ValidationError } from '@/lib/errors';
@@ -17,15 +17,13 @@ describe('validateInput', () => {
   });
 
   it('throws ValidationError when email is invalid', () => {
-    expect(() =>
-      validateInput(testSchema, { email: 'not-an-email', password: 'password123' }),
-    ).toThrow(ValidationError);
+    expect(() => validateInput(testSchema, { email: 'not-an-email', password: 'password123' })).toThrow(
+      ValidationError,
+    );
   });
 
   it('throws ValidationError when password is too short', () => {
-    expect(() =>
-      validateInput(testSchema, { email: 'test@example.com', password: 'short' }),
-    ).toThrow(ValidationError);
+    expect(() => validateInput(testSchema, { email: 'test@example.com', password: 'short' })).toThrow(ValidationError);
   });
 
   it('includes context in error message', () => {

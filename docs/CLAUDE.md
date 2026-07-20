@@ -12,7 +12,7 @@ Student Portal is a SaaS-oriented educational management frontend. It supports s
 - **Styling**: Tailwind CSS 4.1.15
 - **UI Components**: shadcn/ui (Radix UI primitives)
 - **Forms**: React Hook Form + Zod validation
-- **i18n**: next-intl (Ukrainian default, English)
+- **i18n**: next-intl (Ukrainian default, English, Polish, German)
 - **Data**: Prisma 7.8.0 with SQLite locally (PrismaBetterSqlite3 adapter) and PostgreSQL/Neon in deployment (PrismaPg adapter)
 - **Auth**: bcryptjs + JWT in httpOnly cookies, with external REST API fallback
 - **Backend**: External REST API is configurable; this repository does not host an API server
@@ -45,7 +45,7 @@ src/
 │   ├── [locale]/          # Locale-based routing (uk, en)
 │   │   ├── (public)/      # Public routes (auth, support)
 │   │   └── (private)/     # Protected routes (modules)
-│   └── api/               # API routes (healthz, kpi-id)
+│   └── api/               # API routes (healthz, ready, feed/stream, chat/stream, notifications/stream, export, cron)
 ├── actions/               # Server actions (auth, certificates, etc.)
 ├── components/
 │   ├── ui/               # shadcn/ui components (43+)
@@ -54,7 +54,7 @@ src/
 ├── lib/                  # Utilities & constants
 ├── middleware/           # Auth & i18n middleware
 ├── types/                # TypeScript types & enums
-├── messages/             # Translation files (en.json, uk.json)
+├── messages/             # Translation files (en.json, uk.json, pl.json, de.json)
 └── i18n/                 # i18n configuration
 ```
 
@@ -68,6 +68,7 @@ src/
 ## TypeScript Configuration
 
 Strict mode enabled with:
+
 - `noUnusedLocals`, `noUnusedParameters`
 - `noImplicitReturns`, `strictNullChecks`
 - `noFallthroughCasesInSwitch`
@@ -75,30 +76,35 @@ Strict mode enabled with:
 ## Key Patterns
 
 ### Server Actions
+
 ```typescript
 'use server';
 // Actions in src/actions/*.actions.ts
 ```
 
 ### API Client
+
 ```typescript
 import { apiFetch } from '@/lib/client';
 // Automatically injects the configured auth token from cookies
 ```
 
 ### Translations
-- Files: `src/messages/{uk,en}.json`
+
+- Files: `src/messages/{uk,en,pl,de}.json`
 - Supported tags: `<p>`, `<br/>`, `<h1-h6>`, `<ul>`, `<li>`, `<tel>`, `<email>`
 
 ### SVG Imports
+
 ```typescript
-import Icon from './icon.svg';        // As React component
+import Icon from './icon.svg'; // As React component
 import iconUrl from './icon.svg?url'; // As URL string
 ```
 
 ## Environment Variables
 
 Required in `.env.development` / `.env.production`:
+
 - `API_BASE_URL` - External REST API URL (required, validated as URL by Zod)
 - `DATABASE_URL` - SQLite or Neon PostgreSQL connection string
 - `JWT_SECRET` - Secret for local demo JWTs (minimum 16 characters, no default — app fails fast if missing)
@@ -108,6 +114,9 @@ Required in `.env.development` / `.env.production`:
 - `NEXT_PUBLIC_LOCAL_AUTH` - Enables Prisma-backed local auth
 - `MAIN_COOKIE_DOMAIN`, `ROOT_COOKIE_DOMAIN` - Cookie domains
 - `NEXT_PUBLIC_RECAPTCHA_KEY` - Optional password-reset reCAPTCHA key
+- `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` - Optional Nodemailer SMTP for email sending
+- `REDIS_URL` - Optional Redis for rate limiting (in-memory fallback if not set)
+- `NEXT_PUBLIC_FEATURE_DARK_MODE`, `NEXT_PUBLIC_FEATURE_COMMAND_PALETTE`, `NEXT_PUBLIC_FEATURE_REALTIME_NOTIFICATIONS`, `NEXT_PUBLIC_FEATURE_ADMIN_PANEL` - Feature toggles
 
 ## Authentication
 
@@ -128,7 +137,7 @@ Required in `.env.development` / `.env.production`:
 ## Locales
 
 - Default: Ukrainian (uk)
-- Supported: English (en)
+- Supported: English (en), Polish (pl), German (de)
 - URL pattern: `/{locale}/...`
 
 ## Deployment
@@ -146,7 +155,11 @@ The anti-pattern checklist and current risks are tracked in `docs/engineering-qu
 
 - **Circuit breaker** (`src/lib/circuit-breaker.ts`) — 5xx errors trip circuit, fast-fail after 5 failures
 - **Smart retry** (`src/lib/retry.ts`) — TransientError retried with backoff, others fast-fail
-- **Rate limiting** (`src/lib/rate-limit.ts`) — in-memory rate limiting with lockout
+- **Rate limiting** (`src/lib/rate-limit.ts`) — in-memory or Redis rate limiting with lockout
+- **Email** (`src/lib/email.ts`) — Nodemailer SMTP with graceful fallback when not configured
+- **Real-time SSE** — `/api/feed/stream`, `/api/chat/stream`, `/api/notifications/stream` with EventSource hooks
+- **Global search** (`src/actions/search.actions.ts`) — posts, users, notifications with school isolation
+- **Image upload** (`src/actions/feed.actions.ts`) — file-based with 5MB limit and MIME allow-list
 - **Feature toggles** (`src/lib/features.ts`) — env-based toggles for all major features
 - **Structured logging** (`src/lib/logger.ts`) — JSON output with scoped loggers and correlation IDs
 - **Error types** (`src/lib/errors.ts`) — typed errors: TransientError, PermanentError, ValidationError, NotFoundError, UnauthorizedError

@@ -47,23 +47,35 @@ export async function getChatRooms() {
       orderBy: { room: { createdAt: 'desc' } },
     });
 
-    return memberships.map((m: { id: number; joinedAt: Date; room: { id: number; name: string; courseId: number | null; members: { user: { id: number; fullName: string; photo: string } }[]; messages: { id: number; content: string; createdAt: Date; sender: { id: number; fullName: string } }[] } }) => ({
-      id: m.room.id,
-      name: m.room.name,
-      courseId: m.room.courseId,
-      members: m.room.members.map((mem: { user: { id: number; fullName: string; photo: string } }) => ({
-        id: mem.user.id,
-        name: mem.user.fullName,
-        photo: mem.user.photo,
-      })),
-      lastMessage: m.room.messages[0]
-        ? {
-            content: m.room.messages[0].content,
-            senderName: m.room.messages[0].sender.fullName,
-            createdAt: m.room.messages[0].createdAt,
-          }
-        : null,
-    }));
+    return memberships.map(
+      (m: {
+        id: number;
+        joinedAt: Date;
+        room: {
+          id: number;
+          name: string;
+          courseId: number | null;
+          members: { user: { id: number; fullName: string; photo: string } }[];
+          messages: { id: number; content: string; createdAt: Date; sender: { id: number; fullName: string } }[];
+        };
+      }) => ({
+        id: m.room.id,
+        name: m.room.name,
+        courseId: m.room.courseId,
+        members: m.room.members.map((mem: { user: { id: number; fullName: string; photo: string } }) => ({
+          id: mem.user.id,
+          name: mem.user.fullName,
+          photo: mem.user.photo,
+        })),
+        lastMessage: m.room.messages[0]
+          ? {
+              content: m.room.messages[0].content,
+              senderName: m.room.messages[0].sender.fullName,
+              createdAt: m.room.messages[0].createdAt,
+            }
+          : null,
+      }),
+    );
   } catch {
     return [];
   }
@@ -90,15 +102,23 @@ export async function getChatMessages(roomId: number) {
       take: 100,
     });
 
-    return messages.map((m: { id: number; content: string; createdAt: Date; senderId: number; sender: { id: number; fullName: string; photo: string } }) => ({
-      id: m.id,
-      content: m.content,
-      senderId: m.senderId,
-      senderName: m.sender.fullName,
-      senderPhoto: m.sender.photo,
-      createdAt: m.createdAt,
-      isOwn: m.senderId === user.id,
-    }));
+    return messages.map(
+      (m: {
+        id: number;
+        content: string;
+        createdAt: Date;
+        senderId: number;
+        sender: { id: number; fullName: string; photo: string };
+      }) => ({
+        id: m.id,
+        content: m.content,
+        senderId: m.senderId,
+        senderName: m.sender.fullName,
+        senderPhoto: m.sender.photo,
+        createdAt: m.createdAt,
+        isOwn: m.senderId === user.id,
+      }),
+    );
   } catch {
     return [];
   }
@@ -137,10 +157,7 @@ export async function createChatRoom(params: z.infer<typeof createRoomSchema>) {
         schoolId: user.schoolId ?? null,
         createdBy: user.id,
         members: {
-          create: [
-            { userId: user.id },
-            ...uniqueMemberIds.map((id: number) => ({ userId: id })),
-          ],
+          create: [{ userId: user.id }, ...uniqueMemberIds.map((id: number) => ({ userId: id }))],
         },
       },
     });

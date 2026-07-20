@@ -41,7 +41,9 @@ export const AttendanceScanContent = ({ token }: Props) => {
     };
 
     void verify();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [token]);
 
   if (status === 'no-token') {
@@ -51,8 +53,8 @@ export const AttendanceScanContent = ({ token }: Props) => {
           <CardTitle className="text-center">{t('title')}</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col items-center gap-3 py-8">
-          <XCircle className="h-12 w-12 text-muted-foreground" />
-          <p className="text-center text-sm text-muted-foreground">{t('no-token')}</p>
+          <XCircle className="text-muted-foreground h-12 w-12" />
+          <p className="text-muted-foreground text-center text-sm">{t('no-token')}</p>
         </CardContent>
       </Card>
     );
@@ -79,8 +81,8 @@ export const AttendanceScanContent = ({ token }: Props) => {
           <CardTitle className="text-center">{t('title')}</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col items-center gap-3 py-8">
-          <XCircle className="h-12 w-12 text-destructive" />
-          <p className="text-center text-sm text-muted-foreground">{t('error')}</p>
+          <XCircle className="text-destructive h-12 w-12" />
+          <p className="text-muted-foreground text-center text-sm">{t('error')}</p>
         </CardContent>
       </Card>
     );
@@ -94,9 +96,7 @@ export const AttendanceScanContent = ({ token }: Props) => {
       <CardContent className="flex flex-col items-center gap-3 py-8">
         <CheckCircle2 className="h-12 w-12 text-green-500" />
         <p className="text-center text-lg font-semibold">{t('success')}</p>
-        {courseName && (
-          <p className="text-center text-sm text-muted-foreground">{courseName}</p>
-        )}
+        {courseName && <p className="text-muted-foreground text-center text-sm">{courseName}</p>}
       </CardContent>
     </Card>
   );

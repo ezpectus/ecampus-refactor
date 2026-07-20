@@ -21,7 +21,7 @@
 - Added `prisma.config.ts` and moved `DATABASE_URL` configuration out of schema files.
 - Kept SQLite and PostgreSQL schemas separate:
   - `prisma/schema.prisma`;
-  - `prisma-postgres/schema.prisma`.
+  - `prisma/schema-postgres.prisma`.
 - Updated Docker Compose to pass `DATABASE_URL`, `JWT_SECRET`, local auth flags, PostgreSQL healthchecks, schema bootstrap, and demo seed configuration.
 - Updated `Dockerfile` to generate the PostgreSQL Prisma client and include the runtime schema/entrypoint.
 - Updated `README.md`, `CLAUDE.md`, `docs/saas-transformation-roadmap.md`, and `docs/high-impact-features.md`.

@@ -27,15 +27,15 @@ Pre-deployment verification for Docker-based production environments.
 
 ## Environment Variables
 
-| Variable | Required | Example | Notes |
-|----------|----------|---------|-------|
-| `DATABASE_URL` | Yes | `postgresql://...` | Neon or local Postgres |
-| `JWT_SECRET` | Yes | 32+ random chars | Used for JWT signing |
-| `NEXT_PUBLIC_LOCAL_AUTH` | Yes | `false` | Set `true` for standalone demo |
-| `NEXT_PUBLIC_SHOW_DEMO_CREDENTIALS` | No | `false` | Set `true` for portfolio demo |
-| `API_BASE_URL` | Yes | `https://api.example.com` | External API URL |
-| `NEXT_PUBLIC_ENV` | No | `production` | Used for feature gating |
-| `NEXT_PUBLIC_FEATURE_*` | No | `true`/`false` | Feature toggles, default ON |
+| Variable                            | Required | Example                   | Notes                          |
+| ----------------------------------- | -------- | ------------------------- | ------------------------------ |
+| `DATABASE_URL`                      | Yes      | `postgresql://...`        | Neon or local Postgres         |
+| `JWT_SECRET`                        | Yes      | 32+ random chars          | Used for JWT signing           |
+| `NEXT_PUBLIC_LOCAL_AUTH`            | Yes      | `false`                   | Set `true` for standalone demo |
+| `NEXT_PUBLIC_SHOW_DEMO_CREDENTIALS` | No       | `false`                   | Set `true` for portfolio demo  |
+| `API_BASE_URL`                      | Yes      | `https://api.example.com` | External API URL               |
+| `NEXT_PUBLIC_ENV`                   | No       | `production`              | Used for feature gating        |
+| `NEXT_PUBLIC_FEATURE_*`             | No       | `true`/`false`            | Feature toggles, default ON    |
 
 ## Docker Compose
 

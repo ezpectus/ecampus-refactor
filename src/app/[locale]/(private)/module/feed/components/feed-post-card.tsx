@@ -46,9 +46,7 @@ export const FeedPostCard = ({ post, currentUserId, isAdmin, onLike, onComment, 
             </Avatar>
             <div>
               <p className="text-sm font-medium">{post.authorName}</p>
-              <p className="text-muted-foreground text-xs">
-                {dayjs(post.createdAt).format('DD.MM.YYYY HH:mm')}
-              </p>
+              <p className="text-muted-foreground text-xs">{dayjs(post.createdAt).format('DD.MM.YYYY HH:mm')}</p>
             </div>
           </div>
           <Show when={canDelete}>
@@ -66,13 +64,7 @@ export const FeedPostCard = ({ post, currentUserId, isAdmin, onLike, onComment, 
         <p className="text-sm whitespace-pre-wrap">{post.content}</p>
         <Show when={!!post.imageUrl}>
           <div className="relative max-h-96 w-full overflow-hidden rounded-lg">
-            <Image
-              src={post.imageUrl!}
-              alt=""
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 672px"
-            />
+            <Image src={post.imageUrl!} alt="" fill className="object-cover" sizes="(max-width: 768px) 100vw, 672px" />
           </div>
         </Show>
         <div className="flex items-center gap-4 border-t pt-3">
@@ -87,7 +79,7 @@ export const FeedPostCard = ({ post, currentUserId, isAdmin, onLike, onComment, 
           </button>
           <button
             onClick={() => setShowComments(!showComments)}
-            className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+            className="text-muted-foreground hover:text-foreground flex items-center gap-1.5 text-sm"
           >
             <MessageCircle className="h-4 w-4" />
             {post.comments.length}
@@ -100,7 +92,7 @@ export const FeedPostCard = ({ post, currentUserId, isAdmin, onLike, onComment, 
                 <Avatar className="h-6 w-6">
                   <AvatarFallback>{c.authorName.charAt(0)}</AvatarFallback>
                 </Avatar>
-                <div className="flex-1 rounded-lg bg-muted px-3 py-2">
+                <div className="bg-muted flex-1 rounded-lg px-3 py-2">
                   <span className="text-xs font-medium">{c.authorName}</span>
                   <p className="text-sm">{c.content}</p>
                 </div>

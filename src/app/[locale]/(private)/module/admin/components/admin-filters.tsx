@@ -7,7 +7,7 @@ import { useCallback } from 'react';
 import { MagnifyingGlassBold } from '@/app/images';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { usePathname,useRouter } from '@/i18n/routing';
+import { usePathname, useRouter } from '@/i18n/routing';
 
 interface Props {
   faculties: string[];
@@ -44,10 +44,7 @@ export const AdminFilters = ({ faculties }: Props) => {
         defaultValue={searchParams.get('search') ?? ''}
         onChange={(e) => updateParam('search', e.target.value)}
       />
-      <Select
-        defaultValue={searchParams.get('role') ?? 'all'}
-        onValueChange={(v) => updateParam('role', v)}
-      >
+      <Select defaultValue={searchParams.get('role') ?? 'all'} onValueChange={(v) => updateParam('role', v)}>
         <SelectTrigger className="md:w-[180px]">
           <SelectValue placeholder={t('category')} />
         </SelectTrigger>
@@ -58,10 +55,7 @@ export const AdminFilters = ({ faculties }: Props) => {
           <SelectItem value="ADMIN">{tRole('role-admin')}</SelectItem>
         </SelectContent>
       </Select>
-      <Select
-        defaultValue={searchParams.get('status') ?? 'all'}
-        onValueChange={(v) => updateParam('status', v)}
-      >
+      <Select defaultValue={searchParams.get('status') ?? 'all'} onValueChange={(v) => updateParam('status', v)}>
         <SelectTrigger className="md:w-[180px]">
           <SelectValue placeholder={t('status')} />
         </SelectTrigger>
@@ -72,10 +66,7 @@ export const AdminFilters = ({ faculties }: Props) => {
           <SelectItem value="Dismissed">{tRole('status-dismissed')}</SelectItem>
         </SelectContent>
       </Select>
-      <Select
-        defaultValue={searchParams.get('faculty') ?? 'all'}
-        onValueChange={(v) => updateParam('faculty', v)}
-      >
+      <Select defaultValue={searchParams.get('faculty') ?? 'all'} onValueChange={(v) => updateParam('faculty', v)}>
         <SelectTrigger className="md:w-[200px]">
           <SelectValue placeholder={t('faculty')} />
         </SelectTrigger>

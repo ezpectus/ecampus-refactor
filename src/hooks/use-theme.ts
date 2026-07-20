@@ -11,9 +11,8 @@ export const useTheme = () => {
   useEffect(() => {
     const stored = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const initial: Theme = stored === 'light' || stored === 'dim' || stored === 'dark'
-      ? stored
-      : prefersDark ? 'dark' : 'light';
+    const initial: Theme =
+      stored === 'light' || stored === 'dim' || stored === 'dark' ? stored : prefersDark ? 'dark' : 'light';
     setTheme(initial);
     setMounted(true);
   }, []);
@@ -27,9 +26,7 @@ export const useTheme = () => {
     localStorage.setItem('theme', theme);
   }, [theme, mounted]);
 
-  const toggle = () => setTheme((prev) => (
-    prev === 'light' ? 'dim' : prev === 'dim' ? 'dark' : 'light'
-  ));
+  const toggle = () => setTheme((prev) => (prev === 'light' ? 'dim' : prev === 'dim' ? 'dark' : 'light'));
 
   return { theme, toggle, mounted };
 };

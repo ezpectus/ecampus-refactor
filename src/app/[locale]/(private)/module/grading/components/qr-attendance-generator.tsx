@@ -66,7 +66,7 @@ export const QrAttendanceGenerator = ({ courseName }: Props) => {
       <CardContent className="flex flex-col items-center gap-4">
         {token ? (
           <>
-            <div className="rounded-lg border-2 border-border p-4">
+            <div className="border-border rounded-lg border-2 p-4">
               <Image
                 src={`https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=${encodeURIComponent(qrUrl)}`}
                 alt="QR Code"
@@ -75,7 +75,7 @@ export const QrAttendanceGenerator = ({ courseName }: Props) => {
                 unoptimized
               />
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               {t('expires-in')} {Math.floor(secondsLeft / 60)}:{(secondsLeft % 60).toString().padStart(2, '0')}
             </p>
             <Button variant="tertiary" size="small" onClick={handleGenerate} loading={loading}>
@@ -84,7 +84,7 @@ export const QrAttendanceGenerator = ({ courseName }: Props) => {
           </>
         ) : (
           <>
-            <p className="text-sm text-muted-foreground text-center">{t('description')}</p>
+            <p className="text-muted-foreground text-center text-sm">{t('description')}</p>
             <Button onClick={handleGenerate} loading={loading}>
               {t('generate')}
             </Button>

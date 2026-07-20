@@ -100,21 +100,21 @@
 - Unused imports — 0 (eslint clean)
 - `settings-form.tsx` — uses `as unknown as Record` for notif prefs (existing, non-critical)
 
-### Nice to have (future)
+### Nice to have — ALL DONE ✅
 1. ~~Email sending (Nodemailer + SMTP)~~ — `src/lib/email.ts` with Nodemailer, graceful fallback when SMTP not configured, wired into password reset
-2. ~~PostgreSQL migration for production~~ — `prisma-postgres/schema.prisma` ready, migration guide at `docs/infrastructure/06-postgresql-migration.md`
-3. ~~Redis for rate limiting~~ — `src/lib/rate-limit.ts` now supports Redis with automatic in-memory fallback when `REDIS_URL` not set
-4. ~~Real-time notifications (SSE)~~ — `/api/notifications/stream` SSE endpoint, NotificationCenter uses EventSource with polling fallback
+2. ~~PostgreSQL migration for production~~ — `prisma/schema-postgres.prisma` ready, migration guide at `docs/infrastructure/06-postgresql-migration.md`
+3. ~~Redis for rate limiting~~ — `src/lib/rate-limit.ts` supports Redis with automatic in-memory fallback when `REDIS_URL` not set
+4. ~~Real-time feed + chat + notifications (SSE)~~ — `/api/feed/stream` + `/api/chat/stream` + `/api/notifications/stream` SSE endpoints, EventSource hooks with polling fallback
 5. ~~Image upload for feed~~ — `uploadFeedImage()` server action saves to `public/uploads/feed/`, UI file picker with preview in feed composer
 6. ~~Global search~~ — `search.actions.ts` searches posts/users/notifications with school isolation, integrated into command palette (Cmd+K)
 7. API documentation (OpenAPI/Swagger) — N/A for server actions architecture
-8. ~~Monitoring~~ — `/api/ready` enhanced with Redis health check, memory metrics, Node version, platform info
+8. ~~Monitoring~~ — `/api/ready` with DB health, circuit breaker, uptime, version; `/api/healthz` liveness check
 9. ~~CONTRIBUTING.md~~ — Comprehensive contributing guide with setup, workflow, code style, testing
-10. ~~LICENSE~~ — MIT License already present
+10. ~~LICENSE~~ — MIT License present
 
 ### Code quality (non-blocking)
 - `analytics.actions.ts` (12KB) — single cohesive `getAnalytics()` function, splitting would add complexity without benefit
-- `getLocalUserLite()` wired into ALL applicable server actions + components + API routes (feed, ai-chat, calendar, audit, notification, grading, qr-attendance, grade-predictions, analytics, dashboard, admin, parent, msg, chat, settings, onboarding, announcement, export, app-sidebar). Only `rating.actions.ts` and `auth.actions.ts` still use `getLocalUser` (need full user fields).
+- `getLocalUserLite()` wired into ALL applicable server actions + components + API routes. Only `rating.actions.ts` and `auth.actions.ts` still use `getLocalUser` (need full user fields).
 - Rate limiting — in-memory for single-instance, Redis for multi-instance (auto-detected via `REDIS_URL`)
 
 ---
@@ -197,10 +197,15 @@
 - [x] Wired into `local-password.actions.ts` — password reset emails sent when SMTP configured
 - [x] `isEmailConfigured()` helper for feature detection
 
-### Real-time Feed via SSE (#4)
-- [x] `src/app/api/feed/stream/route.ts` — SSE endpoint with 30s keepalive pings
-- [x] `src/hooks/use-feed-sse.ts` — Client hook using EventSource, auto-cleanup
+### Real-time Feed + Chat via SSE (#4)
+- [x] `src/app/api/feed/stream/route.ts` — SSE endpoint polls DB for new posts every 15s, emits `new-post` events with school isolation, 30s keepalive
+- [x] `src/hooks/use-feed-sse.ts` — Client hook using EventSource, listens for `new-post` events, auto-cleanup
 - [x] Integrated into `feed-content.tsx` — refreshes posts on SSE events
+- [x] `src/app/api/chat/stream/route.ts` — SSE endpoint polls DB for new chat messages every 10s, emits `new-messages` events filtered by roomId, excludes own messages
+- [x] `src/hooks/use-chat-sse.ts` — Client hook using EventSource, listens for `new-messages` events, auto-cleanup
+- [x] Integrated into `chat-content.tsx` — refreshes messages on SSE events when a room is selected
+- [x] `src/app/api/notifications/stream/route.ts` — SSE endpoint polls for unread notifications every 15s (pre-existing)
+- [x] `notification-center.tsx` — uses EventSource with 30s polling fallback (pre-existing)
 
 ### PostgreSQL Migration (#2)
 - [x] `prisma/schema-postgres.prisma` — Full PostgreSQL schema (same models, `provider = "postgresql"`)
@@ -217,6 +222,47 @@
 ### Docs & Community
 - [x] `CONTRIBUTING.md` — setup, workflow, code style, testing, project structure, architecture decisions
 - [x] `LICENSE` — MIT License already present
+- [x] `README.md` — updated features list (Student Feed, AI Chat, Grade Predictions, QR Attendance, Chat Rooms, Notifications, Email, SSE, Redis, Image Upload, Monitoring)
+- [x] Removed duplicate `prisma-postgres/` directory — consolidated to `prisma/schema-postgres.prisma`
+- [x] Fixed all doc references from `prisma-postgres/schema.prisma` → `prisma/schema-postgres.prisma` (7 files: README, 06-postgresql-migration, 01-stack-overview, 02-architecture-diagram, 04-database-layer, 04-database-concepts, saas-transformation-roadmap)
+- [x] Updated `prisma-postgres.config.ts` to point to correct schema path
+
+### i18n fix — module translations misplaced
+- [x] Module translations (chat, feed, ai-chat, calendar, parent, analytics, grading, attendance, onboarding) were in `commandPalette` namespace instead of `private` — components use `useTranslations('private.chat')` etc.
+- [x] Copied all 9 module translation blocks from `commandPalette` to `private` in en.json and uk.json
+- [x] Copied missing modules (parent, analytics, calendar, chat, feed, ai-chat, attendance) from en.json to pl.json and de.json as English fallback
+- [x] Fixed missing `auth.passwordReset` keys (placeholder, button, field) in pl.json and de.json
+- [x] Result: 0 MISSING_MESSAGE errors on clean build (was 94)
 
 ### Skipped (non-blocking)
 - `analytics.actions.ts` split — single cohesive function, splitting adds complexity without benefit
+
+### Final verification — 2026-07-20
+- `tsc --noEmit` — 0 errors
+- `eslint src/` — 0 errors, 0 warnings (fixed `<img>` → `<Image>` in feed-content.tsx)
+- `vitest run` — 23 files, 199 tests, all passing
+- `npm run build` — succeeds, 0 MISSING_MESSAGE errors, all routes prerendered
+- `npm ci` — passes (lock file synced)
+- `package.json` — repository field added pointing to https://github.com/ezpectus/student-portal.git
+
+### Code quality audit — 2026-07-20
+- **TypeScript**: 0 `any` types in source code (all in generated Prisma). `as unknown as` casts limited to JWT payload verification and Prisma Proxy — all justified
+- **Server actions**: All mutations have `requireCsrf()`. All have auth checks (`getLocalUserLite`/`getLocalUser`). Reads return safe defaults
+- **API routes**: All have auth checks. Cron route has bearer token auth. SSE endpoints have `cancel()` methods for cleanup
+- **SSE cleanup**: Added `cancel()` to all 3 SSE endpoints (feed, chat, notifications). Removed fragile `Proxy` hack on `controller.enqueue` in notifications SSE. Hoisted interval variables for proper cleanup
+- **Security**: No hardcoded secrets. No `dangerouslySetInnerHTML`. No SQL injection (raw queries use parameterized template literals). CSP in middleware. Security headers in `next.config.mjs`
+- **Empty catch blocks**: All intentional — either call `errorToast()`, return safe defaults, or clean up resources
+- **TODOs**: 2 (React 19 recaptcha library — known limitation)
+- **console.log**: Only in `logger.ts` (structured logger)
+- **`.env.example`**: Added missing feature flag env vars (DARK_MODE, COMMAND_PALETTE, REALTIME_NOTIFICATIONS, ADMIN_PANEL)
+
+### Doc cleanup — 2026-07-20
+- Updated all docs from "eCampus Student Portal" → "Student Portal" (12 files: 8 infrastructure + 5 theory)
+- Updated `docs/CLAUDE.md` — added pl/de locales, SMTP/Redis/feature-flag env vars, SSE endpoints, global search, image upload, email to key libraries list
+- Updated `docs/AGENTS.md` — title from "eCampus" to "Student Portal"
+- Updated `docs/CODE_OF_CONDUCT.md` — contact email → GitHub issues link
+- Updated `docs/theory/05-development-workflow.md` — clone URL from `<repo-url>` to actual GitHub URL, dir name from `ecampus-refactor` to `student-portal`
+- Updated `docs/saas-transformation-roadmap.md` — repo name from `ecampus-refactor` to `student-portal`, Prisma version 6.19.3 → 7.8.0
+- Updated `docs/infrastructure/02-architecture-diagram.md` — directory name from `ecampus-refactor/` to `student-portal/`
+- Updated `docs/Architecture_Old.md` — directory name from `ecampus-refactor/` to `student-portal/`
+- Updated `docs/01-audit-findings.md` — stale `s:\` drive path → `f:\` drive path

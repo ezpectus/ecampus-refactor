@@ -59,9 +59,12 @@ export const Header = ({ user }: Props) => {
 
   return (
     <header
-      className={cn('bg-background sticky top-0 flex h-[80px] items-center justify-between border-b border-border px-6', {
-        'justify-end': !isMobile,
-      })}
+      className={cn(
+        'bg-background border-border sticky top-0 flex h-[80px] items-center justify-between border-b px-6',
+        {
+          'justify-end': !isMobile,
+        },
+      )}
     >
       <Show when={isMobile}>
         <SidebarTrigger />
@@ -80,9 +83,7 @@ export const Header = ({ user }: Props) => {
                 {tUserCategory(USER_CATEGORIES[category])}
               </Paragraph>
             ))}
-            {user?.schoolName && (
-              <Paragraph className="m-0 text-xs text-muted-foreground">{user.schoolName}</Paragraph>
-            )}
+            {user?.schoolName && <Paragraph className="text-muted-foreground m-0 text-xs">{user.schoolName}</Paragraph>}
           </div>
         </div>
         <TooltipProvider>

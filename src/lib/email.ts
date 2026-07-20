@@ -22,12 +22,7 @@ function getTransporter(): nodemailer.Transporter | null {
   return transporter;
 }
 
-export async function sendEmail(opts: {
-  to: string;
-  subject: string;
-  html: string;
-  text?: string;
-}): Promise<boolean> {
+export async function sendEmail(opts: { to: string; subject: string; html: string; text?: string }): Promise<boolean> {
   const transport = getTransporter();
   if (!transport) {
     mailLogger.warn('SMTP not configured, skipping email', { to: opts.to, subject: opts.subject });

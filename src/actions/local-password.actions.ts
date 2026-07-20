@@ -18,17 +18,18 @@ export async function requestPasswordReset(identifier: string) {
   const validated = validateInput(passwordResetSchema, { identifier }, 'requestPasswordReset');
   const normalized = validated.identifier.trim().toLowerCase();
 
-  const rateLimit = await checkRateLimit(normalized, 'password-reset', { maxAttempts: 5, windowMs: 60 * 60_000, lockoutMs: 60 * 60_000 });
+  const rateLimit = await checkRateLimit(normalized, 'password-reset', {
+    maxAttempts: 5,
+    windowMs: 60 * 60_000,
+    lockoutMs: 60 * 60_000,
+  });
   if (!rateLimit.allowed) {
     return { ok: false, error: 'rate-limited' as const };
   }
 
   const user = await prisma.user.findFirst({
     where: {
-      OR: [
-        { email: normalized },
-        { username: normalized },
-      ],
+      OR: [{ email: normalized }, { username: normalized }],
     },
   });
   if (!user) {

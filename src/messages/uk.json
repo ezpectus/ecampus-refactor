@@ -1158,6 +1158,266 @@
           "change_notifications": "Зміна сповіщень"
         }
       }
+    },
+    "grading": {
+      "title": "Журнал оцінок",
+      "empty": "У вас немає призначених курсів",
+      "select-course": "Оберіть курс",
+      "select-placeholder": "Оберіть курс зі списку",
+      "students": "студ.",
+      "loading": "Завантаження студентів...",
+      "no-students": "На цьому курсі немає студентів",
+      "validation": {
+        "grade-range": "Оцінка має бути від 0 до 100"
+      },
+      "success": {
+        "grade-updated": "Оцінку оновлено"
+      },
+      "table": {
+        "student": "Студент",
+        "group": "Група",
+        "credits": "Кредити",
+        "grade-type": "Тип оцінки",
+        "grade": "Оцінка",
+        "actions": "Дії"
+      },
+      "actions": {
+        "edit": "Змінити",
+        "save": "Зберегти",
+        "cancel": "Скасувати"
+      },
+      "qr": {
+        "title": "QR-код для відвідуваності",
+        "description": "Згенеруйте QR-код, щоб студенти могли відмітити відвідуваність",
+        "generate": "Згенерувати QR-код",
+        "regenerate": "Згенерувати заново",
+        "generated": "QR-код згенеровано",
+        "expires-in": "Діє ще:"
+      }
+    },
+    "parent": {
+      "title": "Портал батьків",
+      "empty": "До вашого акаунту не прив'язано дітей",
+      "back": "Назад",
+      "gpa": "Сер. бал",
+      "study-year": "Курс",
+      "courses": "Предмети",
+      "loading": "Завантаження...",
+      "no-courses": "Предмети не знайдено",
+      "grades-table": "Оцінки",
+      "attendance-chart": "Відвідуваність",
+      "table": {
+        "course": "Предмет",
+        "teacher": "Викладач",
+        "credits": "Кредити",
+        "grade": "Оцінка"
+      }
+    },
+    "analytics": {
+      "title": "Аналітика",
+      "no-data": "Дані відсутні",
+      "metrics": {
+        "total-users": "Всього користувачів",
+        "students": "Студенти",
+        "active-students": "Активні студенти",
+        "new-this-month": "Нові (30д)",
+        "avg-gpa": "Сер. бал",
+        "parents": "Батьки"
+      },
+      "charts": {
+        "user-activity": "Активність користувачів (30 днів)",
+        "role-distribution": "Розподіл за ролями",
+        "registrations": "Реєстрації по місяцях",
+        "faculty-distribution": "Студенти за факультетами",
+        "cohorts": "Когорти за роком навчання",
+        "curriculum-analytics": "Курси з високим рівнем нездачі",
+        "teacher-effectiveness": "Ефективність викладачів",
+        "at-risk-students": "Студенти в зоні ризику",
+        "risk-score": "Ризик-скор",
+        "failure-rate": "Рівень нездачі",
+        "avg-grade": "Середній бал",
+        "grade-distribution": "Розподіл оцінок"
+      },
+      "warnings": {
+        "send": "Надіслати попередження",
+        "sent": "Попередження надіслано",
+        "description": "Студентам: {students}, батькам: {parents}"
+      },
+      "dashboard": {
+        "edit-mode": "Режим редагування",
+        "widgets": "Віджети",
+        "reset": "Скинути",
+        "saved": "Збережено",
+        "widget-titles": {
+          "metrics": "Метрики",
+          "user-activity": "Активність користувачів",
+          "role-distribution": "Розподіл ролей",
+          "registrations": "Реєстрації",
+          "faculty-distribution": "Розподіл за факультетами",
+          "grade-distribution": "Розподіл оцінок",
+          "cohorts": "Когорти",
+          "curriculum-analytics": "Аналітика програми",
+          "teacher-effectiveness": "Ефективність викладачів",
+          "at-risk-students": "Студенти з ризиком"
+        }
+      }
+    },
+    "calendar": {
+      "title": "Календар подій",
+      "upcoming": "Майбутні події",
+      "no-events": "Подій немає",
+      "more": "ще",
+      "weekdays": {
+        "sun": "Нд",
+        "mon": "Пн",
+        "tue": "Вт",
+        "wed": "Ср",
+        "thu": "Чт",
+        "fri": "Пт",
+        "sat": "Сб"
+      },
+      "actions": {
+        "create": "Створити подію"
+      },
+      "form": {
+        "create": "Нова подія",
+        "edit": "Редагувати подію",
+        "created": "Подію створено",
+        "updated": "Подію оновлено",
+        "deleted": "Подію видалено",
+        "fields": {
+          "title": "Назва",
+          "description": "Опис",
+          "startDate": "Дата початку",
+          "endDate": "Дата закінчення",
+          "location": "Місце проведення",
+          "type": "Тип події"
+        },
+        "types": {
+          "general": "Загальна",
+          "exam": "Іспит",
+          "conference": "Конференція",
+          "holiday": "Свято",
+          "deadline": "Дедлайн"
+        },
+        "buttons": {
+          "create": "Створити",
+          "update": "Оновити",
+          "delete": "Видалити"
+        }
+      }
+    },
+    "chat": {
+      "title": "Груповий чат",
+      "rooms": "Чати",
+      "no-rooms": "Поки що немає чатів",
+      "no-messages": "Повідомлень немає",
+      "select-room": "Оберіть чат, щоб почати спілкування",
+      "message-placeholder": "Введіть повідомлення...",
+      "send": "Надіслати",
+      "you": "Ви",
+      "members": "учасників",
+      "create": {
+        "button": "Створити",
+        "title": "Новий чат",
+        "room-name": "Назва чату",
+        "room-name-placeholder": "Введіть назву",
+        "members": "Учасники",
+        "members-placeholder": "Оберіть учасників",
+        "no-users": "Немає доступних користувачів",
+        "cancel": "Скасувати",
+        "create": "Створити",
+        "success": "Чат створено"
+      }
+    },
+    "feed": {
+      "title": "Студентська стрічка",
+      "share-something": "Поділіться чимось",
+      "post-placeholder": "Що нового?",
+      "image-url-placeholder": "URL зображення (необов'язково)",
+      "upload-image": "Завантажити зображення",
+      "image-uploaded": "Зображення завантажено",
+      "post": "Опублікувати",
+      "post-created": "Допис створено",
+      "post-deleted": "Допис видалено",
+      "empty": "Поки що немає дописів. Будьте першим!",
+      "delete": "Видалити",
+      "comment": "Коментар",
+      "comment-placeholder": "Напишіть коментар..."
+    },
+    "ai-chat": {
+      "title": "AI-асистент",
+      "welcome": "Привіт! Я твій навчальний асистент. Можу допомогти з порадами щодо підготовки до іспитів, тайм-менеджменту, мотивації та іншого. Про що б ти хотів дізнатися?",
+      "placeholder": "Запитай щось...",
+      "thinking": "Думаю...",
+      "suggestions": {
+        "exam": "Як підготуватися до іспиту?",
+        "grade": "Як покращити оцінки?",
+        "deadline": "Як не зірвати дедлайн?",
+        "stress": "Як впоратися зі стресом?",
+        "motivation": "Немає мотивації вчитися"
+      }
+    },
+    "attendance": {
+      "title": "Відвідуваність",
+      "success": "Відвідуваність відмічено!",
+      "error": "QR-код недійсний або термін дії минув",
+      "no-token": "QR-код не знайдено. Попросіть викладача згенерувати новий код."
+    },
+    "onboarding": {
+      "title": "Вітаемо в Student Portal",
+      "subtitle": "Заповніть інформацію про себе, щоб розпочати. Ви можете пропустити будь-який крок.",
+      "skip-all": "Пропустити все",
+      "steps": {
+        "academic": {
+          "title": "Академічна інформація",
+          "description": "Розкажіть про свій факультет та спеціальність."
+        },
+        "personal": {
+          "title": "Особисті дані",
+          "description": "Додайте контактні дані та дату народження."
+        },
+        "photo": {
+          "title": "Фото профілю",
+          "description": "Завантажте фото, щоб інші могли вас впізнати."
+        }
+      },
+      "field": {
+        "faculty": "Факультет",
+        "speciality": "Спеціальність",
+        "group": "Група",
+        "study-form": "Форма навчання",
+        "study-year": "Курс",
+        "phone": "Телефон",
+        "birth-date": "Дата народження",
+        "grade-book": "Номер заліковки"
+      },
+      "placeholder": {
+        "faculty": "Напр. ФІОТ",
+        "speciality": "Напр. Інженерія програмного забезпечення",
+        "group": "Напр. ІП-01",
+        "study-form": "Напр. Денна",
+        "phone": "+380...",
+        "grade-book": "Напр. 12345678"
+      },
+      "validation": {
+        "faculty-required": "Вкажіть факультет",
+        "speciality-required": "Вкажіть спеціальність",
+        "group-required": "Вкажіть групу",
+        "study-form-required": "Вкажіть форму навчання",
+        "study-year-required": "Вкажіть курс",
+        "study-year-max": "Курс має бути від 1 до 6"
+      },
+      "button": {
+        "back": "Назад",
+        "next": "Далі",
+        "skip": "Пропустити",
+        "finish": "Завершити"
+      },
+      "success": {
+        "title": "Профіль оновлено",
+        "description": "Ласкаво просимо до Student Portal!"
+      }
     }
   },
   "landing": {

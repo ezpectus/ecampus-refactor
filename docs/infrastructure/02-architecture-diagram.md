@@ -1,6 +1,6 @@
 # 02 — Architecture Diagram & Component Map
 
-**Project:** eCampus Student Portal
+**Project:** Student Portal
 **Last updated:** July 2026
 
 ---
@@ -121,7 +121,7 @@
 ## Directory Structure (detailed)
 
 ```
-ecampus-refactor/
+student-portal/
 ├── src/
 │   ├── app/                              # Next.js App Router
 │   │   ├── [locale]/                     # Locale-based routing (uk, en, pl, de)
@@ -252,13 +252,11 @@ ecampus-refactor/
 │   └── generated/                        # Prisma generated client
 │       └── prisma/                       # (auto-generated, gitignored)
 │
-├── prisma/                               # SQLite schema + migrations
-│   ├── schema.prisma                     # Prisma schema (SQLite)
+├── prisma/                               # Prisma schemas + migrations
+│   ├── schema.prisma                     # Prisma schema (SQLite, default)
+│   ├── schema-postgres.prisma            # Prisma schema (PostgreSQL, production)
 │   ├── seed.ts                           # Demo data seeder
 │   └── dev.db                            # SQLite database file
-│
-├── prisma-postgres/                      # PostgreSQL schema
-│   └── schema.prisma                     # Prisma schema (PostgreSQL)
 │
 ├── public/                               # Static assets
 │   └── uploads/                          # User uploads (gitignored)
@@ -286,17 +284,17 @@ ecampus-refactor/
 
 ## Route Groups & Access Control
 
-| Route Group | Access | Error Boundary | Purpose |
-|-------------|--------|----------------|---------|
-| `(public)/(auth)` | Anyone | `error.tsx` | Login, register, password reset |
-| `(public)/(support)` | Anyone | `error.tsx` | Curator search, certificate verify |
-| `(public)/landing` | Anyone | `error.tsx` | Marketing landing page |
-| `(private)/module/*` | Authenticated + authorized | `error.tsx` (module level) | Feature modules |
-| `(private)/settings` | Authenticated | `error.tsx` (settings level) | User settings |
-| `(private)/profile` | Authenticated | `error.tsx` (profile level) | User profile |
-| `(private)/onboarding` | Authenticated | — | First-login setup |
-| `api/healthz` | Anyone | — | Liveness probe |
-| `api/ready` | Anyone | — | Readiness probe |
+| Route Group            | Access                     | Error Boundary               | Purpose                            |
+| ---------------------- | -------------------------- | ---------------------------- | ---------------------------------- |
+| `(public)/(auth)`      | Anyone                     | `error.tsx`                  | Login, register, password reset    |
+| `(public)/(support)`   | Anyone                     | `error.tsx`                  | Curator search, certificate verify |
+| `(public)/landing`     | Anyone                     | `error.tsx`                  | Marketing landing page             |
+| `(private)/module/*`   | Authenticated + authorized | `error.tsx` (module level)   | Feature modules                    |
+| `(private)/settings`   | Authenticated              | `error.tsx` (settings level) | User settings                      |
+| `(private)/profile`    | Authenticated              | `error.tsx` (profile level)  | User profile                       |
+| `(private)/onboarding` | Authenticated              | —                            | First-login setup                  |
+| `api/healthz`          | Anyone                     | —                            | Liveness probe                     |
+| `api/ready`            | Anyone                     | —                            | Readiness probe                    |
 
 ### Authorization flow
 
@@ -321,18 +319,18 @@ Request → middleware.ts
 
 ## Module Access Matrix
 
-| Module | ADMIN | TEACHER | STUDENT | PARENT |
-|--------|-------|---------|---------|--------|
-| admin | ✅ | ❌ | ❌ | ❌ |
-| grading | ✅ | ✅ | ❌ | ❌ |
-| analytics | ✅ | ✅ | ❌ | ❌ |
-| rating | ✅ | ✅ | ✅ | ❌ |
-| studysheet | ✅ | ✅ | ✅ | ❌ |
-| certificates | ✅ | ✅ | ✅ | ❌ |
-| announcementseditor | ✅ | ✅ | ✅ | ❌ |
-| msg | ✅ | ✅ | ✅ | ✅ |
-| calendar | ✅ | ✅ | ✅ | ✅ |
-| chat | ✅ | ✅ | ✅ | ❌ |
-| feed | ✅ | ✅ | ✅ | ❌ |
-| ai-chat | ✅ | ✅ | ✅ | ❌ |
-| parent | ❌ | ❌ | ❌ | ✅ |
+| Module              | ADMIN | TEACHER | STUDENT | PARENT |
+| ------------------- | ----- | ------- | ------- | ------ |
+| admin               | ✅    | ❌      | ❌      | ❌     |
+| grading             | ✅    | ✅      | ❌      | ❌     |
+| analytics           | ✅    | ✅      | ❌      | ❌     |
+| rating              | ✅    | ✅      | ✅      | ❌     |
+| studysheet          | ✅    | ✅      | ✅      | ❌     |
+| certificates        | ✅    | ✅      | ✅      | ❌     |
+| announcementseditor | ✅    | ✅      | ✅      | ❌     |
+| msg                 | ✅    | ✅      | ✅      | ✅     |
+| calendar            | ✅    | ✅      | ✅      | ✅     |
+| chat                | ✅    | ✅      | ✅      | ❌     |
+| feed                | ✅    | ✅      | ✅      | ❌     |
+| ai-chat             | ✅    | ✅      | ✅      | ❌     |
+| parent              | ❌    | ❌      | ❌      | ✅     |

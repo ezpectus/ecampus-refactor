@@ -82,9 +82,7 @@ export const AdminTable = memo(function AdminTable({ items, totalCount, onView, 
           {paginatedItems.map((user) => (
             <TableRow key={user.id}>
               <TableCell className="font-medium">
-                <div className="flex items-center gap-2">
-                  {user.fullName}
-                </div>
+                <div className="flex items-center gap-2">{user.fullName}</div>
                 <p className="text-xs text-neutral-400">{user.username}</p>
               </TableCell>
               <TableCell className="text-sm text-neutral-600">{user.email}</TableCell>
@@ -97,7 +95,9 @@ export const AdminTable = memo(function AdminTable({ items, totalCount, onView, 
               <TableCell>
                 {user.status && (
                   <Badge variant={statusBadgeVariant[user.status] ?? 'neutral'}>
-                    {tRole(`status-${user.status === 'Studying' ? 'studying' : user.status === 'OnAcademicLeave' ? 'leave' : 'dismissed'}`)}
+                    {tRole(
+                      `status-${user.status === 'Studying' ? 'studying' : user.status === 'OnAcademicLeave' ? 'leave' : 'dismissed'}`,
+                    )}
                   </Badge>
                 )}
               </TableCell>
@@ -107,20 +107,10 @@ export const AdminTable = memo(function AdminTable({ items, totalCount, onView, 
               </TableCell>
               <TableCell>
                 <div className="flex justify-end gap-1">
-                  <Button
-                    variant="tertiary"
-                    size="small"
-                    onClick={() => onView(user.id)}
-                    aria-label={t('view')}
-                  >
+                  <Button variant="tertiary" size="small" onClick={() => onView(user.id)} aria-label={t('view')}>
                     <Eye size={16} />
                   </Button>
-                  <Button
-                    variant="tertiary"
-                    size="small"
-                    onClick={() => onDelete(user.id)}
-                    aria-label={t('delete')}
-                  >
+                  <Button variant="tertiary" size="small" onClick={() => onDelete(user.id)} aria-label={t('delete')}>
                     <Trash size={16} />
                   </Button>
                 </div>

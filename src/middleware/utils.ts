@@ -64,9 +64,7 @@ export const getAuthInfo = async (request: NextRequest) => {
 
   try {
     const decoded = await getJWTPayload<CampusJwtPayload & { iss?: string }>(token);
-    const payload = decoded.iss === LOCAL_JWT_ISSUER
-      ? getVerifiedLocalJWTPayload<CampusJwtPayload>(token)
-      : decoded;
+    const payload = decoded.iss === LOCAL_JWT_ISSUER ? getVerifiedLocalJWTPayload<CampusJwtPayload>(token) : decoded;
 
     return payload ?? undefined;
   } catch {

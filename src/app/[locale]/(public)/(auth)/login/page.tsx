@@ -1,6 +1,6 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { Description,Heading2 } from '@/components/typography';
+import { Description, Heading2 } from '@/components/typography';
 import { Link } from '@/i18n/routing';
 import { LocaleProps } from '@/types/locale-props';
 

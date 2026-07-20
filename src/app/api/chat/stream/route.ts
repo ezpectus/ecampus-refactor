@@ -4,15 +4,20 @@ import { prisma } from '@/lib/prisma';
 export const dynamic = 'force-dynamic';
 export const maxDuration = 300;
 
-export async function GET() {
+export async function GET(request: Request) {
   const user = await getLocalUserLite();
   if (!user) {
     return new Response('Unauthorized', { status: 401 });
   }
 
+  const { searchParams } = new URL(request.url);
+  const roomId = searchParams.get('roomId');
+  if (!roomId) {
+    return new Response('Missing roomId', { status: 400 });
+  }
+
   const encoder = new TextEncoder();
   let lastCheck = new Date();
-  const schoolFilter = user.schoolId ? { schoolId: user.schoolId } : {};
 
   let pollInterval: ReturnType<typeof setInterval>;
   let keepAlive: ReturnType<typeof setInterval>;
@@ -30,23 +35,24 @@ export async function GET() {
 
       pollInterval = setInterval(async () => {
         try {
-          const newPosts = await prisma.feedPost.count({
+          const newMessages = await prisma.chatMessage.count({
             where: {
-              ...schoolFilter,
+              roomId: Number(roomId),
               createdAt: { gt: lastCheck },
+              senderId: { not: user.id },
             },
           });
 
-          if (newPosts > 0) {
-            sendEvent({ type: 'new-post', count: newPosts });
+          if (newMessages > 0) {
+            sendEvent({ type: 'new-messages', count: newMessages, roomId: Number(roomId) });
             lastCheck = new Date();
           }
         } catch {
           // Silently ignore polling errors
         }
-      }, 15_000);
+      }, 10_000);
 
-      sendEvent({ type: 'connected' });
+      sendEvent({ type: 'connected', roomId: Number(roomId) });
 
       keepAlive = setInterval(() => {
         try {

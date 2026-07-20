@@ -1,6 +1,6 @@
 import { getLocale } from 'next-intl/server';
 
-import { LogoBetaEN, LogoBetaUK,LogoEN, LogoUK } from '@/app/images';
+import { LogoBetaEN, LogoBetaUK, LogoEN, LogoUK } from '@/app/images';
 import { Link, LOCALE } from '@/i18n/routing';
 import { env } from '@/lib/env';
 

@@ -12,8 +12,7 @@ import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { useServerErrorToast } from '@/hooks/use-server-error-toast';
 
-import { type AnnouncementFormValues,formSchema } from './schema';
-
+import { type AnnouncementFormValues, formSchema } from './schema';
 
 const emptyValues: AnnouncementFormValues = {
   announcement: {
@@ -50,13 +49,7 @@ interface Props {
   onSubmit: (values: AnnouncementFormValues) => Promise<void>;
 }
 
-export function AnnouncementForm({
-  rolesData,
-  studyFormsData,
-  coursesData,
-  initialValues,
-  onSubmit,
-}: Props) {
+export function AnnouncementForm({ rolesData, studyFormsData, coursesData, initialValues, onSubmit }: Props) {
   const t = useTranslations('private.announcementseditor.form');
   const { errorToast } = useServerErrorToast();
   const form = useForm<AnnouncementFormValues>({
@@ -228,10 +221,7 @@ export function AnnouncementForm({
           render={({ field }) => (
             <FormItem className="flex flex-row items-center gap-3">
               <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
+                <Switch checked={field.value} onCheckedChange={field.onChange} />
               </FormControl>
               <FormLabel>{t('fields.autoTranslate')}</FormLabel>
               <FormMessage />

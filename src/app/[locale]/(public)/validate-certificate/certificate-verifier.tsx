@@ -129,13 +129,14 @@ export function CertificateVerifier() {
               </div>
               <Paragraph className="m-0 text-lg font-semibold text-neutral-900">{tResultCard('notfound')}</Paragraph>
               <Paragraph className="m-0 font-medium text-neutral-500">{tResultCard('again')}</Paragraph>
-              {whatsappSupportLink && tResultCard.rich('contact-support', {
-                link: (chunks) => (
-                  <Link href={whatsappSupportLink} target="_blank" rel="noopener noreferrer">
-                    {chunks}
-                  </Link>
-                ),
-              })}
+              {whatsappSupportLink &&
+                tResultCard.rich('contact-support', {
+                  link: (chunks) => (
+                    <Link href={whatsappSupportLink} target="_blank" rel="noopener noreferrer">
+                      {chunks}
+                    </Link>
+                  ),
+                })}
             </div>
           )}
         </CardContent>

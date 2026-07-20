@@ -1,6 +1,6 @@
 # 04 — Database Concepts: ORM, Prisma & Multi-Database Strategy
 
-**Project:** eCampus Student Portal
+**Project:** Student Portal
 **Audience:** Developers learning database concepts
 **Language:** English with code examples
 
@@ -29,10 +29,10 @@
 
 ```typescript
 // Raw SQL — error-prone, no type safety
-const result = await db.query(
-  'SELECT id, username, email FROM users WHERE school_id = $1 AND role = $2',
-  [schoolId, 'STUDENT']
-);
+const result = await db.query('SELECT id, username, email FROM users WHERE school_id = $1 AND role = $2', [
+  schoolId,
+  'STUDENT',
+]);
 // result.rows[0].usrname ← typo, no error until runtime
 // result.rows[0].email ← is this a string? null? undefined?
 ```
@@ -58,15 +58,15 @@ const users = await prisma.user.findMany({
 
 ### What an ORM does
 
-| Feature | Raw SQL | ORM (Prisma) |
-|---------|---------|---------------|
-| Type safety | ❌ (strings) | ✅ (TypeScript types) |
-| Auto-complete | ❌ | ✅ (IDE suggests fields) |
-| SQL injection protection | Manual (parameterized queries) | ✅ (built-in) |
-| Schema changes | Manual SQL updates | `prisma db push` (auto) |
-| Database portability | ❌ (vendor-specific SQL) | ✅ (same code, different DB) |
-| Relations | Manual JOINs | ✅ (automatic includes) |
-| Migrations | Manual files | ✅ (auto-generated) |
+| Feature                  | Raw SQL                        | ORM (Prisma)                 |
+| ------------------------ | ------------------------------ | ---------------------------- |
+| Type safety              | ❌ (strings)                   | ✅ (TypeScript types)        |
+| Auto-complete            | ❌                             | ✅ (IDE suggests fields)     |
+| SQL injection protection | Manual (parameterized queries) | ✅ (built-in)                |
+| Schema changes           | Manual SQL updates             | `prisma db push` (auto)      |
+| Database portability     | ❌ (vendor-specific SQL)       | ✅ (same code, different DB) |
+| Relations                | Manual JOINs                   | ✅ (automatic includes)      |
+| Migrations               | Manual files                   | ✅ (auto-generated)          |
 
 ### Relations example
 
@@ -96,15 +96,15 @@ const user = await prisma.user.findUnique({
 
 ### Prisma vs other ORMs
 
-| Feature | Prisma | TypeORM | Sequelize | Drizzle |
-|---------|--------|---------|-----------|---------|
-| Type safety | ✅ (generated types) | Partial | ❌ | ✅ |
-| Schema file | `.prisma` (declarative) | Decorators (code) | Models (code) | `.sql` or code |
-| Query API | Object-based (no SQL) | SQL-like | SQL-like | SQL-like |
-| Migrations | ✅ (auto) | ✅ | ✅ | Manual |
-| Edge runtime | ✅ (adapters) | ❌ | ❌ | ✅ |
-| Bundle size | Medium | Large | Large | Small |
-| Learning curve | Low | Medium | Medium | Medium |
+| Feature        | Prisma                  | TypeORM           | Sequelize     | Drizzle        |
+| -------------- | ----------------------- | ----------------- | ------------- | -------------- |
+| Type safety    | ✅ (generated types)    | Partial           | ❌            | ✅             |
+| Schema file    | `.prisma` (declarative) | Decorators (code) | Models (code) | `.sql` or code |
+| Query API      | Object-based (no SQL)   | SQL-like          | SQL-like      | SQL-like       |
+| Migrations     | ✅ (auto)               | ✅                | ✅            | Manual         |
+| Edge runtime   | ✅ (adapters)           | ❌                | ❌            | ✅             |
+| Bundle size    | Medium                  | Large             | Large         | Small          |
+| Learning curve | Low                     | Medium            | Medium        | Medium         |
 
 ### Why Prisma for this project
 
@@ -163,15 +163,15 @@ enum Role {
 
 ### Key annotations
 
-| Annotation | Meaning | Example |
-|-----------|---------|---------|
-| `@id` | Primary key | `id Int @id @default(autoincrement())` |
-| `@unique` | Unique constraint | `email String @unique` |
-| `@default()` | Default value | `role Role @default(STUDENT)` |
-| `@relation()` | Foreign key relation | `school School? @relation(fields: [schoolId], references: [id])` |
-| `@updatedAt` | Auto-update timestamp | `updatedAt DateTime @updatedAt` |
-| `@@index()` | Composite index | `@@index([schoolId, role])` |
-| `@@unique` | Composite unique | `@@unique([userId, courseId])` |
+| Annotation    | Meaning               | Example                                                          |
+| ------------- | --------------------- | ---------------------------------------------------------------- |
+| `@id`         | Primary key           | `id Int @id @default(autoincrement())`                           |
+| `@unique`     | Unique constraint     | `email String @unique`                                           |
+| `@default()`  | Default value         | `role Role @default(STUDENT)`                                    |
+| `@relation()` | Foreign key relation  | `school School? @relation(fields: [schoolId], references: [id])` |
+| `@updatedAt`  | Auto-update timestamp | `updatedAt DateTime @updatedAt`                                  |
+| `@@index()`   | Composite index       | `@@index([schoolId, role])`                                      |
+| `@@unique`    | Composite unique      | `@@unique([userId, courseId])`                                   |
 
 ### Relation types
 
@@ -249,10 +249,10 @@ export const prisma = new PrismaClient({ adapter });
 
 Because SQLite and PostgreSQL have different capabilities (e.g. enums), Prisma needs separate schema files:
 
-| File | Provider | When to use |
-|------|----------|-------------|
-| `prisma/schema.prisma` | `sqlite` | Local development |
-| `prisma-postgres/schema.prisma` | `postgresql` | Production |
+| File                            | Provider     | When to use       |
+| ------------------------------- | ------------ | ----------------- |
+| `prisma/schema.prisma`          | `sqlite`     | Local development |
+| `prisma/schema-postgres.prisma` | `postgresql` | Production        |
 
 ### Two separate configs
 
@@ -261,7 +261,7 @@ Because SQLite and PostgreSQL have different capabilities (e.g. enums), Prisma n
 import { defineConfig } from 'prisma/config';
 
 export default defineConfig({
-  schema: 'prisma-postgres/schema.prisma',
+  schema: 'prisma/schema-postgres.prisma',
 });
 ```
 
@@ -281,16 +281,16 @@ npm run db:push:postgres       # prisma db push --config prisma-postgres.config.
 
 ### Comparison
 
-| Feature | SQLite | PostgreSQL |
-|---------|--------|------------|
-| Type | Embedded (file-based) | Server-based |
-| Setup | Zero (just a file) | Requires server process |
-| Concurrency | WAL mode (1 writer, many readers) | MVCC (many writers + readers) |
-| Scale | Good for <100 concurrent users | Good for 10,000+ concurrent users |
-| Data types | Limited (no native enums, no arrays) | Rich (enums, arrays, JSON, UUID) |
-| Full-text search | Basic (FTS5 extension) | Advanced (tsvector, trigram) |
-| Backup | Copy file | pg_dump / replication |
-| Use case | Development, prototyping | Production |
+| Feature          | SQLite                               | PostgreSQL                        |
+| ---------------- | ------------------------------------ | --------------------------------- |
+| Type             | Embedded (file-based)                | Server-based                      |
+| Setup            | Zero (just a file)                   | Requires server process           |
+| Concurrency      | WAL mode (1 writer, many readers)    | MVCC (many writers + readers)     |
+| Scale            | Good for <100 concurrent users       | Good for 10,000+ concurrent users |
+| Data types       | Limited (no native enums, no arrays) | Rich (enums, arrays, JSON, UUID)  |
+| Full-text search | Basic (FTS5 extension)               | Advanced (tsvector, trigram)      |
+| Backup           | Copy file                            | pg_dump / replication             |
+| Use case         | Development, prototyping             | Production                        |
 
 ### Why SQLite for development?
 
@@ -378,6 +378,7 @@ The WAL file grows as writes accumulate. A **checkpoint** merges WAL changes int
 **Automatic checkpoint:** SQLite auto-checkpoints when the WAL reaches 1000 pages (~4MB).
 
 **Manual checkpoint:**
+
 ```sql
 PRAGMA wal_checkpoint(TRUNCATE);
 -- TRUNCATE: checkpoint + reset WAL file to zero size
@@ -408,9 +409,7 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({ adapter, log: ['query'] });
+export const prisma = globalForPrisma.prisma ?? new PrismaClient({ adapter, log: ['query'] });
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 ```
@@ -448,6 +447,7 @@ If PostgreSQL max_connections = 100:
 ```
 
 **Solutions:**
+
 - PgBouncer (connection pooler) — sits between app and PostgreSQL
 - Reduce pool size: `new PrismaClient({ adapter, poolSize: 5 })`
 - Serverless: use Neon's connection pooler (built-in)
@@ -683,7 +683,7 @@ The same codebase must work with both databases.
 ```
 1. Two schema files:
    prisma/schema.prisma          → provider: sqlite
-   prisma-postgres/schema.prisma → provider: postgresql
+   prisma/schema-postgres.prisma → provider: postgresql
 
 2. Two Prisma clients (generated separately):
    npm run db:generate           → generates SQLite client
@@ -708,7 +708,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// prisma-postgres/schema.prisma
+// prisma/schema-postgres.prisma
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -730,7 +730,7 @@ Prisma handles this transparently — the application code is the same regardles
 
 ```bash
 # 1. Edit prisma/schema.prisma (add a field)
-# 2. Edit prisma-postgres/schema.prisma (add the same field)
+# 2. Edit prisma/schema-postgres.prisma (add the same field)
 # 3. Generate both clients:
 npm run db:generate && npm run db:generate:postgres
 # 4. Push to both databases:

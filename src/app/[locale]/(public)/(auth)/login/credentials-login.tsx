@@ -100,14 +100,22 @@ export const CredentialsLogin = () => {
           </Link>
         </div>
         <FormMessage>{form.formState.errors.root?.message}</FormMessage>
-        <Button size="big" className="my-4 w-full" type="submit" loading={form.formState.isSubmitting} data-testid="login-submit">
+        <Button
+          size="big"
+          className="my-4 w-full"
+          type="submit"
+          loading={form.formState.isSubmitting}
+          data-testid="login-submit"
+        >
           {t('button.login')}
         </Button>
       </form>
-      <DemoCredentials onSelect={(username, password) => {
-        form.setValue('username', username);
-        form.setValue('password', password);
-      }} />
+      <DemoCredentials
+        onSelect={(username, password) => {
+          form.setValue('username', username);
+          form.setValue('password', password);
+        }}
+      />
     </Form>
   );
 };

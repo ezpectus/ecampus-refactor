@@ -1,8 +1,8 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { alphabetical, flat,unique } from 'radash';
-import { useMemo,useState } from 'react';
+import { alphabetical, flat, unique } from 'radash';
+import { useMemo, useState } from 'react';
 
 import { Paragraph } from '@/components/typography';
 import { Input } from '@/components/ui/input';
@@ -24,10 +24,7 @@ export function ColleagueContactsList({ colleagues, contactTypes }: ColleagueCon
 
   const allSubdivisions = useMemo(() => {
     return alphabetical(
-      unique(
-        flat(colleagues.map((x) => x.positions.map((x) => x.subdivision))),
-        (subdivision) => subdivision.id,
-      ),
+      unique(flat(colleagues.map((x) => x.positions.map((x) => x.subdivision))), (subdivision) => subdivision.id),
       (subdivision) => subdivision.name,
     );
   }, [colleagues]);

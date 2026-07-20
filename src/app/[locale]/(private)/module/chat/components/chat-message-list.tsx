@@ -43,21 +43,14 @@ export const ChatMessageList = memo(function ChatMessageList({ messages, isLoadi
   }
 
   return (
-    <ScrollArea className="flex-1 rounded-lg border border-border p-4">
+    <ScrollArea className="border-border flex-1 rounded-lg border p-4">
       <div className="flex flex-col gap-3">
         {messages.map((msg) => (
-          <div
-            key={msg.id}
-            className={`flex flex-col gap-1 ${msg.isOwn ? 'items-end' : 'items-start'}`}
-          >
-            <span className="text-muted-foreground text-xs">
-              {msg.isOwn ? t('you') : msg.senderName}
-            </span>
+          <div key={msg.id} className={`flex flex-col gap-1 ${msg.isOwn ? 'items-end' : 'items-start'}`}>
+            <span className="text-muted-foreground text-xs">{msg.isOwn ? t('you') : msg.senderName}</span>
             <div
               className={`max-w-[70%] rounded-lg px-3 py-2 text-sm ${
-                msg.isOwn
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-muted text-muted-foreground'
+                msg.isOwn ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
               }`}
             >
               {msg.content}

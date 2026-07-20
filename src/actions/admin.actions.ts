@@ -134,9 +134,12 @@ export async function getAdminStats() {
     select: { gpa: true },
   });
 
-  const avgGpa = studentsData.length > 0
-    ? Math.round((studentsData.reduce((sum: number, u: { gpa: number }) => sum + u.gpa, 0) / studentsData.length) * 100) / 100
-    : 0;
+  const avgGpa =
+    studentsData.length > 0
+      ? Math.round(
+          (studentsData.reduce((sum: number, u: { gpa: number }) => sum + u.gpa, 0) / studentsData.length) * 100,
+        ) / 100
+      : 0;
 
   return {
     totalUsers,
@@ -230,28 +233,52 @@ export async function getDbTableData(table: string, page: number = 1, pageSize: 
   switch (table) {
     case 'users': {
       const [items, total] = await Promise.all([
-        prisma.user.findMany({ skip, take: pageSize, orderBy: { id: 'asc' }, where: schoolWhere, select: publicUserSelect }),
+        prisma.user.findMany({
+          skip,
+          take: pageSize,
+          orderBy: { id: 'asc' },
+          where: schoolWhere,
+          select: publicUserSelect,
+        }),
         prisma.user.count({ where: schoolWhere }),
       ]);
       return { items, total };
     }
     case 'courses': {
       const [items, total] = await Promise.all([
-        prisma.course.findMany({ skip, take: pageSize, orderBy: { id: 'asc' }, where: schoolWhere, include: { user: { select: { fullName: true } } } }),
+        prisma.course.findMany({
+          skip,
+          take: pageSize,
+          orderBy: { id: 'asc' },
+          where: schoolWhere,
+          include: { user: { select: { fullName: true } } },
+        }),
         prisma.course.count({ where: schoolWhere }),
       ]);
       return { items, total };
     }
     case 'attendance': {
       const [items, total] = await Promise.all([
-        prisma.attendance.findMany({ skip, take: pageSize, orderBy: { id: 'asc' }, where: schoolUserWhere, include: { user: { select: { fullName: true } } } }),
+        prisma.attendance.findMany({
+          skip,
+          take: pageSize,
+          orderBy: { id: 'asc' },
+          where: schoolUserWhere,
+          include: { user: { select: { fullName: true } } },
+        }),
         prisma.attendance.count({ where: schoolUserWhere }),
       ]);
       return { items, total };
     }
     case 'notifications': {
       const [items, total] = await Promise.all([
-        prisma.notification.findMany({ skip, take: pageSize, orderBy: { id: 'desc' }, where: schoolUserWhere, include: { user: { select: { fullName: true } } } }),
+        prisma.notification.findMany({
+          skip,
+          take: pageSize,
+          orderBy: { id: 'desc' },
+          where: schoolUserWhere,
+          include: { user: { select: { fullName: true } } },
+        }),
         prisma.notification.count({ where: schoolUserWhere }),
       ]);
       return { items, total };

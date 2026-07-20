@@ -25,12 +25,7 @@ export default async function NotificationsRoute({ params }: LocaleProps) {
   return (
     <SubLayout pageTitle={t('page-title')}>
       <div className="col-span-12">
-        <NotificationsPage
-          initialItems={items}
-          initialUnreadCount={unreadCount}
-          total={total}
-          pageSize={PAGE_SIZE}
-        />
+        <NotificationsPage initialItems={items} initialUnreadCount={unreadCount} total={total} pageSize={PAGE_SIZE} />
       </div>
     </SubLayout>
   );

@@ -12,13 +12,7 @@ import { Input } from '@/components/ui/input';
 import { useServerErrorToast } from '@/hooks/use-server-error-toast';
 import { useLocalStorage } from '@/hooks/use-storage';
 
-const SUGGESTIONS = [
-  'exam',
-  'grade',
-  'deadline',
-  'stress',
-  'motivation',
-];
+const SUGGESTIONS = ['exam', 'grade', 'deadline', 'stress', 'motivation'];
 
 export const AiChatContent = () => {
   const t = useTranslations('private.ai-chat');
@@ -74,20 +68,13 @@ export const AiChatContent = () => {
           <div ref={scrollRef} className="flex-1 overflow-y-auto">
             <div className="flex flex-col gap-3 pr-4">
               {messages.map((msg, i) => (
-                <div
-                  key={i}
-                  className={`flex gap-2 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}
-                >
+                <div key={i} className={`flex gap-2 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
                   <Avatar className="h-8 w-8 shrink-0">
-                    <AvatarFallback>
-                      {msg.role === 'user' ? 'Я' : 'AI'}
-                    </AvatarFallback>
+                    <AvatarFallback>{msg.role === 'user' ? 'Я' : 'AI'}</AvatarFallback>
                   </Avatar>
                   <div
                     className={`max-w-[80%] rounded-lg px-3 py-2 text-sm whitespace-pre-wrap ${
-                      msg.role === 'user'
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-muted text-muted-foreground'
+                      msg.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
                     }`}
                   >
                     {msg.content}
@@ -99,9 +86,7 @@ export const AiChatContent = () => {
                   <Avatar className="h-8 w-8 shrink-0">
                     <AvatarFallback>AI</AvatarFallback>
                   </Avatar>
-                  <div className="bg-muted rounded-lg px-3 py-2 text-sm text-muted-foreground">
-                    {t('thinking')}
-                  </div>
+                  <div className="bg-muted text-muted-foreground rounded-lg px-3 py-2 text-sm">{t('thinking')}</div>
                 </div>
               )}
             </div>
@@ -113,7 +98,7 @@ export const AiChatContent = () => {
                 <button
                   key={key}
                   onClick={() => handleSend(t(`suggestions.${key}`))}
-                  className="bg-muted hover:bg-accent rounded-full px-3 py-1.5 text-xs text-muted-foreground transition-colors"
+                  className="bg-muted hover:bg-accent text-muted-foreground rounded-full px-3 py-1.5 text-xs transition-colors"
                 >
                   {t(`suggestions.${key}`)}
                 </button>

@@ -38,7 +38,7 @@ export default async function AttestationResultsPage({ params }: LocaleProps) {
   };
 
   return (
-    <Card className="rounded-b-6 col-span-full w-full bg-card p-6 text-card-foreground xl:col-span-5">
+    <Card className="rounded-b-6 bg-card text-card-foreground col-span-full w-full p-6 xl:col-span-5">
       <Table>
         <TableHeader>
           <TableRow>

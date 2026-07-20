@@ -1,6 +1,6 @@
-import { beforeEach,describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import { checkRateLimit, clearExpiredEntries,resetRateLimit } from '@/lib/rate-limit';
+import { checkRateLimit, clearExpiredEntries, resetRateLimit } from '@/lib/rate-limit';
 
 describe('checkRateLimit', () => {
   beforeEach(async () => {

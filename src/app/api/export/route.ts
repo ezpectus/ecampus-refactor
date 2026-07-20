@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server';
 
 import { getLocalUserLite } from '@/actions/local-user.actions';
-import { type CsvColumn,csvResponse, toCsv } from '@/lib/csv-export';
+import { type CsvColumn, csvResponse, toCsv } from '@/lib/csv-export';
 import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
       orderBy: { name: 'asc' },
     });
 
-    const columns: CsvColumn<typeof courses[number]>[] = [
+    const columns: CsvColumn<(typeof courses)[number]>[] = [
       { header: 'Course', accessor: (r) => r.name },
       { header: 'Grade', accessor: (r) => r.grade },
       { header: 'Grade Type', accessor: (r) => r.gradeType },
@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
       select: { month: true, present: true, total: true },
     });
 
-    const columns: CsvColumn<typeof attendance[number]>[] = [
+    const columns: CsvColumn<(typeof attendance)[number]>[] = [
       { header: 'Month', accessor: (r) => r.month },
       { header: 'Present', accessor: (r) => r.present },
       { header: 'Total', accessor: (r) => r.total },

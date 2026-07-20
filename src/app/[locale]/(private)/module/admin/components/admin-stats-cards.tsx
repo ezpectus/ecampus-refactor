@@ -1,6 +1,6 @@
 'use client';
 
-import { GraduationCap, TrendingUp,UserCheck, Users } from 'lucide-react';
+import { GraduationCap, TrendingUp, UserCheck, Users } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Card, CardContent } from '@/components/ui/card';

@@ -7,15 +7,12 @@ import { GoogleReCaptchaProvider } from 'react19-google-recaptcha-v3';
 
 import { env } from '@/lib/env';
 
-interface Props
-  extends Readonly<{
-    children: React.ReactNode;
-  }> {}
+interface Props extends Readonly<{
+  children: React.ReactNode;
+}> {}
 
 export default function PasswordResetLayout({ children }: Props) {
   return (
-    <GoogleReCaptchaProvider reCaptchaKey={env.NEXT_PUBLIC_RECAPTCHA_KEY || ''}>
-      {children}
-    </GoogleReCaptchaProvider>
+    <GoogleReCaptchaProvider reCaptchaKey={env.NEXT_PUBLIC_RECAPTCHA_KEY || ''}>{children}</GoogleReCaptchaProvider>
   );
 }

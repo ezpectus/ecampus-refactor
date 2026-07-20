@@ -68,18 +68,33 @@ export const getChildren = unstable_cache(
         orderBy: { student: { fullName: 'asc' } },
       });
 
-      return relations.map((r: { id: number; student: { id: number; fullName: string; username: string; groupName: string | null; faculty: string | null; speciality: string | null; gpa: number; studyYear: number; photo: string } }) => ({
-        id: r.id,
-        studentId: r.student.id,
-        studentName: r.student.fullName,
-        studentUsername: r.student.username,
-        groupName: r.student.groupName,
-        faculty: r.student.faculty,
-        speciality: r.student.speciality,
-        gpa: r.student.gpa,
-        studyYear: r.student.studyYear,
-        photo: r.student.photo,
-      }));
+      return relations.map(
+        (r: {
+          id: number;
+          student: {
+            id: number;
+            fullName: string;
+            username: string;
+            groupName: string | null;
+            faculty: string | null;
+            speciality: string | null;
+            gpa: number;
+            studyYear: number;
+            photo: string;
+          };
+        }) => ({
+          id: r.id,
+          studentId: r.student.id,
+          studentName: r.student.fullName,
+          studentUsername: r.student.username,
+          groupName: r.student.groupName,
+          faculty: r.student.faculty,
+          speciality: r.student.speciality,
+          gpa: r.student.gpa,
+          studyYear: r.student.studyYear,
+          photo: r.student.photo,
+        }),
+      );
     } catch {
       return [];
     }
@@ -111,15 +126,24 @@ export const getChildCourses = unstable_cache(
         orderBy: { name: 'asc' },
       });
 
-      return courses.map((c: { id: number; name: string; grade: number; gradeType: string; credits: number; teacher: { fullName: string } | null }) => ({
-        id: c.id,
-        name: c.name,
-        grade: c.grade,
-        gradeType: c.gradeType,
-        credits: c.credits,
-        displayGrade: displayGrade(c.grade, c.gradeType as GradeType),
-        teacherName: c.teacher?.fullName ?? null,
-      }));
+      return courses.map(
+        (c: {
+          id: number;
+          name: string;
+          grade: number;
+          gradeType: string;
+          credits: number;
+          teacher: { fullName: string } | null;
+        }) => ({
+          id: c.id,
+          name: c.name,
+          grade: c.grade,
+          gradeType: c.gradeType,
+          credits: c.credits,
+          displayGrade: displayGrade(c.grade, c.gradeType as GradeType),
+          teacherName: c.teacher?.fullName ?? null,
+        }),
+      );
     } catch {
       return [];
     }

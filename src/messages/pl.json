@@ -322,6 +322,10 @@
         "retryMessage": "Didn't get an email? <link>Click to resend.</link>",
         "button": "Continue",
         "loading": "Loading..."
+      },
+      "placeholder": {
+        "token": "Enter reset token",
+        "new-password": "Enter new password"
       }
     },
     "footer": "All rights reserved. © {year} Student Portal"
@@ -1136,6 +1140,230 @@
       "send": "Send",
       "clear": "Clear history",
       "empty": "No messages yet. Ask something to get started!"
+    },
+    "grading": {
+      "title": "Grade Book",
+      "empty": "You have no assigned courses",
+      "select-course": "Select a course",
+      "select-placeholder": "Select a course from the list",
+      "students": "students",
+      "loading": "Loading students...",
+      "no-students": "No students enrolled in this course",
+      "validation": {
+        "grade-range": "Grade must be between 0 and 100"
+      },
+      "success": {
+        "grade-updated": "Grade updated"
+      },
+      "table": {
+        "student": "Student",
+        "group": "Group",
+        "credits": "Credits",
+        "grade-type": "Grade Type",
+        "grade": "Grade",
+        "actions": "Actions"
+      },
+      "actions": {
+        "edit": "Edit",
+        "save": "Save",
+        "cancel": "Cancel"
+      }
+    },
+    "onboarding": {
+      "title": "Welcome to Student Portal",
+      "subtitle": "Fill in your information to get started. You can skip any step.",
+      "skip-all": "Skip all",
+      "steps": {
+        "academic": {
+          "title": "Academic Information",
+          "description": "Tell us about your faculty and program."
+        },
+        "personal": {
+          "title": "Personal Details",
+          "description": "Add your contact information and date of birth."
+        },
+        "photo": {
+          "title": "Profile Photo",
+          "description": "Upload a photo so others can recognize you."
+        }
+      },
+      "field": {
+        "faculty": "Faculty",
+        "speciality": "Speciality",
+        "group": "Group",
+        "study-form": "Study Form",
+        "study-year": "Year",
+        "phone": "Phone",
+        "birth-date": "Date of Birth",
+        "grade-book": "Grade Book Number"
+      },
+      "placeholder": {
+        "faculty": "e.g. FIOT",
+        "speciality": "e.g. Software Engineering",
+        "group": "e.g. IP-01",
+        "study-form": "e.g. Full-time",
+        "phone": "+380...",
+        "grade-book": "e.g. 12345678"
+      },
+      "validation": {
+        "faculty-required": "Faculty is required",
+        "speciality-required": "Speciality is required",
+        "group-required": "Group is required",
+        "study-form-required": "Study form is required",
+        "study-year-required": "Year is required",
+        "study-year-max": "Year must be between 1 and 6"
+      },
+      "button": {
+        "back": "Back",
+        "next": "Next",
+        "skip": "Skip",
+        "finish": "Finish"
+      },
+      "success": {
+        "title": "Profile updated",
+        "description": "Welcome to Student Portal!"
+      }
+    },
+    "parent": {
+      "title": "Parent Portal",
+      "empty": "No children linked to your account",
+      "back": "Back",
+      "gpa": "GPA",
+      "study-year": "Year",
+      "courses": "Courses",
+      "loading": "Loading...",
+      "no-courses": "No courses found",
+      "grades-table": "Grades",
+      "attendance-chart": "Attendance",
+      "table": {
+        "course": "Course",
+        "teacher": "Teacher",
+        "credits": "Credits",
+        "grade": "Grade"
+      }
+    },
+    "analytics": {
+      "title": "Analytics Dashboard",
+      "no-data": "No data available",
+      "metrics": {
+        "total-users": "Total Users",
+        "students": "Students",
+        "active-students": "Active Students",
+        "new-this-month": "New (30d)",
+        "avg-gpa": "Avg GPA",
+        "parents": "Parents"
+      },
+      "charts": {
+        "user-activity": "User Activity (30 days)",
+        "role-distribution": "Role Distribution",
+        "registrations": "Monthly Registrations",
+        "faculty-distribution": "Students by Faculty",
+        "cohorts": "Cohorts by Study Year",
+        "curriculum-analytics": "Courses with High Failure Rate",
+        "teacher-effectiveness": "Teacher Effectiveness",
+        "at-risk-students": "At-Risk Students",
+        "risk-score": "Risk score",
+        "failure-rate": "Failure rate",
+        "avg-grade": "Average grade",
+        "grade-distribution": "Grade Distribution"
+      },
+      "warnings": {
+        "send": "Send Warnings",
+        "sent": "Warnings sent",
+        "description": "Students: {students}, Parents: {parents}"
+      },
+      "dashboard": {
+        "edit-mode": "Edit Mode",
+        "widgets": "Widgets",
+        "reset": "Reset",
+        "saved": "Saved",
+        "widget-titles": {
+          "metrics": "Metrics",
+          "user-activity": "User Activity",
+          "role-distribution": "Role Distribution",
+          "registrations": "Registrations",
+          "faculty-distribution": "Faculty Distribution",
+          "grade-distribution": "Grade Distribution",
+          "cohorts": "Cohorts",
+          "curriculum-analytics": "Curriculum Analytics",
+          "teacher-effectiveness": "Teacher Effectiveness",
+          "at-risk-students": "At-Risk Students"
+        }
+      }
+    },
+    "calendar": {
+      "title": "Event Calendar",
+      "upcoming": "Upcoming Events",
+      "no-events": "No events",
+      "more": "more",
+      "weekdays": {
+        "sun": "Sun",
+        "mon": "Mon",
+        "tue": "Tue",
+        "wed": "Wed",
+        "thu": "Thu",
+        "fri": "Fri",
+        "sat": "Sat"
+      },
+      "actions": {
+        "create": "Create Event"
+      },
+      "form": {
+        "create": "New Event",
+        "edit": "Edit Event",
+        "created": "Event created",
+        "updated": "Event updated",
+        "deleted": "Event deleted",
+        "fields": {
+          "title": "Title",
+          "description": "Description",
+          "startDate": "Start Date",
+          "endDate": "End Date",
+          "location": "Location",
+          "type": "Event Type"
+        },
+        "types": {
+          "general": "General",
+          "exam": "Exam",
+          "conference": "Conference",
+          "holiday": "Holiday",
+          "deadline": "Deadline"
+        },
+        "buttons": {
+          "create": "Create",
+          "update": "Update",
+          "delete": "Delete"
+        }
+      }
+    },
+    "chat": {
+      "title": "Group Chat",
+      "rooms": "Rooms",
+      "no-rooms": "No chat rooms yet",
+      "no-messages": "No messages",
+      "select-room": "Select a room to start chatting",
+      "message-placeholder": "Type a message...",
+      "send": "Send",
+      "you": "You",
+      "members": "members",
+      "create": {
+        "button": "Create",
+        "title": "New Chat",
+        "room-name": "Room Name",
+        "room-name-placeholder": "Enter room name",
+        "members": "Members",
+        "members-placeholder": "Select members",
+        "no-users": "No available users",
+        "cancel": "Cancel",
+        "create": "Create",
+        "success": "Chat room created"
+      }
+    },
+    "attendance": {
+      "title": "Attendance",
+      "success": "Attendance marked!",
+      "error": "QR code is invalid or expired",
+      "no-token": "QR code not found. Ask your teacher to generate a new code."
     }
   },
   "landing": {

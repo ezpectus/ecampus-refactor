@@ -1,6 +1,6 @@
 # 04 — Database Layer
 
-**Project:** eCampus Student Portal
+**Project:** Student Portal
 **Last updated:** July 2026
 
 ---
@@ -9,10 +9,10 @@
 
 The project supports **two databases** through Prisma 7 adapters:
 
-| Environment | Database | Adapter | Connection String |
-|-------------|----------|---------|-------------------|
-| Development | SQLite | `PrismaBetterSqlite3` | `file:./dev.db` |
-| Production | PostgreSQL 17 | `PrismaPg` | `postgresql://user:pass@host:5432/db` |
+| Environment | Database      | Adapter               | Connection String                     |
+| ----------- | ------------- | --------------------- | ------------------------------------- |
+| Development | SQLite        | `PrismaBetterSqlite3` | `file:./dev.db`                       |
+| Production  | PostgreSQL 17 | `PrismaPg`            | `postgresql://user:pass@host:5432/db` |
 
 ### Adapter selection (runtime)
 
@@ -31,6 +31,7 @@ export const prisma = globalForPrisma.prisma ?? new PrismaClient({ adapter });
 ### Why not Prisma's built-in driver?
 
 Prisma 7 uses **adapters** instead of built-in database drivers. This allows:
+
 - Smaller Prisma client bundle (no driver code bundled)
 - Runtime adapter selection (same codebase for dev + prod)
 - Support for serverless/edge runtimes (no native binaries needed for PG)
@@ -73,6 +74,7 @@ if (!isPostgres && !globalForPrisma.prisma) {
 ### What is WAL?
 
 WAL (Write-Ahead Logging) is SQLite's concurrency mode:
+
 - **Without WAL (default):** Readers block writers, writers block readers. `SQLITE_BUSY` errors under concurrent access.
 - **With WAL:** Writers append to a log file. Readers read the main database. One writer + multiple readers can run concurrently.
 
@@ -151,18 +153,18 @@ Role:
 
 ### Key indexes
 
-| Model | Index | Purpose |
-|-------|-------|---------|
-| User | `@@index([role])` | Filter users by role |
-| User | `@@index([schoolId, role])` | School-scoped role queries |
-| User | `@@index([lastActiveAt])` | Activity-based sorting |
-| Course | `@@index([teacherId])` | Teacher's courses lookup |
-| Course | `@@index([schoolId])` | School-scoped course queries |
-| Notification | `@@index([userId, read, createdAt])` | Unread notifications |
-| AuditLog | `@@index([createdAt])` | Chronological audit trail |
-| FeedPost | `@@index([schoolId, createdAt])` | School feed timeline |
-| RefreshToken | `@@index([expiresAt])` | Expired token cleanup |
-| RefreshToken | `@@index([userId])` | User's active tokens |
+| Model        | Index                                | Purpose                      |
+| ------------ | ------------------------------------ | ---------------------------- |
+| User         | `@@index([role])`                    | Filter users by role         |
+| User         | `@@index([schoolId, role])`          | School-scoped role queries   |
+| User         | `@@index([lastActiveAt])`            | Activity-based sorting       |
+| Course       | `@@index([teacherId])`               | Teacher's courses lookup     |
+| Course       | `@@index([schoolId])`                | School-scoped course queries |
+| Notification | `@@index([userId, read, createdAt])` | Unread notifications         |
+| AuditLog     | `@@index([createdAt])`               | Chronological audit trail    |
+| FeedPost     | `@@index([schoolId, createdAt])`     | School feed timeline         |
+| RefreshToken | `@@index([expiresAt])`               | Expired token cleanup        |
+| RefreshToken | `@@index([userId])`                  | User's active tokens         |
 
 ---
 
@@ -177,7 +179,7 @@ if (!user) throw new UnauthorizedError();
 
 const posts = await prisma.feedPost.findMany({
   where: {
-    schoolId: user.schoolId,  // ← school isolation
+    schoolId: user.schoolId, // ← school isolation
     // OR for super-admin (schoolId === undefined):
     ...(user.schoolId ? { schoolId: user.schoolId } : {}),
   },
@@ -195,10 +197,10 @@ const posts = await prisma.feedPost.findMany({
 
 ## Two-Schema Management
 
-| File | Provider | Commands |
-|------|----------|----------|
-| `prisma/schema.prisma` | sqlite | `npm run db:push`, `npm run db:generate` |
-| `prisma-postgres/schema.prisma` | postgresql | `npm run db:push:postgres`, `npm run db:generate:postgres` |
+| File                            | Provider   | Commands                                                   |
+| ------------------------------- | ---------- | ---------------------------------------------------------- |
+| `prisma/schema.prisma`          | sqlite     | `npm run db:push`, `npm run db:generate`                   |
+| `prisma/schema-postgres.prisma` | postgresql | `npm run db:push:postgres`, `npm run db:generate:postgres` |
 
 ### Keeping schemas in sync
 
@@ -210,7 +212,7 @@ datasource db {
   provider = "sqlite"
 }
 
-// prisma-postgres/schema.prisma
+// prisma/schema-postgres.prisma
 datasource db {
   provider = "postgresql"
 }
@@ -234,6 +236,7 @@ npm run db:seed  # Runs prisma/seed.ts via tsx
 ```
 
 The seeder creates:
+
 - 1 school (if `schoolCode` env is set)
 - Demo users: admin, teacher, student (with hashed passwords)
 - Sample courses, attendance, notifications
@@ -251,19 +254,20 @@ In Docker: `SEED_DATABASE=true` + `ALLOW_DESTRUCTIVE_SEED=true` env vars trigger
 
 ## Database Commands Reference
 
-| Command | Purpose |
-|---------|---------|
-| `npm run db:generate` | Generate Prisma Client from SQLite schema |
-| `npm run db:push` | Apply SQLite schema to database (no migration files) |
-| `npm run db:seed` | Insert demo data |
-| `npm run db:studio` | Open Prisma Studio (GUI database browser) |
-| `npm run db:generate:postgres` | Generate Prisma Client from PostgreSQL schema |
-| `npm run db:push:postgres` | Apply PostgreSQL schema to database |
-| `npm run build:postgres` | Generate PG client + build for production |
+| Command                        | Purpose                                              |
+| ------------------------------ | ---------------------------------------------------- |
+| `npm run db:generate`          | Generate Prisma Client from SQLite schema            |
+| `npm run db:push`              | Apply SQLite schema to database (no migration files) |
+| `npm run db:seed`              | Insert demo data                                     |
+| `npm run db:studio`            | Open Prisma Studio (GUI database browser)            |
+| `npm run db:generate:postgres` | Generate Prisma Client from PostgreSQL schema        |
+| `npm run db:push:postgres`     | Apply PostgreSQL schema to database                  |
+| `npm run build:postgres`       | Generate PG client + build for production            |
 
 ### Why `db push` instead of `migrate`?
 
 This project uses `prisma db push` (schema push) instead of `prisma migrate`:
+
 - **db push:** Applies schema directly, no migration history. Good for prototyping and when data loss is acceptable.
 - **migrate:** Creates timestamped migration files, tracks schema evolution. Better for production with existing data.
 

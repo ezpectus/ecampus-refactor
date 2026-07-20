@@ -21,10 +21,7 @@ export async function GET(request: Request) {
     const { items } = await getAdminAnnouncements({ page: 1, pageSize: 100 });
 
     const scheduledItems = items.filter(
-      (item) =>
-        item.announcement.scheduledAt &&
-        item.announcement.scheduledAt <= now &&
-        !item.announcement.isPublished,
+      (item) => item.announcement.scheduledAt && item.announcement.scheduledAt <= now && !item.announcement.isPublished,
     );
 
     let publishedCount = 0;
@@ -52,7 +49,10 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to process scheduled announcements', detail: error instanceof Error ? error.message : 'Unknown error' },
+      {
+        error: 'Failed to process scheduled announcements',
+        detail: error instanceof Error ? error.message : 'Unknown error',
+      },
       { status: 500 },
     );
   }

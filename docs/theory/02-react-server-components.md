@@ -1,6 +1,6 @@
 # 02 — React Server Components: Concepts & Theory
 
-**Project:** eCampus Student Portal
+**Project:** Student Portal
 **Audience:** Developers learning Next.js 15 / React 19
 **Language:** English with code examples
 
@@ -33,6 +33,7 @@ Browser downloads JS bundle → React renders all components → User sees conte
 ```
 
 **Problems:**
+
 - Large JS bundle (every component, every dependency)
 - Client must fetch data (loading spinners)
 - No SEO (search engines see empty `<div id="root">`)
@@ -48,6 +49,7 @@ Browser receives HTML → React hydrates (makes interactive parts work)
 ```
 
 **Benefits:**
+
 - Zero JS for static content (smaller bundle)
 - Server-side data fetching (no loading spinners for initial data)
 - SEO (search engines see full HTML)
@@ -77,6 +79,7 @@ export default async function RatingPage({ params }) {
 ```
 
 **What the browser receives:**
+
 - Complete HTML with grades, student names, etc.
 - Small JS bundle for `RatingContent` (only the interactive part)
 - No data fetching on the client
@@ -85,17 +88,17 @@ export default async function RatingPage({ params }) {
 
 ## Server vs Client Components
 
-| Feature | Server Component | Client Component |
-|---------|-----------------|-----------------|
-| Directive | (none — default) | `'use client'` |
-| Can use `async/await` | ✅ | ❌ (must use effects) |
-| Can use `useState`, `useEffect` | ❌ | ✅ |
-| Can use browser APIs (`window`, `localStorage`) | ❌ | ✅ |
-| Can use event handlers (`onClick`) | ❌ | ✅ |
-| Can access database directly | ✅ | ❌ |
-| Can access API keys/secrets | ✅ | ❌ |
-| Ships JS to browser | ❌ (zero JS) | ✅ |
-| Can import server-only packages | ✅ (bcrypt, prisma) | ❌ |
+| Feature                                         | Server Component    | Client Component      |
+| ----------------------------------------------- | ------------------- | --------------------- |
+| Directive                                       | (none — default)    | `'use client'`        |
+| Can use `async/await`                           | ✅                  | ❌ (must use effects) |
+| Can use `useState`, `useEffect`                 | ❌                  | ✅                    |
+| Can use browser APIs (`window`, `localStorage`) | ❌                  | ✅                    |
+| Can use event handlers (`onClick`)              | ❌                  | ✅                    |
+| Can access database directly                    | ✅                  | ❌                    |
+| Can access API keys/secrets                     | ✅                  | ❌                    |
+| Ships JS to browser                             | ❌ (zero JS)        | ✅                    |
+| Can import server-only packages                 | ✅ (bcrypt, prisma) | ❌                    |
 
 ### When to use which?
 
@@ -312,15 +315,15 @@ await updateGrade({ courseId: 1, grade: 95 });
 
 ### Why Server Actions are better
 
-| Factor | API Routes | Server Actions |
-|--------|-----------|----------------|
-| Type safety | Manual (request/response types) | Automatic (function signature) |
-| Boilerplate | URL, method, headers, JSON parse | None |
-| Validation | Manual in route handler | Zod schema in action |
-| Auth | Manual in route handler | `getLocalUser()` in action |
-| Cache invalidation | Manual `revalidatePath()` call | Same, but co-located |
-| Error handling | HTTP status codes | Throw/catch (natural) |
-| CSRF | Manual | Built-in (Next-Action header) |
+| Factor             | API Routes                       | Server Actions                 |
+| ------------------ | -------------------------------- | ------------------------------ |
+| Type safety        | Manual (request/response types)  | Automatic (function signature) |
+| Boilerplate        | URL, method, headers, JSON parse | None                           |
+| Validation         | Manual in route handler          | Zod schema in action           |
+| Auth               | Manual in route handler          | `getLocalUser()` in action     |
+| Cache invalidation | Manual `revalidatePath()` call   | Same, but co-located           |
+| Error handling     | HTTP status codes                | Throw/catch (natural)          |
+| CSRF               | Manual                           | Built-in (Next-Action header)  |
 
 ### How it works under the hood
 
@@ -407,7 +410,7 @@ const response = await apiFetch('announcements', {
 // Tag-based invalidation (when data changes)
 export async function createAnnouncement(data) {
   // ... create announcement
-  revalidateTag(ANNOUNCEMENTS_CACHE_TAG);  // ← invalidates all cached responses with this tag
+  revalidateTag(ANNOUNCEMENTS_CACHE_TAG); // ← invalidates all cached responses with this tag
 }
 ```
 
@@ -508,6 +511,7 @@ Error boundaries need interactivity (the "Try again" button calls `reset()`). Se
 ### What it does
 
 `'use client'` marks a file as a **client component**. This means:
+
 - The component runs in the browser
 - It can use hooks, state, effects, event handlers
 - It's included in the client JS bundle
@@ -562,6 +566,7 @@ export default function Page() {
 ### What `'use server'` does
 
 `'use server'` marks a file's exports as **Server Actions**. These functions:
+
 - Run on the server
 - Can be called from client components
 - Are serialized over the network (arguments and return values)
@@ -598,9 +603,11 @@ src/lib/*.ts                → no directive (called from server only)
 ```
 
 Files with `'use server'`:
+
 - `auth.actions.ts`, `admin.actions.ts`, `grading.actions.ts`, etc.
 
 Files without `'use server'`:
+
 - `prisma.ts`, `jwt.ts`, `env.ts`, `csrf.ts`, etc.
 
 ---

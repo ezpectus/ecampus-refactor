@@ -1,6 +1,6 @@
-# AGENTS.md — eCampus Frontend Conventions
+# AGENTS.md — Student Portal Frontend Conventions
 
-This file documents the *de facto* conventions used in this repo. Follow them so PRs match what already exists and don't churn through review.
+This file documents the _de facto_ conventions used in this repo. Follow them so PRs match what already exists and don't churn through review.
 
 For tech stack, commands, and env vars see [CLAUDE.md](./CLAUDE.md).
 
@@ -11,6 +11,7 @@ For tech stack, commands, and env vars see [CLAUDE.md](./CLAUDE.md).
 **Match the surrounding code.** Before adding a new pattern, open 2–3 existing modules under `src/app/[locale]/(private)/module/` and copy their structure. If you find yourself introducing an abstraction (custom layout view, new helper file, new wrapper component) that no other module uses, stop — there is almost certainly an existing pattern you should be following instead.
 
 Concrete examples of recent drift to avoid:
+
 - Adding a separate mobile card view inside a table component (no other table does this — `<Table>` is used as-is).
 - Wrapping create/edit forms in modal `<Dialog>` for primary CRUD flows. Inline forms above the table are the convention (see `announcement-management.tsx`).
 - Inventing a new file type like `schema.ts` when the form's Zod schema is small enough to live next to `useForm`.
@@ -138,14 +139,14 @@ Memoization: only wrap in `memo(function Name() {})` when the component is rende
 
 In `src/hooks/`:
 
-| Hook | Purpose |
-|------|---------|
-| `usePagination(pageSize, items)` | Slices items + reads/writes `?page=` URL param |
+| Hook                                               | Purpose                                                                              |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `usePagination(pageSize, items)`                   | Slices items + reads/writes `?page=` URL param                                       |
 | `useTableSort(rows, getSortValue?, sortableKeys?)` | Client-side column sorting, returns `{ sortedRows, sortHandlers, getSortDirection }` |
-| `useServerErrorToast()` | `errorToast()` showing the standard `'global.server-error'` message |
-| `useToast()` | Manual toasts: `toast({ title, description, variant: 'destructive' })` |
-| `useLocalStorage(key, default)` | Persist client state |
-| `useIsMobile()` | Viewport check (use sparingly — Tailwind breakpoints are usually enough) |
+| `useServerErrorToast()`                            | `errorToast()` showing the standard `'global.server-error'` message                  |
+| `useToast()`                                       | Manual toasts: `toast({ title, description, variant: 'destructive' })`               |
+| `useLocalStorage(key, default)`                    | Persist client state                                                                 |
+| `useIsMobile()`                                    | Viewport check (use sparingly — Tailwind breakpoints are usually enough)             |
 
 If you need a hook only inside one module, put it in `<module>/hooks.ts` (see `module/rating/hooks.ts`).
 
@@ -210,6 +211,7 @@ npx prettier --check $(git diff --name-only main..HEAD)
 (Or wrap each in the Docker invocation per [CLAUDE.md](./CLAUDE.md).)
 
 Quick self-review pass:
+
 - [ ] Did I match the file layout, naming, and component style of a sibling module?
 - [ ] Am I introducing any new abstraction that no other module uses? If yes, why?
 - [ ] Did I add translation keys to **both** `uk.json` and `en.json`?

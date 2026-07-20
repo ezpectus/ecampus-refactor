@@ -41,15 +41,11 @@ export const ParentView = ({ items, emptyMessage }: Props) => {
             <CardHeader className="flex-row items-center gap-4">
               <Avatar className="h-12 w-12">
                 <AvatarImage src={child.photo || undefined} alt={child.studentName} />
-                <AvatarFallback>
-                  {child.studentName.charAt(0).toUpperCase()}
-                </AvatarFallback>
+                <AvatarFallback>{child.studentName.charAt(0).toUpperCase()}</AvatarFallback>
               </Avatar>
               <div className="flex flex-col">
                 <CardTitle className="text-base">{child.studentName}</CardTitle>
-                <span className="text-sm text-muted-foreground">
-                  {child.groupName ?? '—'}
-                </span>
+                <span className="text-muted-foreground text-sm">{child.groupName ?? '—'}</span>
               </div>
             </CardHeader>
             <CardContent>
@@ -63,9 +59,7 @@ export const ParentView = ({ items, emptyMessage }: Props) => {
                   <span className="font-semibold">{child.studyYear}</span>
                 </div>
               </div>
-              {child.faculty && (
-                <p className="mt-2 text-sm text-muted-foreground">{child.faculty}</p>
-              )}
+              {child.faculty && <p className="text-muted-foreground mt-2 text-sm">{child.faculty}</p>}
             </CardContent>
           </Card>
         ))}

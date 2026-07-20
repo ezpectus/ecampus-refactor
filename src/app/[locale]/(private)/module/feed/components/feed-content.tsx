@@ -1,9 +1,18 @@
 'use client';
 
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { createFeedComment, createFeedPost, deleteFeedPost, type FeedPostItem, getFeedPosts, toggleFeedLike, uploadFeedImage } from '@/actions/feed.actions';
+import {
+  createFeedComment,
+  createFeedPost,
+  deleteFeedPost,
+  type FeedPostItem,
+  getFeedPosts,
+  toggleFeedLike,
+  uploadFeedImage,
+} from '@/actions/feed.actions';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { PaginationWithLinks } from '@/components/ui/pagination-with-links';
@@ -127,12 +136,7 @@ export const FeedContent = ({ currentUserId, isAdmin }: Props) => {
             rows={3}
           />
           <div className="flex items-center gap-2">
-            <Button
-              variant="tertiary"
-              size="small"
-              onClick={() => fileInputRef.current?.click()}
-              loading={uploading}
-            >
+            <Button variant="tertiary" size="small" onClick={() => fileInputRef.current?.click()} loading={uploading}>
               {t('upload-image')}
             </Button>
             <input
@@ -144,7 +148,14 @@ export const FeedContent = ({ currentUserId, isAdmin }: Props) => {
             />
             {postImage && (
               <div className="flex items-center gap-2">
-                <img src={postImage} alt="" className="h-10 w-10 rounded object-cover" />
+                <Image
+                  src={postImage}
+                  alt=""
+                  width={40}
+                  height={40}
+                  className="h-10 w-10 rounded object-cover"
+                  unoptimized
+                />
                 <Button variant="tertiary" size="small" onClick={() => setPostImage('')}>
                   ✕
                 </Button>

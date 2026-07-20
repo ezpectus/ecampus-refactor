@@ -1,5 +1,5 @@
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useMemo,useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 import { useRouter } from '@/i18n/routing';
 

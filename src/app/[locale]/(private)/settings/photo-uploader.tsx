@@ -24,9 +24,12 @@ export function PhotoUploader({ photoSrc, onFileUpload }: PhotoUploaderProps) {
 
   const [error, setError] = useState('');
 
-  useEffect(() => () => {
-    if (photoPreview.startsWith('blob:')) URL.revokeObjectURL(photoPreview);
-  }, [photoPreview]);
+  useEffect(
+    () => () => {
+      if (photoPreview.startsWith('blob:')) URL.revokeObjectURL(photoPreview);
+    },
+    [photoPreview],
+  );
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError('');

@@ -1,18 +1,14 @@
-import { describe, expect,it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import { createPagesRange } from '@/lib/pagination.utils';
 
 describe('createPagesRange', () => {
   it('returns all pages when total is within visible range', () => {
-    expect(createPagesRange({ currentPage: 1, pagesCount: 5, visibleRange: 5 })).toEqual([
-      1, 2, 3, 4, 5,
-    ]);
+    expect(createPagesRange({ currentPage: 1, pagesCount: 5, visibleRange: 5 })).toEqual([1, 2, 3, 4, 5]);
   });
 
   it('returns all pages when pagesCount <= visibleRange + 4', () => {
-    expect(createPagesRange({ currentPage: 3, pagesCount: 9, visibleRange: 5 })).toEqual([
-      1, 2, 3, 4, 5, 6, 7, 8, 9,
-    ]);
+    expect(createPagesRange({ currentPage: 3, pagesCount: 9, visibleRange: 5 })).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9]);
   });
 
   it('adds ellipsis at end when current page is near start', () => {

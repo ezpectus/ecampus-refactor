@@ -37,9 +37,7 @@ export function InternalMaterialsTable({ internalMaterials }: Props) {
           <TableRow key={row.resourceId}>
             <TableCell>{row.date}</TableCell>
             <TableCell>
-              <Link href={`/module/studysheet/${row.resourceId}`}>
-                {row.name}
-              </Link>
+              <Link href={`/module/studysheet/${row.resourceId}`}>{row.name}</Link>
             </TableCell>
             <TableCell className="max-w-[360px]">
               <LecturerItemCell photo={row.lecturer.photo} fullName={row.lecturer.fullName} />

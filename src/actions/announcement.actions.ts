@@ -92,12 +92,16 @@ export const getAnnouncements = async ({ excludeOutdated = false }: { excludeOut
   }
 
   try {
-    const response = await retryWithBackoff(() => apiFetch('announcements', {
-      next: { revalidate: 300, tags: [ANNOUNCEMENTS_CACHE_TAG] },
-    }), {
-      maxAttempts: 2,
-      baseDelayMs: 200,
-    });
+    const response = await retryWithBackoff(
+      () =>
+        apiFetch('announcements', {
+          next: { revalidate: 300, tags: [ANNOUNCEMENTS_CACHE_TAG] },
+        }),
+      {
+        maxAttempts: 2,
+        baseDelayMs: 200,
+      },
+    );
 
     if (!response.ok) {
       return [];

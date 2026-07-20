@@ -29,7 +29,11 @@ function calculateTrend(history: { oldGrade: number; newGrade: number; createdAt
   const sorted = [...history].sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
   const recentGrades = sorted.slice(-3).map((h) => h.newGrade);
   const avgRecent = recentGrades.reduce((a, b) => a + b, 0) / recentGrades.length;
-  const avgOld = sorted.slice(0, -1).map((h) => h.oldGrade).reduce((a, b) => a + b, 0) / Math.max(sorted.length - 1, 1);
+  const avgOld =
+    sorted
+      .slice(0, -1)
+      .map((h) => h.oldGrade)
+      .reduce((a, b) => a + b, 0) / Math.max(sorted.length - 1, 1);
 
   const diff = avgRecent - avgOld;
   if (diff > 3) return 'up';
@@ -37,11 +41,7 @@ function calculateTrend(history: { oldGrade: number; newGrade: number; createdAt
   return 'stable';
 }
 
-function predictGrade(
-  currentGrade: number,
-  trend: 'up' | 'down' | 'stable',
-  attendanceRate: number,
-): number {
+function predictGrade(currentGrade: number, trend: 'up' | 'down' | 'stable', attendanceRate: number): number {
   let predicted = currentGrade;
 
   if (trend === 'up') predicted += 4;
@@ -72,7 +72,11 @@ function getRiskReasonKeys(predictedGrade: number, attendanceRate: number, trend
   return reasons;
 }
 
-function getSummaryKey(predictedGpa: number, atRiskCount: number, totalCourses: number): { key: string; params: { atRiskCount?: number } } {
+function getSummaryKey(
+  predictedGpa: number,
+  atRiskCount: number,
+  totalCourses: number,
+): { key: string; params: { atRiskCount?: number } } {
   if (atRiskCount === 0) {
     if (predictedGpa >= 85) return { key: 'summary.excellent', params: {} };
     if (predictedGpa >= 70) return { key: 'summary.good', params: {} };
@@ -130,7 +134,8 @@ export async function getGradePredictions(): Promise<SemesterPrediction | null> 
 
     const totalCredits = courses.reduce((a, b) => a + b.credits, 0);
     const currentGpa = courses.reduce((a, b) => a + b.grade * b.credits, 0) / Math.max(totalCredits, 1);
-    const predictedGpa = coursePredictions.reduce((a, b) => a + b.predictedGrade * b.credits, 0) / Math.max(totalCredits, 1);
+    const predictedGpa =
+      coursePredictions.reduce((a, b) => a + b.predictedGrade * b.credits, 0) / Math.max(totalCredits, 1);
     const atRiskCount = coursePredictions.filter((c) => c.riskLevel === 'high').length;
 
     return {

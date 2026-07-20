@@ -61,7 +61,6 @@ COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 # Copy Prisma schemas + generated client for db push at startup
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
-COPY --from=builder --chown=nextjs:nodejs /app/prisma-postgres ./prisma-postgres
 COPY --from=builder --chown=nextjs:nodejs /app/prisma.config.ts ./prisma.config.ts
 COPY --from=builder --chown=nextjs:nodejs /app/prisma-postgres.config.ts ./prisma-postgres.config.ts
 

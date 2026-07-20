@@ -8,7 +8,7 @@ import { useMemo, useRef, useState } from 'react';
 import { MagnifyingGlassRegular } from '@/app/images';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { usePathname,useRouter } from '@/i18n/routing';
+import { usePathname, useRouter } from '@/i18n/routing';
 
 import { ANNOUNCEMENT_FILTER_LANGUAGES } from '../constants';
 
@@ -20,8 +20,7 @@ export const AnnouncementsFilters = () => {
 
   const search = searchParams.get('search') ?? '';
   const rawLanguage = searchParams.get('language')?.toLowerCase();
-  const language =
-    ANNOUNCEMENT_FILTER_LANGUAGES.find((v) => v === rawLanguage) ?? 'all';
+  const language = ANNOUNCEMENT_FILTER_LANGUAGES.find((v) => v === rawLanguage) ?? 'all';
 
   const [searchValue, setSearchValue] = useState(search);
   const [prevSearch, setPrevSearch] = useState(search);

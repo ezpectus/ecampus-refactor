@@ -1,7 +1,7 @@
 # 04 — Target Architecture After Refactoring
 
 **Date:** 18.07.2026  
-**Author:** Denys Stepanenko  
+**Author:** Denys Stepanenko
 
 ---
 
@@ -13,21 +13,21 @@ Refactoring does not change the tech stack — it **eliminates weak points** and
 
 ## What Changes
 
-| Layer | Before | After |
-|-------|--------|-------|
-| **JWT** | `decode()` without verification | Structure validation + exp + modules (or `verify()` if key available) |
-| **Cookies** | `httpOnly` only | `httpOnly` + `secure` + `sameSite: 'lax'` (production) |
-| **Security headers** | None | CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy |
-| **Rate limiting** | None | Login/password reset: 5 attempts / 15 min |
-| **Error handling** | 3 different patterns | 2 documented patterns: read → safe default, mutation → throw |
-| **Caching** | `cache: 'no-cache'` default | `next: { revalidate: 300 }` default + tags for invalidation |
-| **Images** | `unoptimized: true` | Documented decision (CDN or Next.js optimization) |
-| **Error boundary** | `<></>` (empty) | Fallback UI with message + "try again" button |
-| **`<html>`** | Without `lang` | `lang={locale}` |
-| **Env vars** | `process.env.X!` (non-null) | Zod validation at startup, throw if invalid |
-| **Tests** | 0 | Vitest (unit) + Playwright (e2e), coverage > 80% actions |
-| **Dead code** | 3 unused packages, Storybook with 1 story | Cleaned up |
-| **`studysheet/[id]`** | `'use client'` + `useEffect` fetch | Server component, data on server |
+| Layer                 | Before                                    | After                                                                 |
+| --------------------- | ----------------------------------------- | --------------------------------------------------------------------- |
+| **JWT**               | `decode()` without verification           | Structure validation + exp + modules (or `verify()` if key available) |
+| **Cookies**           | `httpOnly` only                           | `httpOnly` + `secure` + `sameSite: 'lax'` (production)                |
+| **Security headers**  | None                                      | CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy   |
+| **Rate limiting**     | None                                      | Login/password reset: 5 attempts / 15 min                             |
+| **Error handling**    | 3 different patterns                      | 2 documented patterns: read → safe default, mutation → throw          |
+| **Caching**           | `cache: 'no-cache'` default               | `next: { revalidate: 300 }` default + tags for invalidation           |
+| **Images**            | `unoptimized: true`                       | Documented decision (CDN or Next.js optimization)                     |
+| **Error boundary**    | `<></>` (empty)                           | Fallback UI with message + "try again" button                         |
+| **`<html>`**          | Without `lang`                            | `lang={locale}`                                                       |
+| **Env vars**          | `process.env.X!` (non-null)               | Zod validation at startup, throw if invalid                           |
+| **Tests**             | 0                                         | Vitest (unit) + Playwright (e2e), coverage > 80% actions              |
+| **Dead code**         | 3 unused packages, Storybook with 1 story | Cleaned up                                                            |
+| **`studysheet/[id]`** | `'use client'` + `useEffect` fetch        | Server component, data on server                                      |
 
 ---
 
@@ -285,16 +285,16 @@ jobs:
 
 ## Success Metrics
 
-| Metric | Before | Target |
-|--------|--------|--------|
-| Tests | 0 | > 100 (unit + e2e) |
-| Action coverage | 0% | > 80% |
-| Middleware coverage | 0% | > 90% |
-| Security headers | 0 | 8+ (CSP, HSTS, X-Frame, etc.) |
-| `any` types | 7+ | 0 |
-| Unused npm packages | 3+ | 0 |
-| Error boundaries with UI | 0 | 1 (private routes) |
-| `<html lang>` | No | Yes |
-| `secure` cookies | No | Yes (production) |
-| Cache strategy | no-cache | revalidate: 300 default |
-| Server component pages | 11/12 | 12/12 |
+| Metric                   | Before   | Target                        |
+| ------------------------ | -------- | ----------------------------- |
+| Tests                    | 0        | > 100 (unit + e2e)            |
+| Action coverage          | 0%       | > 80%                         |
+| Middleware coverage      | 0%       | > 90%                         |
+| Security headers         | 0        | 8+ (CSP, HSTS, X-Frame, etc.) |
+| `any` types              | 7+       | 0                             |
+| Unused npm packages      | 3+       | 0                             |
+| Error boundaries with UI | 0        | 1 (private routes)            |
+| `<html lang>`            | No       | Yes                           |
+| `secure` cookies         | No       | Yes (production)              |
+| Cache strategy           | no-cache | revalidate: 300 default       |
+| Server component pages   | 11/12    | 12/12                         |

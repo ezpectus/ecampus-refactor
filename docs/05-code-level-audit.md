@@ -27,10 +27,7 @@
 **File:** `src/app/[locale]/(private)/module/msg/components/dialog/preview-dialog.tsx:47`
 
 ```tsx
-<div
-  className="pt-2 text-base leading-relaxed"
-  dangerouslySetInnerHTML={{ __html: selectedMail.content }}
-/>
+<div className="pt-2 text-base leading-relaxed" dangerouslySetInnerHTML={{ __html: selectedMail.content }} />
 ```
 
 **Problem:** Email content (`selectedMail.content`) is rendered as raw HTML without sanitization. If an attacker sends a message containing `<script>` or `<img onerror=...>`, the script executes in the user's browser when they preview the message. This is a stored XSS — the payload persists in the backend and triggers on every preview.
@@ -38,6 +35,7 @@
 **Impact:** Session hijacking, token theft, credential exfiltration, defacement.
 
 **Fix:** Install `dompurify` and sanitize before rendering:
+
 ```tsx
 import DOMPurify from 'dompurify';
 // ...
@@ -59,12 +57,14 @@ export const getJWTPayload = <T extends JwtPayload>(token: string) => {
 **Problem:** `JWT.decode()` only base64-decodes the payload — it does NOT verify the signature. Any user can craft a fake JWT with arbitrary `modules` array and `exp` value. The `as T` cast suppresses the null return type, hiding cases where decode fails.
 
 **Used in:**
+
 - `src/middleware/utils.ts:64` — `getJWTPayload<CampusJwtPayload>(token)` for auth decisions
 - `src/actions/auth.actions.ts:17` — `JWT.decode(token) as { exp: number }` for cookie expiry
 
 **Impact:** Privilege escalation — user can add any module to their JWT and access restricted pages. Authentication bypass — user can set `exp` to a far-future timestamp.
 
 **Fix:** If the backend public key is available, use `JWT.verify()`. If not, at minimum validate the payload structure:
+
 ```ts
 export const getJWTPayload = <T extends JwtPayload>(token: string): T | null => {
   const payload = JWT.decode(token, { json: true });
@@ -89,6 +89,7 @@ resolvedCookies.set(TOKEN_COOKIE_NAME, token, { domain: MAIN_COOKIE_DOMAIN, http
 **Impact:** Token interception over HTTP, CSRF attacks.
 
 **Fix:**
+
 ```ts
 resolvedCookies.set(SID_COOKIE_NAME, sessionId, {
   domain: ROOT_COOKIE_DOMAIN,
@@ -113,6 +114,7 @@ resolvedCookies.set(SID_COOKIE_NAME, sessionId, {
 **Problem:** Only `.env` is ignored. `.env.production` (which exists in the repo root and contains API URLs, cookie domains, reCAPTCHA key, GA ID) is NOT ignored. If committed, production secrets leak to anyone with repo access.
 
 **Fix:** Change to `.env*` or add `.env.production` explicitly:
+
 ```
 .env*
 !.env.example
@@ -127,6 +129,7 @@ resolvedCookies.set(SID_COOKIE_NAME, sessionId, {
 **Problem:** No CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, or Permissions-Policy headers are set anywhere. The app is vulnerable to clickjacking, MIME sniffing, and data exfiltration.
 
 **Fix:** Add to `next.config.mjs`:
+
 ```js
 async headers() {
   return [{
@@ -147,6 +150,7 @@ async headers() {
 ### P1-06. No rate limiting on auth endpoints [CWE-307]
 
 **Files:**
+
 - `src/actions/auth.actions.ts:28` — `loginWithCredentials`
 - `src/actions/auth.actions.ts:68` — `resetPassword`
 - `src/app/api/kpi-id/route.ts:7` — `GET` handler
@@ -172,6 +176,7 @@ export async function redirectToEmploymentSystem() {
 **Problem:** The `url` from the backend response is passed directly to `redirect()` without validation. If the backend is compromised or the response is tampered with, the user could be redirected to a malicious site.
 
 **Fix:** Validate the URL domain before redirecting:
+
 ```ts
 const parsed = new URL(url);
 if (!parsed.hostname.endsWith('.kpi.ua')) throw new Error('Invalid redirect URL');
@@ -183,12 +188,14 @@ redirect(url);
 ### P1-08. No fetch timeout [CWE-1127]
 
 **Files:**
+
 - `src/lib/client.ts:31` — `await fetch<T>(input, { ... })`
 - `src/lib/file-upload.ts:18` — `await fetch(input, { ... })`
 
 **Problem:** No `AbortSignal.timeout()` or timeout mechanism. If the backend hangs, the request hangs indefinitely, consuming server resources.
 
 **Fix:**
+
 ```ts
 const response = await fetch(input, {
   ...options,
@@ -216,6 +223,7 @@ const response = await fetch(input, {
 ### P2-10. Non-null assertions on environment variables [CWE-758]
 
 **Files (15 occurrences):**
+
 - `src/lib/client.ts:49` — `process.env.CAMPUS_API_BASE_PATH!`
 - `src/lib/file-upload.ts:38` — `process.env.CAMPUS_API_BASE_PATH!`
 - `src/app/layout.tsx:19` — `process.env.NEXT_PUBLIC_GA_ID!`
@@ -234,6 +242,7 @@ const response = await fetch(input, {
 **Problem:** The `!` non-null assertion operator suppresses TypeScript's null check. If an env var is missing, the value is `undefined` at runtime, causing silent failures (empty base URL, GA with `gaId="undefined"`, broken links).
 
 **Fix:** Create `src/lib/env.ts` with Zod validation:
+
 ```ts
 import { z } from 'zod';
 const envSchema = z.object({
@@ -259,6 +268,7 @@ if (response.status < 200 || response.status >= 300) {
 **Problem:** All non-2xx responses (401, 403, 500, network error) return `null`. The client cannot distinguish between wrong password and server error. No logging of the actual status code.
 
 **Fix:** Log the status, return a typed error:
+
 ```ts
 if (!response.ok) {
   console.error('Login failed:', response.status);
@@ -281,6 +291,7 @@ if (!response.ok) {
 **Problem:** Network timeout, 500, 502, and actual 400 are all replaced with "Bad request". The client never knows the real cause.
 
 **Fix:** Re-throw the original error or create specific error types:
+
 ```ts
 } catch (error) {
   if (error instanceof Error) throw error;
@@ -311,6 +322,7 @@ import { USER_PROFILE_CACHE_TAG } from '@/lib/constants/cache-tags';
 **File:** `src/middleware/contants.ts`
 
 **Problem:** The filename is misspelled. It's imported in 4 files:
+
 - `src/middleware/authentication.middleware.ts:5`
 - `src/middleware/authorization.middleware.ts:2`
 - `src/middleware/code-of-honor.middleware.ts:4`
@@ -407,6 +419,7 @@ export const Header: FC<Props> = ({ user }) => {
 **Problem:** `FC` (FunctionComponent) is deprecated in React 19. The rest of the codebase uses direct prop typing: `({ user }: Props)`.
 
 **Fix:**
+
 ```ts
 import { useEffect, useRef, useState } from 'react';
 export const Header = ({ user }: Props) => {
@@ -434,6 +447,7 @@ export const SubLayout = ({ children, breadcrumbs = [], pageTitle, className }: 
 ### Q-10. `TODO` and `FIXME` comments left in code
 
 **Files:**
+
 - `src/middleware/code-of-honor.middleware.ts:10` — `// TODO: Refactor to not use actions here`
 - `src/app/[locale]/(private)/student-manual/page.tsx:9` — `// TODO: remove this page when the manual is ready for lecturers`
 - `src/app/[locale]/(public)/(auth)/password-reset/password-reset-form.tsx:13-15` — `// FIXME: This version of recaptcha library should be replace with official one`
@@ -448,6 +462,7 @@ export const SubLayout = ({ children, breadcrumbs = [], pageTitle, className }: 
 ### Q-11. `console.error` used for all error logging (no structured logging)
 
 **Files (20+ occurrences):**
+
 - `src/actions/announcement.actions.ts:51,66,90,110,127,143,156,169,182`
 - `src/actions/certificates.actions.ts:90`
 - `src/actions/colleague-contacts.actions.ts:12,18,28,34`
@@ -465,6 +480,7 @@ export const SubLayout = ({ children, breadcrumbs = [], pageTitle, className }: 
 **Problem:** The same SVGO config (`removeViewBox: false`) is duplicated for Turbopack and webpack. If one is updated, the other may be forgotten.
 
 **Fix:** Extract to a shared variable:
+
 ```js
 const svgoConfig = { plugins: [{ name: 'preset-default', params: { overrides: { removeViewBox: false } } }] };
 ```
@@ -479,11 +495,11 @@ const svgoConfig = { plugins: [{ name: 'preset-default', params: { overrides: { 
 
 **Problem:** Three different patterns coexist:
 
-| Pattern | Files | Behavior |
-|---------|-------|----------|
-| **Throw** on non-OK | `certificates.actions.ts`, `msg.actions.ts`, `attestation.actions.ts`, `rating.actions.ts`, `monitoring.actions.ts`, `term.actions.ts`, `settings.actions.ts` | Client catches, shows toast |
-| **Return safe default** | `announcement.actions.ts`, `menu.actions.ts`, `colleague-contacts.actions.ts` | Client never sees error |
-| **Return null** | `auth.actions.ts` (`loginWithCredentials`, `getUserDetails`) | Client must null-check |
+| Pattern                 | Files                                                                                                                                                         | Behavior                    |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| **Throw** on non-OK     | `certificates.actions.ts`, `msg.actions.ts`, `attestation.actions.ts`, `rating.actions.ts`, `monitoring.actions.ts`, `term.actions.ts`, `settings.actions.ts` | Client catches, shows toast |
+| **Return safe default** | `announcement.actions.ts`, `menu.actions.ts`, `colleague-contacts.actions.ts`                                                                                 | Client never sees error     |
+| **Return null**         | `auth.actions.ts` (`loginWithCredentials`, `getUserDetails`)                                                                                                  | Client must null-check      |
 
 AGENTS.md §3 documents two patterns, but they're not applied consistently.
 
@@ -499,7 +515,7 @@ AGENTS.md §3 documents two patterns, but they're not applied consistently.
 export async function getContacts() {
   try {
     const response = await campusFetch<Contact[]>('profile/contacts');
-    return response.json();  // ← no response.ok check
+    return response.json(); // ← no response.ok check
   } catch (error) {
     return [];
   }
@@ -509,6 +525,7 @@ export async function getContacts() {
 **Problem:** If the server returns 401/403/500, `response.json()` may throw (if body isn't JSON) or return an error object that doesn't match `Contact[]`. The catch returns `[]`, hiding the error.
 
 **Fix:**
+
 ```ts
 if (!response.ok) return [];
 return response.json();
@@ -529,6 +546,7 @@ return response.json();
 **Problem:** Every mutation catches the original error and throws a new generic one. The original error (network timeout, 401, 500, validation error) is lost. The client only sees "Error while creating contact" with no actionable information.
 
 **Fix:** Re-throw the original error or include the original in the new error:
+
 ```ts
 } catch (error) {
   throw new Error('Error while creating contact', { cause: error });
@@ -550,6 +568,7 @@ return response.json();
 **Problem:** Error is silently swallowed. No toast, no error state, no logging. User sees a blank page (line 54: `if (!creditModule) return null;`).
 
 **Fix:**
+
 ```ts
 } catch (error) {
   errorToast();
@@ -570,9 +589,10 @@ return <></>;
 **Problem:** When a rendering error occurs in any private route, the user sees a blank white page. A toast is shown (line 10), but if the toast system itself is broken, there's zero feedback. No recovery option (no "try again" button).
 
 **Fix:**
+
 ```tsx
 return (
-  <div className="flex flex-col items-center justify-center min-h-screen gap-4">
+  <div className="flex min-h-screen flex-col items-center justify-center gap-4">
     <Heading2>{t('error.title')}</Heading2>
     <Paragraph>{t('error.description')}</Paragraph>
     <Button onClick={reset}>{t('error.retry')}</Button>
@@ -609,6 +629,7 @@ const cacheOption = 'next' in otherOptions ? {} : { cache: 'no-cache' as const }
 ```
 
 **Problem:** Unless the caller explicitly passes `next: { ... }`, every request bypasses cache. This means:
+
 - No ISR for pages using `campusFetch` without `next: { revalidate }`
 - Duplicate requests for the same endpoint
 - Slower page loads
@@ -644,6 +665,7 @@ useEffect(() => {
 ```
 
 **Problem:** This is the only `page.tsx` in the project marked `'use client'`. It fetches data via `useEffect` instead of server-side rendering. Consequences:
+
 - No SSR data (blank loading screen on first render)
 - No streaming
 - Server action (`getMonitoringById`) runs as a client-to-server RPC call
@@ -716,6 +738,7 @@ useEffect(() => {
 ### R-01. `key={index}` used in 14 list renders
 
 **Files:**
+
 - `src/app/[locale]/(private)/module/vedomoststud/components/table.tsx:59`
 - `src/app/[locale]/(private)/module/facultycertificate/components/all-docs-table.tsx:99`
 - `src/app/[locale]/(private)/module/studysheet/components/disciplines-table.tsx:49`
@@ -776,6 +799,7 @@ useEffect(() => {
 **Problem:** On every `user` prop change, the component waits 5 seconds then updates the photo URL. This is a workaround for CDN cache purging. The `sleep(5000)` blocks the effect, and if the component unmounts during the sleep, `setProfilePhotoUrl` is called on an unmounted component (React warning).
 
 **Fix:** Use a cleanup timeout:
+
 ```tsx
 useEffect(() => {
   const timer = setTimeout(() => setProfilePhotoUrl(), 5000);
@@ -807,11 +831,11 @@ useEffect(() => {
 
 ### D-01. Unused npm dependencies
 
-| Package | Version | Evidence |
-|---------|---------|----------|
-| `date-fns` | 4.1.0 | Zero imports across `src/` — `dayjs` is used everywhere |
-| `react-day-picker` | 9.11.0 | Zero imports across `src/` |
-| `@tanstack/react-table` | 8.21.3 | Zero imports across `src/` — custom `useTableSort` hook is used instead |
+| Package                 | Version | Evidence                                                                |
+| ----------------------- | ------- | ----------------------------------------------------------------------- |
+| `date-fns`              | 4.1.0   | Zero imports across `src/` — `dayjs` is used everywhere                 |
+| `react-day-picker`      | 9.11.0  | Zero imports across `src/`                                              |
+| `@tanstack/react-table` | 8.21.3  | Zero imports across `src/` — custom `useTableSort` hook is used instead |
 
 **Fix:** Remove from `package.json` and run `npm install`.
 
@@ -843,11 +867,11 @@ export type IconPosition = 'start' | 'end';
 
 ### D-04. Unused UI components (candidates for removal)
 
-| Component | Imported outside itself? |
-|-----------|--------------------------|
-| `src/components/ui/accordion.tsx` | No |
+| Component                             | Imported outside itself?  |
+| ------------------------------------- | ------------------------- |
+| `src/components/ui/accordion.tsx`     | No                        |
 | `src/components/ui/dropdown-menu.tsx` | No (only self-references) |
-| `src/components/ui/switch.tsx` | No |
+| `src/components/ui/switch.tsx`        | No                        |
 
 **Fix:** Remove if not planned for near-term use.
 
@@ -864,6 +888,7 @@ Storybook is installed but is not a testing tool.
 **Risk:** Any refactoring or fix could silently break behavior. The middleware (auth, authorization, code-of-honor) is security-critical and completely untested.
 
 **Fix:**
+
 1. Install Vitest: `npm install -D vitest @testing-library/react jsdom`
 2. Install Playwright: `npm install -D @playwright/test`
 3. Write baseline tests for middleware first (auth, authorization)
@@ -895,23 +920,23 @@ The project has solid foundations:
 
 ## Summary: Issue Count by Severity
 
-| Severity | Count | Categories |
-|----------|-------|------------|
-| **P0 Critical** | 4 | XSS, JWT, cookies, env leak |
-| **P1 High** | 5 | CSP, rate limiting, open redirect, timeout, IP spoofing |
-| **P2 Medium** | 2 | Env validation, error info loss |
-| **Code Quality** | 12 | Imports, typo, toast, deps, types, FC, TODOs, logging, SVG dup |
-| **Error Handling** | 6 | Inconsistent strategy, missing checks, generic errors, empty catch, error boundary, middleware catch |
-| **Performance** | 4 | No cache, unoptimized images, client-side fetch (×2) |
-| **Accessibility** | 3 | No lang, missing aria-label, insufficient aria-labels |
-| **React Anti-Patterns** | 4 | key={index} (×14), useEffect deps, sleep in effect, Suspense without fallback |
-| **Dead Code** | 4 | 3 npm packages, Storybook, unused file, unused components |
-| **Testing** | 1 | Zero tests |
-| **i18n (new)** | 5 | Hardcoded UA strings, missing setRequestLocale, missing generateMetadata |
-| **Navigation (new)** | 3 | Missing loading.tsx, missing Suspense fallback, hardcoded redirect paths |
-| **Security: target=_blank** | 1 | 7 links missing rel="noopener noreferrer" (CWE-1022) |
-| **Architecture & Infra** | 12 | Radix direct import, FC+async, loading inconsistency, notFound vs redirect, async in client component, row click fetch, div onClick, setTimeout leak, router without locale, no HEALTHCHECK, no engines, no test script |
-| **Total** | **66** | |
+| Severity                     | Count  | Categories                                                                                                                                                                                                              |
+| ---------------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **P0 Critical**              | 4      | XSS, JWT, cookies, env leak                                                                                                                                                                                             |
+| **P1 High**                  | 5      | CSP, rate limiting, open redirect, timeout, IP spoofing                                                                                                                                                                 |
+| **P2 Medium**                | 2      | Env validation, error info loss                                                                                                                                                                                         |
+| **Code Quality**             | 12     | Imports, typo, toast, deps, types, FC, TODOs, logging, SVG dup                                                                                                                                                          |
+| **Error Handling**           | 6      | Inconsistent strategy, missing checks, generic errors, empty catch, error boundary, middleware catch                                                                                                                    |
+| **Performance**              | 4      | No cache, unoptimized images, client-side fetch (×2)                                                                                                                                                                    |
+| **Accessibility**            | 3      | No lang, missing aria-label, insufficient aria-labels                                                                                                                                                                   |
+| **React Anti-Patterns**      | 4      | key={index} (×14), useEffect deps, sleep in effect, Suspense without fallback                                                                                                                                           |
+| **Dead Code**                | 4      | 3 npm packages, Storybook, unused file, unused components                                                                                                                                                               |
+| **Testing**                  | 1      | Zero tests                                                                                                                                                                                                              |
+| **i18n (new)**               | 5      | Hardcoded UA strings, missing setRequestLocale, missing generateMetadata                                                                                                                                                |
+| **Navigation (new)**         | 3      | Missing loading.tsx, missing Suspense fallback, hardcoded redirect paths                                                                                                                                                |
+| **Security: target=\_blank** | 1      | 7 links missing rel="noopener noreferrer" (CWE-1022)                                                                                                                                                                    |
+| **Architecture & Infra**     | 12     | Radix direct import, FC+async, loading inconsistency, notFound vs redirect, async in client component, row click fetch, div onClick, setTimeout leak, router without locale, no HEALTHCHECK, no engines, no test script |
+| **Total**                    | **66** |                                                                                                                                                                                                                         |
 
 ---
 
@@ -964,7 +989,7 @@ return <LocaleOption text="Перейти на українську" icon={<Flag
 **File:** `src/app/[locale]/(private)/module/facultycertificate/page.content.tsx:81`
 
 ```tsx
-placeholder="Пошук за імʼям студента, призначенням..."
+placeholder = 'Пошук за імʼям студента, призначенням...';
 ```
 
 **Problem:** Hardcoded Ukrainian placeholder text in a client component. Bypasses i18n entirely.
@@ -993,6 +1018,7 @@ const IMAGES: CarouselImage[] = [
 **Problem:** `setRequestLocale(locale)` is required by `next-intl` for static rendering optimization. It's called in some pages but not others:
 
 **Pages WITH `setRequestLocale`:**
+
 - `src/app/[locale]/layout.tsx:55`
 - `src/app/[locale]/(private)/module/directory/page.tsx:24`
 - `src/app/[locale]/(private)/user-manual/page.tsx:26`
@@ -1005,6 +1031,7 @@ const IMAGES: CarouselImage[] = [
 - `src/app/[locale]/(private)/about/page.tsx:22`
 
 **Pages MISSING `setRequestLocale`:**
+
 - `src/app/[locale]/(private)/module/announcementseditor/page.tsx`
 - `src/app/[locale]/(private)/module/announcementseditor/create/page.tsx`
 - `src/app/[locale]/(private)/module/announcementseditor/[id]/edit/page.tsx`
@@ -1031,6 +1058,7 @@ const IMAGES: CarouselImage[] = [
 ### I-03. Missing `generateMetadata` in 2 module pages
 
 **Files:**
+
 - `src/app/[locale]/(private)/module/facultycertificate/[id]/page.tsx` — no `generateMetadata`
 - `src/app/[locale]/(private)/module/studysheet/[id]/page.tsx` — no `generateMetadata` (also a client component, so can't have one)
 
@@ -1047,14 +1075,17 @@ const IMAGES: CarouselImage[] = [
 **Problem:** Only 5 of 12 module directories have `loading.tsx`:
 
 **Have `loading.tsx`:**
+
 - `announcementseditor`, `attestationresults`, `directory`, `msg`, `vedomoststud`
 
 **Missing `loading.tsx`:**
+
 - `certificates`, `employment`, `facultycertificate`, `facultycertificate/[id]`, `kurator`, `rating`, `studysheet`, `studysheet/[id]`
 
 **Impact:** When navigating to these pages, users see a blank screen during server-side data fetching. No loading indicator.
 
 **Fix:** Add `loading.tsx` to each missing directory:
+
 ```tsx
 import { LoadingScreen } from '@/components/loading-screen';
 export default function Loading() {
@@ -1091,6 +1122,7 @@ router.push(`/module/facultycertificate?${qs.stringify(params)}`);
 **Problem:** The URL doesn't include the locale prefix. In a localized app, this should use `router.push` from `@/i18n/routing` which auto-prefixes the locale, or include the locale manually.
 
 **Fix:** Use `useRouter` from `@/i18n/routing` instead of `next/navigation`:
+
 ```tsx
 import { useRouter } from '@/i18n/routing';
 ```
@@ -1105,15 +1137,15 @@ import { useRouter } from '@/i18n/routing';
 
 **Affected files:**
 
-| File | Line | Element |
-|------|------|---------|
-| `src/widgets/faq/frequently-asked-questions.tsx` | 24 | `<Link href={process.env.NEXT_PUBLIC_CAMPUS_DOCUMENT_TEMPLATE!} target="_blank">` |
-| `src/components/not-found-page.tsx` | 33 | `<Link href={process.env.NEXT_PUBLIC_KBIS_URL!} target="_blank">` |
-| `src/components/app-sidebar/footer.tsx` | 38 | `<Link href={process.env.NEXT_PUBLIC_KBIS_URL!} target="_blank">` |
-| `src/app/[locale]/(public)/footer.tsx` | 21 | `<Link href={process.env.NEXT_PUBLIC_KBIS_URL!} target="_blank">` |
-| `src/app/[locale]/(private)/notice-board/components/notice.tsx` | 26 | `<Link href={announcement.link?.uri \|\| ''} target="_blank">` |
-| `src/app/[locale]/(public)/validate-certificate/certificate-verifier.tsx` | 126 | `<Link href={process.env.NEXT_PUBLIC_WHATSAPP_SUPPORT_LINK!} target="_blank">` |
-| `src/app/[locale]/(private)/accept-code-of-honor/page.tsx` | 34 | `<Link target="_blank" href={process.env.NEXT_PUBLIC_CODE_OF_HONOR!}>` |
+| File                                                                      | Line | Element                                                                           |
+| ------------------------------------------------------------------------- | ---- | --------------------------------------------------------------------------------- |
+| `src/widgets/faq/frequently-asked-questions.tsx`                          | 24   | `<Link href={process.env.NEXT_PUBLIC_CAMPUS_DOCUMENT_TEMPLATE!} target="_blank">` |
+| `src/components/not-found-page.tsx`                                       | 33   | `<Link href={process.env.NEXT_PUBLIC_KBIS_URL!} target="_blank">`                 |
+| `src/components/app-sidebar/footer.tsx`                                   | 38   | `<Link href={process.env.NEXT_PUBLIC_KBIS_URL!} target="_blank">`                 |
+| `src/app/[locale]/(public)/footer.tsx`                                    | 21   | `<Link href={process.env.NEXT_PUBLIC_KBIS_URL!} target="_blank">`                 |
+| `src/app/[locale]/(private)/notice-board/components/notice.tsx`           | 26   | `<Link href={announcement.link?.uri \|\| ''} target="_blank">`                    |
+| `src/app/[locale]/(public)/validate-certificate/certificate-verifier.tsx` | 126  | `<Link href={process.env.NEXT_PUBLIC_WHATSAPP_SUPPORT_LINK!} target="_blank">`    |
+| `src/app/[locale]/(private)/accept-code-of-honor/page.tsx`                | 34   | `<Link target="_blank" href={process.env.NEXT_PUBLIC_CODE_OF_HONOR!}>`            |
 
 **Fix:** Add `rel="noopener noreferrer"` to every `target="_blank"` link.
 
@@ -1132,6 +1164,7 @@ import { Tabs, TabsList, TabsContent } from '@radix-ui/react-tabs';
 **Problem:** The project has a `@/components/ui/tabs.tsx` wrapper that adds styling and variants. This page bypasses the wrapper and imports Radix directly, getting unstyled tabs. The `TabSheetTrigger` (line 9) comes from the wrapper, but `Tabs`, `TabsList`, and `TabsContent` come from Radix. This is inconsistent — `compose.tsx:1` correctly imports all from `@/components/ui/tabs`.
 
 **Fix:** Replace with:
+
 ```tsx
 import { Tabs, TabsList, TabsContent, TabSheetTrigger } from '@/components/ui/tabs';
 ```
@@ -1150,6 +1183,7 @@ export const SupportCard: FC<Props> = async ({ className }) => {
 **Problem:** `FC` is deprecated in React 19. Also, `FC` and `async` don't mix — `FC` expects a synchronous return, but `async` returns a `Promise`. This type-checks only because of loose typing in `FC`.
 
 **Fix:**
+
 ```tsx
 export const SupportCard = async ({ className }: Props) => {
 ```
@@ -1159,12 +1193,14 @@ export const SupportCard = async ({ className }: Props) => {
 ### A-03. `loading.tsx` files are inconsistent
 
 **Files:**
+
 - `src/app/[locale]/(private)/module/msg/loading.tsx:4` — `export default async function` (async for no reason — no awaits)
 - Other loading files use `LoadingScreen` component, this one uses a raw `<SpinnerGap />`
 
 **Problem:** The `msg/loading.tsx` is marked `async` but doesn't await anything. It also uses a different loading UI than the rest of the app (`LoadingScreen`).
 
 **Fix:** Use `LoadingScreen` and remove `async`:
+
 ```tsx
 import { LoadingScreen } from '@/components/loading-screen';
 export default function MsgLoading() {
@@ -1188,6 +1224,7 @@ if (!user) {
 **Problem:** When `getUserDetails()` returns null (e.g., JWT expired, backend down), the user sees a 404 page instead of being redirected to login. The middleware should have caught this, but if the backend goes down between middleware and layout, the user gets a confusing 404.
 
 **Fix:** Redirect to login instead:
+
 ```tsx
 if (!user) {
   redirect('/login');
@@ -1209,6 +1246,7 @@ if (!user) {
 **Problem:** `Compose` is an `async` server component (`src/app/[locale]/(private)/module/msg/components/compose.tsx:13`). It's rendered inside `<TabsContent>` which is a Radix client component. In Next.js, async server components cannot be children of client components unless wrapped in a `Suspense` boundary with proper streaming. This may cause hydration issues or silent failures.
 
 **Fix:** Wrap in `<Suspense>`:
+
 ```tsx
 <TabsContent value={MessageTranslationKeys.Compose}>
   <Suspense fallback={<LoadingScreen />}>
@@ -1277,6 +1315,7 @@ const redirectToLogin = () => router.replace('/');
 **Problem:** Uses `next/navigation`'s `useRouter` instead of `@/i18n/routing`'s `useRouter`. The `router.replace('/')` doesn't include the locale prefix, so the user may be redirected to a locale-less URL which triggers the i18n middleware to add a locale, causing an extra redirect.
 
 **Fix:**
+
 ```tsx
 import { useRouter } from '@/i18n/routing';
 ```
@@ -1290,6 +1329,7 @@ import { useRouter } from '@/i18n/routing';
 **Problem:** No `HEALTHCHECK` instruction. The container has a `/api/healthz` endpoint but Docker doesn't know if the app is healthy. Orchestrators (K8s, Docker Compose) can't automatically restart unhealthy containers.
 
 **Fix:** Add:
+
 ```dockerfile
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost:3000/api/healthz || exit 1
@@ -1304,6 +1344,7 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
 **Problem:** No `engines` field specifying Node.js version. The Dockerfile uses `node:22-alpine`, but local developers could use Node 18 or 20 and get unexpected behavior.
 
 **Fix:** Add:
+
 ```json
 "engines": {
   "node": ">=22.0.0"

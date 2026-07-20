@@ -4,7 +4,7 @@ import { cookies, headers as nextHeaders } from 'next/headers';
 import { getLocale } from 'next-intl/server';
 
 import { DEFAULT_LOCALE } from '@/i18n/routing';
-import { CircuitBreakerOpenError,withCircuitBreaker } from '@/lib/circuit-breaker';
+import { CircuitBreakerOpenError, withCircuitBreaker } from '@/lib/circuit-breaker';
 import { env } from '@/lib/env';
 import { logger } from '@/lib/logger';
 
@@ -37,10 +37,7 @@ const createApiFetch = (basePath: string) => {
     const sanitizedForwardedFor = rawForwardedFor.split(',')[0]?.trim().slice(0, 45) || '';
     const sanitizedRealIp = rawRealIp.trim().slice(0, 45) || '';
 
-    const cacheOption =
-      'next' in otherOptions || 'cache' in otherOptions
-        ? {}
-        : { next: { revalidate: 300 } as const };
+    const cacheOption = 'next' in otherOptions || 'cache' in otherOptions ? {} : { next: { revalidate: 300 } as const };
 
     const response = await withCircuitBreaker(
       'external-api',
@@ -69,20 +66,22 @@ const createApiFetch = (basePath: string) => {
         failureThreshold: 5,
         resetTimeoutMs: 30_000,
       },
-    ).then((res) => {
-      if (res.status >= 500) {
-        throw new Error(`Server error: ${res.status}`);
-      }
-      return res;
-    }).catch((error: unknown) => {
-      if (error instanceof CircuitBreakerOpenError) {
-        apiLogger.warn('Circuit breaker open, failing fast', {
-          url: input,
-          retryAfterMs: String(error.retryAfterMs),
-        });
-      }
-      throw error;
-    });
+    )
+      .then((res) => {
+        if (res.status >= 500) {
+          throw new Error(`Server error: ${res.status}`);
+        }
+        return res;
+      })
+      .catch((error: unknown) => {
+        if (error instanceof CircuitBreakerOpenError) {
+          apiLogger.warn('Circuit breaker open, failing fast', {
+            url: input,
+            retryAfterMs: String(error.retryAfterMs),
+          });
+        }
+        throw error;
+      });
 
     if (!response.ok) {
       apiLogger.warn('API returned non-OK status', {

@@ -69,11 +69,7 @@ export const ChatCreateDialog = ({ users, onClose, onCreate }: Props) => {
             <Button variant="tertiary" onClick={onClose}>
               {t('cancel')}
             </Button>
-            <Button
-              onClick={handleCreate}
-              loading={isCreating}
-              disabled={!name.trim() || selectedMembers.length === 0}
-            >
+            <Button onClick={handleCreate} loading={isCreating} disabled={!name.trim() || selectedMembers.length === 0}>
               {t('create')}
             </Button>
           </div>

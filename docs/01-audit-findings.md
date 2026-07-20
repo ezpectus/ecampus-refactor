@@ -9,16 +9,16 @@
 
 ## Summary
 
-| Category | P0 Critical | P1 High | P2 Medium | P3 Low |
-|----------|-------------|---------|-----------|--------|
-| Security (CWE) | 4 | 4 | 2 | 0 |
-| Code Quality (SOLID/CR) | 0 | 3 | 5 | 4 |
-| Error Handling (FT) | 0 | 2 | 3 | 0 |
-| Performance | 0 | 1 | 2 | 0 |
-| Accessibility | 0 | 1 | 1 | 0 |
-| Testing | 0 | 1 | 0 | 0 |
-| Architecture / Dead Code | 0 | 0 | 3 | 2 |
-| **Total** | **4** | **12** | **16** | **6** |
+| Category                 | P0 Critical | P1 High | P2 Medium | P3 Low |
+| ------------------------ | ----------- | ------- | --------- | ------ |
+| Security (CWE)           | 4           | 4       | 2         | 0      |
+| Code Quality (SOLID/CR)  | 0           | 3       | 5         | 4      |
+| Error Handling (FT)      | 0           | 2       | 3         | 0      |
+| Performance              | 0           | 1       | 2         | 0      |
+| Accessibility            | 0           | 1       | 1         | 0      |
+| Testing                  | 0           | 1       | 0         | 0      |
+| Architecture / Dead Code | 0           | 0       | 3         | 2      |
+| **Total**                | **4**       | **12**  | **16**    | **6**  |
 
 **Grand total: 38 issues** (4 critical, 12 high, 16 medium, 6 low)
 
@@ -38,12 +38,13 @@
 ```typescript
 // src/lib/jwt.ts — line 6
 export const getJWTPayload = <T extends JwtPayload>(token: string) => {
-  return JWT.decode(token, { json: true }) as T;  // decode = NO signature check
+  return JWT.decode(token, { json: true }) as T; // decode = NO signature check
 };
 ```
 
 **Why this is a problem:**  
 `JWT.decode()` parses the token without verifying the cryptographic signature. Anyone can craft a fake JWT with arbitrary `modules`, `exp`, and any other claims. This token is trusted for:
+
 - `src/middleware/utils.ts:64` — module authorization (`payload.modules.includes(module)`)
 - `src/middleware/authentication.middleware.ts:15` — authentication check (`payload.exp > dayjs().unix()`)
 - `src/actions/menu.actions.ts:59` — menu construction from JWT modules
@@ -54,6 +55,7 @@ export const getJWTPayload = <T extends JwtPayload>(token: string) => {
 **CWE-347:** Improper Verification of Cryptographic Signature
 
 **How to fix:**
+
 ```typescript
 // Option A: If backend public key is available
 import jwt from 'jsonwebtoken';
@@ -85,16 +87,21 @@ export const getJWTPayload = <T>(token: string): T => {
 ```typescript
 // src/actions/auth.actions.ts — lines 24-25
 resolvedCookies.set(SID_COOKIE_NAME, sessionId, {
-  domain: ROOT_COOKIE_DOMAIN, httpOnly: true, expires
+  domain: ROOT_COOKIE_DOMAIN,
+  httpOnly: true,
+  expires,
   // MISSING: secure: true, sameSite: 'lax'
 });
 resolvedCookies.set(TOKEN_COOKIE_NAME, token, {
-  domain: MAIN_COOKIE_DOMAIN, httpOnly: true, expires
+  domain: MAIN_COOKIE_DOMAIN,
+  httpOnly: true,
+  expires,
   // MISSING: secure: true, sameSite: 'lax'
 });
 ```
 
-**Why this is a problem:**  
+**Why this is a problem:**
+
 - Without `secure: true`, the browser sends the JWT cookie over plain HTTP if the user visits an `http://` URL — MITM attack vector.
 - Without `sameSite: 'lax'`, the cookie is sent on cross-site requests — CSRF attack vector.
 
@@ -102,6 +109,7 @@ resolvedCookies.set(TOKEN_COOKIE_NAME, token, {
 **CWE-1004:** Sensitive Cookie Without 'HttpOnly' (httpOnly present, sameSite missing)
 
 **How to fix:**
+
 ```typescript
 resolvedCookies.set(TOKEN_COOKIE_NAME, token, {
   domain: MAIN_COOKIE_DOMAIN,
@@ -120,10 +128,7 @@ resolvedCookies.set(TOKEN_COOKIE_NAME, token, {
 
 ```tsx
 // preview-dialog.tsx — line 47
-<div
-  className="pt-2 text-base leading-relaxed"
-  dangerouslySetInnerHTML={{ __html: selectedMail.content }}
-/>
+<div className="pt-2 text-base leading-relaxed" dangerouslySetInnerHTML={{ __html: selectedMail.content }} />
 ```
 
 **Why this is a problem:**  
@@ -134,6 +139,7 @@ Email/message content from the backend is rendered as raw HTML without sanitizat
 **CWE-79:** Improper Neutralization of Input During Web Page Generation (XSS)
 
 **How to fix:**
+
 ```typescript
 // Option A: DOMPurify
 import DOMPurify from 'dompurify';
@@ -163,6 +169,7 @@ import DOMPurify from 'dompurify';
 **CWE-200:** Exposure of Sensitive Information to an Unauthorized Actor
 
 **How to fix:**
+
 ```gitignore
 .env
 .env.*
@@ -179,13 +186,14 @@ import DOMPurify from 'dompurify';
 export async function redirectToEmploymentSystem() {
   const response = await campusFetch<string>('employment-system/auth');
   const url = await response.json();
-  redirect(url);  // NO URL validation
+  redirect(url); // NO URL validation
 }
 ```
 
 **CWE-601:** URL Redirection to Untrusted Site
 
 **How to fix:**
+
 ```typescript
 if (!response.ok) throw new Error('Failed to get employment URL');
 const url = await response.json();
@@ -205,6 +213,7 @@ No fetch request has a timeout. If backend is slow/unresponsive, serverless func
 **CWE-1127:** Excessive Attack Surface
 
 **How to fix:**
+
 ```typescript
 signal: AbortSignal.timeout(10000), // 10 second timeout
 ```
@@ -332,6 +341,7 @@ Same SVGO config written twice — DRY violation.
 ### CR-06 · `any` Types [P2 MEDIUM]
 
 **Files:**
+
 - `src/app/api/responses.ts:3` — `data?: any`
 - `src/i18n/request.tsx:9` — `locale as any`
 - `src/types/global.d.ts:16` — `TypedResponse<T = any>`
@@ -546,31 +556,31 @@ Requires per-file analysis.
 
 ### Safe to Delete
 
-| Path | Reason |
-|------|--------|
-| `src/stories/Button.stories.tsx` | Only story, not used in CI |
-| `.storybook/` | Storybook not used in production |
-| `src/components/types.ts` | Unused file (1 type, 0 imports) |
+| Path                             | Reason                           |
+| -------------------------------- | -------------------------------- |
+| `src/stories/Button.stories.tsx` | Only story, not used in CI       |
+| `.storybook/`                    | Storybook not used in production |
+| `src/components/types.ts`        | Unused file (1 type, 0 imports)  |
 
 ### Delete After Verification
 
-| Path | Reason |
-|------|--------|
-| `src/components/ui/accordion.tsx` | Not imported |
+| Path                                  | Reason       |
+| ------------------------------------- | ------------ |
+| `src/components/ui/accordion.tsx`     | Not imported |
 | `src/components/ui/dropdown-menu.tsx` | Not imported |
-| `src/components/ui/switch.tsx` | Not imported |
+| `src/components/ui/switch.tsx`        | Not imported |
 
 ### Remove from `package.json`
 
-| Package | Reason |
-|---------|--------|
+| Package                        | Reason                |
+| ------------------------------ | --------------------- |
 | `date-fns` + `@types/date-fns` | Unused, dayjs is used |
-| `react-day-picker` | Unused |
-| `@tanstack/react-table` | Unused |
-| `@chromatic-com/storybook` | Only for Storybook |
-| `@storybook/*` (7 packages) | If removing Storybook |
-| `storybook` | If removing Storybook |
-| `eslint-plugin-storybook` | If removing Storybook |
+| `react-day-picker`             | Unused                |
+| `@tanstack/react-table`        | Unused                |
+| `@chromatic-com/storybook`     | Only for Storybook    |
+| `@storybook/*` (7 packages)    | If removing Storybook |
+| `storybook`                    | If removing Storybook |
+| `eslint-plugin-storybook`      | If removing Storybook |
 
 ---
 
@@ -578,131 +588,133 @@ Requires per-file analysis.
 
 ### 9.1 Architectural Maintainability
 
-| Criterion | Score | Notes |
-|----------|-------|-------|
-| SRP | 7/10 | `studysheet/[id]/page.tsx` violates |
-| OCP | 8/10 | `modules.ts` registry pattern |
-| DIP | 6/10 | `campusFetch` only abstraction |
-| Consistent patterns | 7/10 | 11/12 server pages, 1 client |
-| Error handling contract | 3/10 | 3 patterns, no JSDoc |
-| Test coverage | 0/10 | 0% |
-| Dead code ratio | 5/10 | 3 packages, 3 components, Storybook |
-| Naming consistency | 6/10 | `contants.ts` typo, mixed styles |
+| Criterion               | Score | Notes                               |
+| ----------------------- | ----- | ----------------------------------- |
+| SRP                     | 7/10  | `studysheet/[id]/page.tsx` violates |
+| OCP                     | 8/10  | `modules.ts` registry pattern       |
+| DIP                     | 6/10  | `campusFetch` only abstraction      |
+| Consistent patterns     | 7/10  | 11/12 server pages, 1 client        |
+| Error handling contract | 3/10  | 3 patterns, no JSDoc                |
+| Test coverage           | 0/10  | 0%                                  |
+| Dead code ratio         | 5/10  | 3 packages, 3 components, Storybook |
+| Naming consistency      | 6/10  | `contants.ts` typo, mixed styles    |
 
 **Overall maintainability: 5.3/10**
 
 ### 9.2 Security Hardening
 
-| Control | Status | Priority |
-|---------|--------|----------|
-| JWT signature verification | Missing | P0 |
-| Cookie security flags | Missing | P0 |
-| XSS prevention (CSP + sanitize) | Missing | P0 |
-| Secrets not in git | `.env.production` not gitignored | P0 |
-| Rate limiting | Missing | P1 |
-| Security headers | Missing | P1 |
-| Open redirect prevention | Missing | P1 |
-| Request timeout | Missing | P1 |
-| Input validation on API routes | Partial | P2 |
-| IP spoofing prevention | Missing | P2 |
-| Structured logging | Missing | P1 |
-| Error monitoring (Sentry) | Missing | P2 |
-| Dependency vulnerability scanning | Dependabot only | P2 |
-| CORS configuration | Missing | P2 |
+| Control                           | Status                           | Priority |
+| --------------------------------- | -------------------------------- | -------- |
+| JWT signature verification        | Missing                          | P0       |
+| Cookie security flags             | Missing                          | P0       |
+| XSS prevention (CSP + sanitize)   | Missing                          | P0       |
+| Secrets not in git                | `.env.production` not gitignored | P0       |
+| Rate limiting                     | Missing                          | P1       |
+| Security headers                  | Missing                          | P1       |
+| Open redirect prevention          | Missing                          | P1       |
+| Request timeout                   | Missing                          | P1       |
+| Input validation on API routes    | Partial                          | P2       |
+| IP spoofing prevention            | Missing                          | P2       |
+| Structured logging                | Missing                          | P1       |
+| Error monitoring (Sentry)         | Missing                          | P2       |
+| Dependency vulnerability scanning | Dependabot only                  | P2       |
+| CORS configuration                | Missing                          | P2       |
 
 ### 9.3 Fault Tolerance & Resilience
 
-| Category | Score |
-|----------|-------|
-| Timeout | 0/10 |
-| Retry | 0/10 |
-| Circuit breaker | 0/10 |
-| Fallback | 3/10 |
-| Health check | 5/10 |
-| Graceful shutdown | 0/10 |
-| State recovery | 7/10 |
-| Error propagation | 4/10 |
-| Monitoring & alerting | 1/10 |
+| Category              | Score |
+| --------------------- | ----- |
+| Timeout               | 0/10  |
+| Retry                 | 0/10  |
+| Circuit breaker       | 0/10  |
+| Fallback              | 3/10  |
+| Health check          | 5/10  |
+| Graceful shutdown     | 0/10  |
+| State recovery        | 7/10  |
+| Error propagation     | 4/10  |
+| Monitoring & alerting | 1/10  |
 
 **Overall resilience: 2.2/10**
 
 ### 9.4 API Design
 
-| # | Criterion | Status |
-|---|----------|--------|
-| 1 | All endpoints require auth | `/api/healthz` open (OK) |
-| 2 | Consistent error response format | 3 different patterns |
-| 3 | Input validation on all endpoints | Zod on forms only |
-| 4 | Rate limiting | None |
-| 5 | No sensitive data in responses | `getKPIIDAccounts` returns `access_token` |
-| 6 | CORS configured | None |
-| 7 | Request/response logging | None |
-| 8 | Pagination | `usePagination` + `PaginationWithLinks` |
+| #   | Criterion                         | Status                                    |
+| --- | --------------------------------- | ----------------------------------------- |
+| 1   | All endpoints require auth        | `/api/healthz` open (OK)                  |
+| 2   | Consistent error response format  | 3 different patterns                      |
+| 3   | Input validation on all endpoints | Zod on forms only                         |
+| 4   | Rate limiting                     | None                                      |
+| 5   | No sensitive data in responses    | `getKPIIDAccounts` returns `access_token` |
+| 6   | CORS configured                   | None                                      |
+| 7   | Request/response logging          | None                                      |
+| 8   | Pagination                        | `usePagination` + `PaginationWithLinks`   |
 
 ### 9.5 Extensibility ("Nothing Breaks When Adding New Things")
 
-| Scenario | Risk | Reason |
-|----------|------|--------|
-| New module | Low | Add to `modules.ts` + create folder |
-| New server action | Medium | No error handling contract |
-| New env variable | High | `process.env.X!` — no runtime validation |
-| New page | Low | Server component pattern documented |
-| New locale | Low | next-intl routing |
-| API backend change | High | No typed API responses (some `any`) |
-| Adding tests | High | No framework — configure from scratch |
+| Scenario           | Risk   | Reason                                   |
+| ------------------ | ------ | ---------------------------------------- |
+| New module         | Low    | Add to `modules.ts` + create folder      |
+| New server action  | Medium | No error handling contract               |
+| New env variable   | High   | `process.env.X!` — no runtime validation |
+| New page           | Low    | Server component pattern documented      |
+| New locale         | Low    | next-intl routing                        |
+| API backend change | High   | No typed API responses (some `any`)      |
+| Adding tests       | High   | No framework — configure from scratch    |
 
 ---
 
 ## 10. Git Repository Location
 
 The `.git` directory is at:
+
 ```
-s:\VSC projects\ecampus-refactor\.git
+f:\VSC projects\ecampus-refactor\.git
 ```
 
 To remove it (start fresh):
+
 ```cmd
-rmdir /s /q "s:\VSC projects\ecampus-refactor\.git"
+rmdir /s /q "f:\VSC projects\ecampus-refactor\.git"
 ```
 
 ---
 
 ## 11. Verification of Other AI's Findings
 
-| Finding | Confirmed | Comment |
-|---------|-----------|---------|
-| JWT without verification | Yes | `src/lib/jwt.ts:6` |
-| Cookies without `secure` | Yes | `src/actions/auth.actions.ts:24-25` |
-| No CSP | Yes | Not in middleware or next.config |
-| No rate limiting | Yes | Not found |
-| Import in middle of file | Yes | `src/actions/auth.actions.ts:90` |
-| Typo `contants` | Yes | `src/middleware/contants.ts` |
-| `TOAST_REMOVE_DELAY = 1000000` | Yes | `src/hooks/use-toast.ts:9` |
-| `useEffect` with state in deps | Yes | `src/hooks/use-toast.ts:180` |
-| SVG config duplication | Yes | `next.config.mjs` |
-| Actions swallow errors | Yes | Inconsistent |
-| No error boundaries | Partial | `error.tsx` renders `<></>` |
-| `process.env.NEXT_PUBLIC_GA_ID!` | Yes | `src/app/layout.tsx:19` |
-| Zero tests | Yes | Confirmed |
-| `cache: 'no-cache'` | Yes | `src/lib/client.ts:29` |
-| `images.unoptimized: true` | Yes | `next.config.mjs:50` |
-| `<html>` without `lang` | Yes | `src/app/layout.tsx:15` |
-| No `aria-label` | Yes | Only 6 occurrences |
+| Finding                          | Confirmed | Comment                             |
+| -------------------------------- | --------- | ----------------------------------- |
+| JWT without verification         | Yes       | `src/lib/jwt.ts:6`                  |
+| Cookies without `secure`         | Yes       | `src/actions/auth.actions.ts:24-25` |
+| No CSP                           | Yes       | Not in middleware or next.config    |
+| No rate limiting                 | Yes       | Not found                           |
+| Import in middle of file         | Yes       | `src/actions/auth.actions.ts:90`    |
+| Typo `contants`                  | Yes       | `src/middleware/contants.ts`        |
+| `TOAST_REMOVE_DELAY = 1000000`   | Yes       | `src/hooks/use-toast.ts:9`          |
+| `useEffect` with state in deps   | Yes       | `src/hooks/use-toast.ts:180`        |
+| SVG config duplication           | Yes       | `next.config.mjs`                   |
+| Actions swallow errors           | Yes       | Inconsistent                        |
+| No error boundaries              | Partial   | `error.tsx` renders `<></>`         |
+| `process.env.NEXT_PUBLIC_GA_ID!` | Yes       | `src/app/layout.tsx:19`             |
+| Zero tests                       | Yes       | Confirmed                           |
+| `cache: 'no-cache'`              | Yes       | `src/lib/client.ts:29`              |
+| `images.unoptimized: true`       | Yes       | `next.config.mjs:50`                |
+| `<html>` without `lang`          | Yes       | `src/app/layout.tsx:15`             |
+| No `aria-label`                  | Yes       | Only 6 occurrences                  |
 
 ### Additional Findings (Not Reported by Other AI)
 
-| # | Finding | CWE | File | Severity |
-|---|---------|-----|------|----------|
-| +1 | `dangerouslySetInnerHTML` — stored XSS | CWE-79 | `preview-dialog.tsx:47` | P0 |
-| +2 | `.env.production` not in `.gitignore` | CWE-200 | `.gitignore:61` | P0 |
-| +3 | Open redirect | CWE-601 | `auth.actions.ts:107` | P1 |
-| +4 | No timeout on fetch | CWE-1127 | `client.ts:31` | P1 |
-| +5 | `sameSite` missing on cookies | CWE-1004 | `auth.actions.ts:24-25` | P0 |
-| +6 | Sidebar cookie without security flags | CWE-155 | `sidebar.tsx:76` | P2 |
-| +7 | `X-Forwarded-For` without validation | CWE-20 | `client.ts:38-39` | P2 |
-| +8 | Empty `catch {}` in print-certificate | — | `print-certificate.ts:25` | P3 |
-| +9 | `redirectToEmploymentSystem` no `response.ok` | — | `auth.actions.ts:104` | P2 |
-| +10 | 20+ `process.env.X!` non-null assertions | CWE-20 | Multiple files | P2 |
+| #   | Finding                                       | CWE      | File                      | Severity |
+| --- | --------------------------------------------- | -------- | ------------------------- | -------- |
+| +1  | `dangerouslySetInnerHTML` — stored XSS        | CWE-79   | `preview-dialog.tsx:47`   | P0       |
+| +2  | `.env.production` not in `.gitignore`         | CWE-200  | `.gitignore:61`           | P0       |
+| +3  | Open redirect                                 | CWE-601  | `auth.actions.ts:107`     | P1       |
+| +4  | No timeout on fetch                           | CWE-1127 | `client.ts:31`            | P1       |
+| +5  | `sameSite` missing on cookies                 | CWE-1004 | `auth.actions.ts:24-25`   | P0       |
+| +6  | Sidebar cookie without security flags         | CWE-155  | `sidebar.tsx:76`          | P2       |
+| +7  | `X-Forwarded-For` without validation          | CWE-20   | `client.ts:38-39`         | P2       |
+| +8  | Empty `catch {}` in print-certificate         | —        | `print-certificate.ts:25` | P3       |
+| +9  | `redirectToEmploymentSystem` no `response.ok` | —        | `auth.actions.ts:104`     | P2       |
+| +10 | 20+ `process.env.X!` non-null assertions      | CWE-20   | Multiple files            | P2       |
 
 ---
 

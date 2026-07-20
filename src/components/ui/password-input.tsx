@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { EyeClosedRegular,EyeRegular } from '@/app/images';
+import { EyeClosedRegular, EyeRegular } from '@/app/images';
 import { Button } from '@/components/ui/button';
 import { Input, InputProps } from '@/components/ui/input';
 import { cn } from '@/lib/utils';

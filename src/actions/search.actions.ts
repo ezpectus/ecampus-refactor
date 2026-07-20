@@ -39,58 +39,58 @@ export async function globalSearch(query: string): Promise<SearchResult> {
   const schoolFilter = user.schoolId ? { schoolId: user.schoolId } : {};
 
   const [posts, users, notifications] = await Promise.all([
-    prisma.feedPost.findMany({
-      where: {
-        ...schoolFilter,
-        OR: [
-          { content: { contains: q } },
-          { author: { fullName: { contains: q } } },
-        ],
-      },
-      include: {
-        author: { select: { id: true, fullName: true, photo: true } },
-      },
-      orderBy: { createdAt: 'desc' },
-      take: 10,
-    }).catch(() => []),
-    prisma.user.findMany({
-      where: {
-        ...schoolFilter,
-        OR: [
-          { fullName: { contains: q } },
-          { username: { contains: q } },
-          { email: { contains: q } },
-          { speciality: { contains: q } },
-        ],
-      },
-      select: {
-        id: true,
-        fullName: true,
-        username: true,
-        photo: true,
-        role: true,
-        faculty: true,
-      },
-      take: 10,
-    }).catch(() => []),
-    prisma.notification.findMany({
-      where: {
-        userId: user.id,
-        OR: [
-          { title: { contains: q } },
-          { message: { contains: q } },
-        ],
-      },
-      select: {
-        id: true,
-        title: true,
-        message: true,
-        type: true,
-        createdAt: true,
-      },
-      orderBy: { createdAt: 'desc' },
-      take: 10,
-    }).catch(() => []),
+    prisma.feedPost
+      .findMany({
+        where: {
+          ...schoolFilter,
+          OR: [{ content: { contains: q } }, { author: { fullName: { contains: q } } }],
+        },
+        include: {
+          author: { select: { id: true, fullName: true, photo: true } },
+        },
+        orderBy: { createdAt: 'desc' },
+        take: 10,
+      })
+      .catch(() => []),
+    prisma.user
+      .findMany({
+        where: {
+          ...schoolFilter,
+          OR: [
+            { fullName: { contains: q } },
+            { username: { contains: q } },
+            { email: { contains: q } },
+            { speciality: { contains: q } },
+          ],
+        },
+        select: {
+          id: true,
+          fullName: true,
+          username: true,
+          photo: true,
+          role: true,
+          faculty: true,
+        },
+        take: 10,
+      })
+      .catch(() => []),
+    prisma.notification
+      .findMany({
+        where: {
+          userId: user.id,
+          OR: [{ title: { contains: q } }, { message: { contains: q } }],
+        },
+        select: {
+          id: true,
+          title: true,
+          message: true,
+          type: true,
+          createdAt: true,
+        },
+        orderBy: { createdAt: 'desc' },
+        take: 10,
+      })
+      .catch(() => []),
   ]);
 
   return {

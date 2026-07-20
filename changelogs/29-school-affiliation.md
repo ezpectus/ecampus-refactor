@@ -7,7 +7,7 @@
 
 ### Database
 
-- Added `School` model with `id`, `name`, `slug` (unique), and `createdAt` to both `prisma/schema.prisma` and `prisma-postgres/schema.prisma`.
+- Added `School` model with `id`, `name`, `slug` (unique), and `createdAt` to both `prisma/schema.prisma` and `prisma/schema-postgres.prisma`.
 - Added `User.schoolId` → `School` relation (`onDelete: SetNull`) and a composite `@@index([schoolId, role])`.
 - Added `Course.schoolId` → `School` and `Course.teacherId` → `User` (`"teacherCourses"` relation) with indexes.
 

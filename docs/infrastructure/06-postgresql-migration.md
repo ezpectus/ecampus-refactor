@@ -5,13 +5,14 @@ This project supports both SQLite (development) and PostgreSQL (production) via 
 ## Current Setup
 
 - **Development**: SQLite at `file:./dev.db` (zero config, fast startup)
-- **Production**: PostgreSQL schema ready at `prisma-postgres/schema.prisma`
+- **Production**: PostgreSQL schema ready at `prisma/schema-postgres.prisma`
 
 ## Migration Steps
 
 ### 1. Provision a PostgreSQL database
 
 Options:
+
 - **Neon** (recommended, serverless): https://neon.tech
 - **Supabase**: https://supabase.com
 - **Railway**: https://railway.app
@@ -28,13 +29,13 @@ DATABASE_URL="postgresql://user:password@host:5432/dbname?schema=public"
 
 ```bash
 # Use the PostgreSQL config
-npx prisma generate --schema=prisma-postgres/schema.prisma
+npx prisma generate --schema=prisma/schema-postgres.prisma
 
 # Push schema to database
-npx prisma db push --schema=prisma-postgres/schema.prisma
+npx prisma db push --schema=prisma/schema-postgres.prisma
 
 # Or create and run migrations
-npx prisma migrate dev --schema=prisma-postgres/schema.prisma --name init
+npx prisma migrate dev --schema=prisma/schema-postgres.prisma --name init
 ```
 
 ### 4. Seed the database
@@ -52,7 +53,7 @@ curl https://your-app.com/api/ready
 
 ## Schema Differences
 
-The PostgreSQL schema (`prisma-postgres/schema.prisma`) is identical to the SQLite schema
+The PostgreSQL schema (`prisma/schema-postgres.prisma`) is identical to the SQLite schema
 (`prisma/schema.prisma`) except for the datasource provider. All models, relations, and
 indexes are the same.
 

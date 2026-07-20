@@ -8,7 +8,7 @@ import { SubLayout } from '@/app/[locale]/(private)/sub-layout';
 import { LoadingScreen } from '@/components/loading-screen';
 import { Description, Heading2 } from '@/components/typography';
 import { Card } from '@/components/ui/card';
-import { Tabs, TabsContent, TabSheetTrigger,TabsList } from '@/components/ui/tabs';
+import { Tabs, TabsContent, TabSheetTrigger, TabsList } from '@/components/ui/tabs';
 import { MailFilter } from '@/types/enums/mail-filter';
 import { ProfileArea } from '@/types/enums/profile-area';
 import { LocaleProps } from '@/types/locale-props';
@@ -56,7 +56,7 @@ export default async function MessagePage({ params }: LocaleProps) {
                 </TabSheetTrigger>
               ))}
             </TabsList>
-            <Card className="rounded-b-6 col-span-full w-full rounded-t-none bg-card p-6 text-card-foreground xl:col-span-5">
+            <Card className="rounded-b-6 bg-card text-card-foreground col-span-full w-full rounded-t-none p-6 xl:col-span-5">
               <TabsContent value={MessageTranslationKeys.Sent}>
                 <Inbox mails={sentMails} filter={MailFilter.Outgoing} />
               </TabsContent>

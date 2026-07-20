@@ -13,14 +13,11 @@ const Progress = ({ className, value = 0, ...props }: ProgressProps) => {
       aria-valuenow={clampedValue}
       aria-valuemin={0}
       aria-valuemax={100}
-      className={cn(
-        'relative h-4 w-full overflow-hidden rounded-full bg-muted',
-        className,
-      )}
+      className={cn('bg-muted relative h-4 w-full overflow-hidden rounded-full', className)}
       {...props}
     >
       <div
-        className="h-full bg-foreground transition-all duration-300 ease-in-out"
+        className="bg-foreground h-full transition-all duration-300 ease-in-out"
         style={{ width: `${clampedValue}%` }}
       />
     </div>

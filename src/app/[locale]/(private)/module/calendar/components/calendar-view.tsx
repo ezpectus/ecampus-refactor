@@ -21,9 +21,7 @@ interface Props {
 const WEEKDAYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'] as const;
 
 const isSameDay = (a: Date, b: Date) =>
-  a.getFullYear() === b.getFullYear() &&
-  a.getMonth() === b.getMonth() &&
-  a.getDate() === b.getDate();
+  a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 
 const isEventOnDay = (event: CalendarEvent, day: Date) => {
   const eventStart = new Date(event.startDate);
@@ -88,9 +86,7 @@ export const CalendarView = ({ events }: Props) => {
 
   const upcomingEvents = useMemo(() => {
     if (!today) return [];
-    return events
-      .filter((e) => new Date(e.startDate) >= today)
-      .slice(0, 10);
+    return events.filter((e) => new Date(e.startDate) >= today).slice(0, 10);
   }, [events, today]);
 
   const handlePrevMonth = () => {
@@ -124,7 +120,20 @@ export const CalendarView = ({ events }: Props) => {
 
   const monthLabel = useMemo(() => {
     if (!currentDate) return '';
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
     return `${months[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
   }, [currentDate]);
 
@@ -134,7 +143,7 @@ export const CalendarView = ({ events }: Props) => {
         <Card>
           <CardContent className="grid grid-cols-7 gap-1 py-4">
             {Array.from({ length: 35 }).map((_, i) => (
-              <div key={i} className="min-h-[80px] rounded-lg bg-muted/30" />
+              <div key={i} className="bg-muted/30 min-h-[80px] rounded-lg" />
             ))}
           </CardContent>
         </Card>
@@ -168,13 +177,13 @@ export const CalendarView = ({ events }: Props) => {
           <CardContent>
             <div className="grid grid-cols-7 gap-1">
               {WEEKDAYS.map((day) => (
-                <div key={day} className="py-2 text-center text-xs font-medium text-muted-foreground">
+                <div key={day} className="text-muted-foreground py-2 text-center text-xs font-medium">
                   {t(`weekdays.${day}`)}
                 </div>
               ))}
               {calendarDays.map((day, index) => {
                 if (!day) {
-                  return <div key={index} className="min-h-[80px] rounded-lg bg-muted/30" />;
+                  return <div key={index} className="bg-muted/30 min-h-[80px] rounded-lg" />;
                 }
                 const dayKey = day.toISOString().split('T')[0];
                 const dayEvents = eventsByDay.get(dayKey) ?? [];
@@ -185,11 +194,11 @@ export const CalendarView = ({ events }: Props) => {
                   <button
                     key={index}
                     onClick={() => handleDayClick(day)}
-                    className={`min-h-[80px] rounded-lg border p-1 text-left transition-colors hover:bg-accent ${
+                    className={`hover:bg-accent min-h-[80px] rounded-lg border p-1 text-left transition-colors ${
                       isToday ? 'border-primary' : 'border-border'
                     } ${isSelected ? 'bg-accent' : ''}`}
                   >
-                    <span className={`text-xs ${isToday ? 'font-bold text-primary' : 'text-muted-foreground'}`}>
+                    <span className={`text-xs ${isToday ? 'text-primary font-bold' : 'text-muted-foreground'}`}>
                       {day.getDate()}
                     </span>
                     <div className="mt-1 flex flex-col gap-0.5">
@@ -202,7 +211,7 @@ export const CalendarView = ({ events }: Props) => {
                         </div>
                       ))}
                       {dayEvents.length > 3 && (
-                        <span className="text-[10px] text-muted-foreground">
+                        <span className="text-muted-foreground text-[10px]">
                           +{dayEvents.length - 3} {t('more')}
                         </span>
                       )}
@@ -220,9 +229,10 @@ export const CalendarView = ({ events }: Props) => {
               <CardTitle>{t('upcoming')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <Show when={upcomingEvents.length > 0} fallback={
-                <p className="text-muted-foreground py-8 text-center text-sm">{t('no-events')}</p>
-              }>
+              <Show
+                when={upcomingEvents.length > 0}
+                fallback={<p className="text-muted-foreground py-8 text-center text-sm">{t('no-events')}</p>}
+              >
                 <EventList events={upcomingEvents} onEdit={handleEditClick} />
               </Show>
             </CardContent>
@@ -253,14 +263,9 @@ export const CalendarView = ({ events }: Props) => {
       <Dialog open={isFormOpen} onOpenChange={(open) => !open && handleFormClose()}>
         <DialogContent className="max-w-lg">
           <DialogHeader>
-            <DialogTitle>
-              {editingEvent ? t('form.edit') : t('form.create')}
-            </DialogTitle>
+            <DialogTitle>{editingEvent ? t('form.edit') : t('form.create')}</DialogTitle>
           </DialogHeader>
-          <CalendarForm
-            event={editingEvent}
-            onSubmit={handleFormClose}
-          />
+          <CalendarForm event={editingEvent} onSubmit={handleFormClose} />
         </DialogContent>
       </Dialog>
     </div>

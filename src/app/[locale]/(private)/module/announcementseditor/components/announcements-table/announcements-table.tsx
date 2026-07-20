@@ -14,7 +14,7 @@ import { Link } from '@/i18n/routing';
 import { isOutdated } from '@/lib/date.utils';
 import { AdminAnnouncementItem } from '@/types/models/announcement';
 
-import { coursesText,formatFilterCell, rolesText, studyFormsText } from './utils';
+import { coursesText, formatFilterCell, rolesText, studyFormsText } from './utils';
 
 interface Props {
   items: AdminAnnouncementItem[];
@@ -50,9 +50,9 @@ export const AnnouncementsTable = ({ items, onDelete }: Props) => {
             {t('table.period')}
           </TableHead>
           <TableHead className="w-28">{t('table.status')}</TableHead>
-          <TableHead className="min-w-28 max-w-40 text-start">{t('table.roles')}</TableHead>
-          <TableHead className="min-w-28 max-w-40 text-start">{t('table.studyForms')}</TableHead>
-          <TableHead className="min-w-24 max-w-32 text-start">{t('table.courses')}</TableHead>
+          <TableHead className="max-w-40 min-w-28 text-start">{t('table.roles')}</TableHead>
+          <TableHead className="max-w-40 min-w-28 text-start">{t('table.studyForms')}</TableHead>
+          <TableHead className="max-w-32 min-w-24 text-start">{t('table.courses')}</TableHead>
           <TableHead className="w-28 text-right">{t('table.actions')}</TableHead>
         </TableRow>
       </TableHeader>
@@ -71,7 +71,7 @@ export const AnnouncementsTable = ({ items, onDelete }: Props) => {
                   {announcement.language ?? '—'}
                 </Badge>
               </TableCell>
-              <TableCell className="whitespace-nowrap text-sm">
+              <TableCell className="text-sm whitespace-nowrap">
                 {dayjs(announcement.start).format('DD.MM.YYYY')} – {dayjs(announcement.end).format('DD.MM.YYYY')}
               </TableCell>
               <TableCell>
@@ -79,13 +79,13 @@ export const AnnouncementsTable = ({ items, onDelete }: Props) => {
                   {outdated ? t('status.outdated') : t('status.active')}
                 </Badge>
               </TableCell>
-              <TableCell className="text-muted-foreground align-middle text-start">
+              <TableCell className="text-muted-foreground text-start align-middle">
                 {formatFilterCell(rolesText(filter), noRestriction)}
               </TableCell>
-              <TableCell className="text-muted-foreground align-middle text-start">
+              <TableCell className="text-muted-foreground text-start align-middle">
                 {formatFilterCell(studyFormsText(filter), noRestriction)}
               </TableCell>
-              <TableCell className="text-muted-foreground align-middle text-start">
+              <TableCell className="text-muted-foreground text-start align-middle">
                 {formatFilterCell(coursesText(filter), noRestriction)}
               </TableCell>
               <TableCell>
@@ -95,7 +95,12 @@ export const AnnouncementsTable = ({ items, onDelete }: Props) => {
                       <PencilRegular />
                     </Link>
                   </Button>
-                  <Button variant="tertiary" size="small" aria-label={t('actions.delete')} onClick={() => onDelete(item)}>
+                  <Button
+                    variant="tertiary"
+                    size="small"
+                    aria-label={t('actions.delete')}
+                    onClick={() => onDelete(item)}
+                  >
                     <Trash2 className="text-other-red" />
                   </Button>
                 </div>

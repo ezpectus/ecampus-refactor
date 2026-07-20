@@ -14,9 +14,7 @@ export const toCsv = <T>(rows: T[], columns: CsvColumn<T>[]): string => {
   };
 
   const headerLine = columns.map((c) => escapeCell(c.header)).join(',');
-  const dataLines = rows.map((row) =>
-    columns.map((c) => escapeCell(c.accessor(row))).join(','),
-  );
+  const dataLines = rows.map((row) => columns.map((c) => escapeCell(c.accessor(row))).join(','));
 
   return [headerLine, ...dataLines].join('\n');
 };

@@ -28,7 +28,7 @@ export const LocaleSwitch = () => {
       className="flex items-center gap-[6px] text-end"
     >
       <span className="hidden text-neutral-600 md:block">{localeLabels[nextLocale] ?? 'English'}</span>
-      <span className="text-xs font-medium uppercase text-neutral-500">{nextLocale}</span>
+      <span className="text-xs font-medium text-neutral-500 uppercase">{nextLocale}</span>
     </Link>
   );
 };

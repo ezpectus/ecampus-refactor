@@ -18,7 +18,7 @@ export function WorkplaceCard({ workplace }: WorkplaceCardProps) {
   const t = useTranslations('private.rating');
 
   return (
-    <Card className="overflow-hidden bg-card text-card-foreground">
+    <Card className="bg-card text-card-foreground overflow-hidden">
       <div className="p-6">
         <div className="mb-4 flex items-start gap-2">
           <MapPin className="text-basic-blue mt-1 h-5 w-5 shrink-0" />
@@ -47,7 +47,7 @@ export function WorkplaceCard({ workplace }: WorkplaceCardProps) {
         </div>
       </div>
 
-      <div className="border-t border-neutral-200 px-6 pb-6 pt-6">
+      <div className="border-t border-neutral-200 px-6 pt-6 pb-6">
         <EntriesTable entries={workplace.entries} />
       </div>
     </Card>

@@ -25,7 +25,10 @@ export async function LecturerInfo({ employeeProfile }: Props) {
 
   const formatPositions = (position: EmployeePosition) => {
     return [
-      { label: t('info.position'), value: `${position.name} (${tEnums(`employment-type.${getEmploymentTypeKey(position.employment)}`)})` },
+      {
+        label: t('info.position'),
+        value: `${position.name} (${tEnums(`employment-type.${getEmploymentTypeKey(position.employment)}`)})`,
+      },
       { label: t('info.subdivision'), value: position.subdivision.name },
     ];
   };

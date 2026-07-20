@@ -72,10 +72,7 @@ describe('getVerifiedLocalJWTPayload', () => {
   });
 
   it('throws on expired token', () => {
-    const token = signToken(
-      { exp: Math.floor(Date.now() / 1000) - 100, modules: [] },
-      TEST_SECRET,
-    );
+    const token = signToken({ exp: Math.floor(Date.now() / 1000) - 100, modules: [] }, TEST_SECRET);
     expect(() => getVerifiedLocalJWTPayload(token)).toThrow();
   });
 });

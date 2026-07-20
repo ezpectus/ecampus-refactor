@@ -22,22 +22,14 @@ const isRetryable = (error: unknown): boolean => {
   return true;
 };
 
-const calculateDelay = (
-  attempt: number,
-  baseDelayMs: number,
-  maxDelayMs: number,
-  jitterFactor: number,
-): number => {
+const calculateDelay = (attempt: number, baseDelayMs: number, maxDelayMs: number, jitterFactor: number): number => {
   const exponentialDelay = baseDelayMs * 2 ** (attempt - 1);
   const clampedDelay = Math.min(exponentialDelay, maxDelayMs);
   const jitter = clampedDelay * jitterFactor * (Math.random() - 0.5) * 2;
   return Math.max(0, Math.round(clampedDelay + jitter));
 };
 
-export const retryWithBackoff = async <T>(
-  operation: () => Promise<T>,
-  options: RetryOptions = {},
-): Promise<T> => {
+export const retryWithBackoff = async <T>(operation: () => Promise<T>, options: RetryOptions = {}): Promise<T> => {
   const { maxAttempts, baseDelayMs, maxDelayMs, jitterFactor } = {
     ...DEFAULT_OPTIONS,
     ...options,

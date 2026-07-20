@@ -51,9 +51,7 @@ export const KeyboardShortcutsHelp = () => {
     },
     {
       label: t('shortcuts.groups.actions'),
-      items: [
-        { keys: '/', description: t('shortcuts.items.search-messages') },
-      ],
+      items: [{ keys: '/', description: t('shortcuts.items.search-messages') }],
     },
   ];
 
@@ -69,12 +67,12 @@ export const KeyboardShortcutsHelp = () => {
         <div className="flex flex-col gap-4">
           {groups.map((group) => (
             <div key={group.label}>
-              <p className="mb-2 text-sm font-medium text-muted-foreground">{group.label}</p>
+              <p className="text-muted-foreground mb-2 text-sm font-medium">{group.label}</p>
               <div className="flex flex-col gap-1.5">
                 {group.items.map((item) => (
                   <div key={item.keys} className="flex items-center justify-between text-sm">
                     <span className="text-foreground">{item.description}</span>
-                    <kbd className="rounded border border-border bg-muted px-2 py-0.5 font-sans text-xs">
+                    <kbd className="border-border bg-muted rounded border px-2 py-0.5 font-sans text-xs">
                       {item.keys}
                     </kbd>
                   </div>

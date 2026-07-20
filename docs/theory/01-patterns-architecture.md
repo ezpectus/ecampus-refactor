@@ -1,6 +1,6 @@
 # 01 — Architecture Patterns & Design Decisions
 
-**Project:** eCampus Student Portal
+**Project:** Student Portal
 **Audience:** Developers, students learning web architecture
 **Language:** English with code examples
 
@@ -29,6 +29,7 @@
 ### The problem
 
 Student portals are **content-heavy, interaction-light** applications:
+
 - Students view grades, schedules, certificates (read-heavy)
 - Teachers update grades, create events (occasional writes)
 - Admins manage users (rare writes)
@@ -38,20 +39,21 @@ This is fundamentally different from a real-time chat app or a collaborative edi
 ### The solution
 
 **Server-first with selective hydration:**
+
 - Most pages are server-rendered HTML (fast initial load, SEO-friendly)
 - Only interactive parts (forms, filters, charts) ship client JS
 - No client-side data fetching for initial page load (server fetches everything)
 
 ### Why not SPA (Single Page Application)?
 
-| Factor | SPA (e.g. Vite + React) | Server-first (Next.js App Router) |
-|--------|--------------------------|------------------------------------|
-| Initial load | Blank page → fetch → render | HTML immediately visible |
-| SEO | Requires SSR or prerender | Built-in SSR |
-| Client JS bundle | Large (all pages in bundle) | Small (only interactive parts) |
-| Data fetching | Client-side (loading spinners) | Server-side (no spinners for initial data) |
-| Auth | Client-side token management | Server-side cookies + middleware |
-| Complexity | Routing, data loading, caching — all manual | Built-in |
+| Factor           | SPA (e.g. Vite + React)                     | Server-first (Next.js App Router)          |
+| ---------------- | ------------------------------------------- | ------------------------------------------ |
+| Initial load     | Blank page → fetch → render                 | HTML immediately visible                   |
+| SEO              | Requires SSR or prerender                   | Built-in SSR                               |
+| Client JS bundle | Large (all pages in bundle)                 | Small (only interactive parts)             |
+| Data fetching    | Client-side (loading spinners)              | Server-side (no spinners for initial data) |
+| Auth             | Client-side token management                | Server-side cookies + middleware           |
+| Complexity       | Routing, data loading, caching — all manual | Built-in                                   |
 
 ---
 
@@ -68,13 +70,13 @@ One Next.js application
 
 ### Why not microservices?
 
-| Factor | Microservices | Modular Monolith (our choice) |
-|--------|---------------|-------------------------------|
-| Team size | 5+ teams | 1-3 developers |
-| Deployment complexity | High (multiple services, API gateways) | Low (one container) |
-| Data consistency | Distributed transactions (hard) | ACID transactions (easy) |
-| Operational overhead | Kubernetes, service mesh, tracing | Docker Compose |
-| Development speed | Slow (cross-service coordination) | Fast (shared codebase) |
+| Factor                | Microservices                          | Modular Monolith (our choice) |
+| --------------------- | -------------------------------------- | ----------------------------- |
+| Team size             | 5+ teams                               | 1-3 developers                |
+| Deployment complexity | High (multiple services, API gateways) | Low (one container)           |
+| Data consistency      | Distributed transactions (hard)        | ACID transactions (easy)      |
+| Operational overhead  | Kubernetes, service mesh, tracing      | Docker Compose                |
+| Development speed     | Slow (cross-service coordination)      | Fast (shared codebase)        |
 
 ### How modules are separated
 
@@ -92,6 +94,7 @@ src/app/[locale]/(private)/module/
 ```
 
 Each module has:
+
 - `page.tsx` — server component, fetches data
 - `components/` — client components for interactivity
 - `constants.ts` — module-local enums/keys
@@ -108,6 +111,7 @@ Each module has:
 ### Concept
 
 In a server-first architecture, the **server does the heavy lifting**:
+
 1. Fetches data from database/API
 2. Renders HTML
 3. Sends HTML + minimal JS to client
@@ -132,6 +136,7 @@ export default async function RatingPage({ params }) {
 ```
 
 **What happens:**
+
 1. User navigates to `/uk/module/rating`
 2. Server runs `RatingPage` function
 3. `getRatingData()` queries the database (server-side, fast)
@@ -140,6 +145,7 @@ export default async function RatingPage({ params }) {
 6. React hydrates `RatingContent` (makes it interactive)
 
 **What the browser receives:**
+
 - HTML with all grades, student names, etc. already rendered
 - Small JS bundle for `RatingContent` (filters, sorting)
 - No data fetching on client
@@ -163,6 +169,7 @@ export default function RatingPage() {
 ```
 
 **Problems with client-side fetching:**
+
 - User sees a loading spinner (bad UX)
 - Data fetching happens after hydration (waterfall)
 - No SEO (search engines see empty page)
@@ -189,7 +196,7 @@ export async function getTeacherCourses(): Promise<TeacherCourse[]> {
     const courses = await prisma.course.findMany({ where: { teacherId: user.id } });
     // ... transform and return
   } catch {
-    return [];  // safe default
+    return []; // safe default
   }
 }
 
@@ -214,6 +221,7 @@ With repository pattern (server actions):
 ```
 
 **Benefits:**
+
 - **Centralized auth** — every action checks authentication
 - **Centralized validation** — Zod schemas on every input
 - **Centralized error handling** — consistent patterns
@@ -293,17 +301,17 @@ let state: CircuitState = 'closed';
 let failureCount = 0;
 let lastFailureTime = 0;
 
-const FAILURE_THRESHOLD = 5;       // 5 failures → open
-const RESET_TIMEOUT_MS = 30_000;   // 30s → half-open
+const FAILURE_THRESHOLD = 5; // 5 failures → open
+const RESET_TIMEOUT_MS = 30_000; // 30s → half-open
 
 export const circuitBreaker = {
   isOpen() {
     if (state === 'open') {
       if (Date.now() - lastFailureTime > RESET_TIMEOUT_MS) {
-        state = 'half-open';  // allow one trial request
+        state = 'half-open'; // allow one trial request
         return false;
       }
-      return true;  // fast-fail
+      return true; // fast-fail
     }
     return false;
   },
@@ -321,7 +329,9 @@ export const circuitBreaker = {
     }
   },
 
-  getState() { return state; }
+  getState() {
+    return state;
+  },
 };
 ```
 
@@ -331,7 +341,7 @@ export const circuitBreaker = {
 // src/lib/client.ts
 export async function apiFetch(url: string, init?: RequestInit) {
   if (circuitBreaker.isOpen()) {
-    throw new Error('Circuit breaker is open');  // ← fast-fail, no network call
+    throw new Error('Circuit breaker is open'); // ← fast-fail, no network call
   }
 
   try {
@@ -387,7 +397,7 @@ When a network request fails transiently (e.g. temporary network glitch), retryi
 // src/lib/retry.ts
 export async function retryWithBackoff<T>(
   fn: () => Promise<T>,
-  options: { maxAttempts: number; baseDelayMs: number }
+  options: { maxAttempts: number; baseDelayMs: number },
 ): Promise<T> {
   for (let attempt = 1; attempt <= options.maxAttempts; attempt++) {
     try {
@@ -399,7 +409,7 @@ export async function retryWithBackoff<T>(
 
       // Exponential backoff: 200ms, 400ms, 800ms, ...
       const delay = options.baseDelayMs * Math.pow(2, attempt - 1);
-      await new Promise(resolve => setTimeout(resolve, delay));
+      await new Promise((resolve) => setTimeout(resolve, delay));
     }
   }
 }
@@ -409,13 +419,14 @@ export async function retryWithBackoff<T>(
 
 ```typescript
 // src/actions/announcement.actions.ts
-const response = await retryWithBackoff(
-  () => apiFetch('announcements', { next: { revalidate: 300 } }),
-  { maxAttempts: 2, baseDelayMs: 200 }
-);
+const response = await retryWithBackoff(() => apiFetch('announcements', { next: { revalidate: 300 } }), {
+  maxAttempts: 2,
+  baseDelayMs: 200,
+});
 ```
 
 **Timeline:**
+
 ```
 Attempt 1: 0ms — fails (e.g. 502 Bad Gateway)
 Wait:      200ms
@@ -432,6 +443,7 @@ Exponential: 100ms, 200ms, 400ms, 800ms — gives server progressively more time
 ### Why not retry 4xx errors?
 
 4xx errors are **permanent** (client error):
+
 - 400 Bad Request — retrying won't fix the request
 - 401 Unauthorized — retrying won't fix the token
 - 404 Not Found — retrying won't make the resource appear
@@ -464,9 +476,15 @@ export class PermanentError extends Error {
   }
 }
 
-export class ValidationError extends Error { /* ... */ }
-export class UnauthorizedError extends Error { /* ... */ }
-export class NotFoundError extends Error { /* ... */ }
+export class ValidationError extends Error {
+  /* ... */
+}
+export class UnauthorizedError extends Error {
+  /* ... */
+}
+export class NotFoundError extends Error {
+  /* ... */
+}
 ```
 
 ### Usage
@@ -481,7 +499,7 @@ if (response.status === 409) throw new PermanentError('Email already in use', 'E
 try {
   return await fn();
 } catch (error) {
-  if (error instanceof PermanentError) throw error;  // no retry
+  if (error instanceof PermanentError) throw error; // no retry
   if (error instanceof TransientError) {
     // retry
   }
@@ -491,6 +509,7 @@ try {
 ### Why typed errors?
 
 Without typed errors:
+
 ```typescript
 catch (error) {
   // Is this a network error? A validation error? An auth error?
@@ -499,6 +518,7 @@ catch (error) {
 ```
 
 With typed errors:
+
 ```typescript
 catch (error) {
   if (error instanceof UnauthorizedError) → redirect to login
@@ -569,6 +589,7 @@ Request → middleware.ts
 ### Why not one big middleware function?
 
 Separation of concerns:
+
 - i18n middleware only handles locale routing
 - CSRF middleware only handles CSRF validation
 - Auth middleware only handles authentication
@@ -646,14 +667,19 @@ Each sub-component (`CardHeader`, `CardTitle`, `CardContent`, `CardFooter`) is a
       <DialogDescription>This action cannot be undone.</DialogDescription>
     </DialogHeader>
     <DialogFooter>
-      <Button variant="secondary" onClick={() => setIsOpen(false)}>Cancel</Button>
-      <Button variant="primary" onClick={handleDelete}>Delete</Button>
+      <Button variant="secondary" onClick={() => setIsOpen(false)}>
+        Cancel
+      </Button>
+      <Button variant="primary" onClick={handleDelete}>
+        Delete
+      </Button>
     </DialogFooter>
   </DialogContent>
 </Dialog>
 ```
 
 **Why Compound Components:**
+
 - **Flexible composition** — use only the parts you need
 - **Implicit state sharing** — `Dialog` manages `open` state, children access it via context
 - **Readable JSX** — `<Card><CardHeader><CardTitle>` is self-documenting
@@ -665,20 +691,21 @@ Each sub-component (`CardHeader`, `CardTitle`, `CardContent`, `CardFooter`) is a
 ### The problem Redux solves
 
 In SPA architectures, client-side state management is complex:
+
 - User data needs to be available in many components
 - Forms need shared state
 - API responses need caching
 
 ### Why this project doesn't need Redux
 
-| Redux use case | This project's solution |
-|----------------|------------------------|
+| Redux use case               | This project's solution                             |
+| ---------------------------- | --------------------------------------------------- |
 | User data in many components | Server component fetches user data, passes as props |
-| API response caching | Next.js `revalidate` + cache tags |
-| Form state | React Hook Form (local to form component) |
-| UI state (modals, filters) | `useState` (local to component) |
-| Theme | `useTheme` hook + localStorage |
-| Toasts | `useToast` hook (Observer pattern) |
+| API response caching         | Next.js `revalidate` + cache tags                   |
+| Form state                   | React Hook Form (local to form component)           |
+| UI state (modals, filters)   | `useState` (local to component)                     |
+| Theme                        | `useTheme` hook + localStorage                      |
+| Toasts                       | `useToast` hook (Observer pattern)                  |
 
 ### The key insight
 

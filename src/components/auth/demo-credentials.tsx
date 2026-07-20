@@ -23,13 +23,13 @@ export const DemoCredentials = ({ onSelect }: Props) => {
   if (process.env.NEXT_PUBLIC_SHOW_DEMO_CREDENTIALS !== 'true') return null;
 
   return (
-    <Card className="mt-6 border-dashed bg-muted/50">
+    <Card className="bg-muted/50 mt-6 border-dashed">
       <CardContent className="p-4">
         <div className="mb-3 flex items-center gap-2">
           <KeyRound size={16} className="text-basic-blue" />
           <div>
-            <p className="text-sm font-semibold text-foreground">{t('title')}</p>
-            <p className="text-xs text-muted-foreground">{t('description')}</p>
+            <p className="text-foreground text-sm font-semibold">{t('title')}</p>
+            <p className="text-muted-foreground text-xs">{t('description')}</p>
           </div>
         </div>
         <div className="grid gap-2 sm:grid-cols-4">
@@ -39,13 +39,15 @@ export const DemoCredentials = ({ onSelect }: Props) => {
               type="button"
               variant="tertiary"
               size="small"
-              className="h-auto justify-start gap-2 border border-border bg-card px-3 py-2 text-left"
+              className="border-border bg-card h-auto justify-start gap-2 border px-3 py-2 text-left"
               onClick={() => onSelect?.(username, password)}
             >
               <Icon size={16} />
               <span className="min-w-0">
                 <span className="block text-xs font-semibold">{t(`roles.${key}`)}</span>
-                <span className="block truncate text-[11px] text-muted-foreground">{username} / {password}</span>
+                <span className="text-muted-foreground block truncate text-[11px]">
+                  {username} / {password}
+                </span>
               </span>
             </Button>
           ))}

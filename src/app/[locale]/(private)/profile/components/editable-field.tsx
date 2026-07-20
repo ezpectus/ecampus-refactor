@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useEffect,useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { PencilBold, XBold } from '@/app/images';
 import { Heading6 } from '@/components/typography/headers';

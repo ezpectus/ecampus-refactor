@@ -21,11 +21,7 @@ function formatIcsDate(date: Date): string {
 }
 
 function escapeIcsText(text: string): string {
-  return text
-    .replace(/\\/g, '\\\\')
-    .replace(/;/g, '\\;')
-    .replace(/,/g, '\\,')
-    .replace(/\n/g, '\\n');
+  return text.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
 }
 
 export function generateIcsCalendar(events: IcsEvent[]): string {

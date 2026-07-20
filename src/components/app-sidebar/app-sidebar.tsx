@@ -16,9 +16,7 @@ export async function AppSidebar() {
   const localUser = await getLocalUserLite();
   const remoteUser = !localUser ? await getUserDetails().catch(() => null) : null;
 
-  const isAdmin = localUser?.role === 'ADMIN'
-    || remoteUser?.userCategories?.includes(UserCategory.Admin)
-    || false;
+  const isAdmin = localUser?.role === 'ADMIN' || remoteUser?.userCategories?.includes(UserCategory.Admin) || false;
 
   const isTeacher = localUser?.role === 'TEACHER' || false;
   const isParent = localUser?.role === 'PARENT' || false;

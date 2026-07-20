@@ -87,7 +87,7 @@ export const AuditLogViewer = () => {
           <TableBody>
             {items.map((item) => (
               <TableRow key={item.id}>
-                <TableCell className="whitespace-nowrap text-sm">
+                <TableCell className="text-sm whitespace-nowrap">
                   {dayjs(item.createdAt).format('DD.MM.YYYY HH:mm')}
                 </TableCell>
                 <TableCell className="text-sm">{item.user.fullName}</TableCell>

@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { completeOnboarding,updateOnboardingProfile, uploadOnboardingPhoto } from '@/actions/onboarding.actions';
+import { completeOnboarding, updateOnboardingProfile, uploadOnboardingPhoto } from '@/actions/onboarding.actions';
 import { PhotoUploader } from '@/app/[locale]/(private)/settings/photo-uploader';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -32,10 +32,16 @@ export const OnboardingWizard = () => {
     speciality: z.string().min(1, { message: t('validation.speciality-required') }),
     groupName: z.string().min(1, { message: t('validation.group-required') }),
     studyForm: z.string().min(1, { message: t('validation.study-form-required') }),
-    studyYear: z.string().min(1, { message: t('validation.study-year-required') }).refine(
-      (val) => { const n = Number(val); return n >= 1 && n <= 6; },
-      { message: t('validation.study-year-max') },
-    ),
+    studyYear: z
+      .string()
+      .min(1, { message: t('validation.study-year-required') })
+      .refine(
+        (val) => {
+          const n = Number(val);
+          return n >= 1 && n <= 6;
+        },
+        { message: t('validation.study-year-max') },
+      ),
   });
 
   const personalSchema = z.object({
@@ -148,7 +154,7 @@ export const OnboardingWizard = () => {
         <button
           type="button"
           onClick={handleSkipAll}
-          className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+          className="text-muted-foreground hover:text-foreground text-sm transition-colors"
         >
           {t('skip-all')}
         </button>
@@ -159,7 +165,7 @@ export const OnboardingWizard = () => {
           {step === 0 && (
             <div>
               <h2 className="mb-2 text-xl font-semibold">{t('steps.academic.title')}</h2>
-              <p className="mb-6 text-sm text-muted-foreground">{t('steps.academic.description')}</p>
+              <p className="text-muted-foreground mb-6 text-sm">{t('steps.academic.description')}</p>
               <Form {...academicForm}>
                 <div className="space-y-4">
                   <FormField
@@ -237,7 +243,7 @@ export const OnboardingWizard = () => {
           {step === 1 && (
             <div>
               <h2 className="mb-2 text-xl font-semibold">{t('steps.personal.title')}</h2>
-              <p className="mb-6 text-sm text-muted-foreground">{t('steps.personal.description')}</p>
+              <p className="text-muted-foreground mb-6 text-sm">{t('steps.personal.description')}</p>
               <Form {...personalForm}>
                 <div className="space-y-4">
                   <FormField
@@ -287,18 +293,13 @@ export const OnboardingWizard = () => {
           {step === 2 && (
             <div>
               <h2 className="mb-2 text-xl font-semibold">{t('steps.photo.title')}</h2>
-              <p className="mb-6 text-sm text-muted-foreground">{t('steps.photo.description')}</p>
+              <p className="text-muted-foreground mb-6 text-sm">{t('steps.photo.description')}</p>
               <PhotoUploader photoSrc="" onFileUpload={setPhotoFile} />
             </div>
           )}
 
           <div className="mt-8 flex items-center justify-between">
-            <Button
-              variant="tertiary"
-              size="medium"
-              onClick={handleBack}
-              disabled={step === 0}
-            >
+            <Button variant="tertiary" size="medium" onClick={handleBack} disabled={step === 0}>
               <ChevronLeft className="mr-1 h-4 w-4" />
               {t('button.back')}
             </Button>

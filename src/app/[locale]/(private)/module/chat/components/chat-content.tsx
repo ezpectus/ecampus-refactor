@@ -3,9 +3,16 @@
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
-import { createChatRoom,getAvailableChatUsers, getChatMessages, getChatRooms, sendChatMessage } from '@/actions/chat.actions';
+import {
+  createChatRoom,
+  getAvailableChatUsers,
+  getChatMessages,
+  getChatRooms,
+  sendChatMessage,
+} from '@/actions/chat.actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useChatSSE } from '@/hooks/use-chat-sse';
 import { useServerErrorToast } from '@/hooks/use-server-error-toast';
 import { useToast } from '@/hooks/use-toast';
 
@@ -60,7 +67,9 @@ export const ChatContent = () => {
         setIsLoadingRooms(false);
       }
     });
-    return () => { isCancelled = true; };
+    return () => {
+      isCancelled = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -73,8 +82,17 @@ export const ChatContent = () => {
         setIsLoadingMessages(false);
       }
     });
-    return () => { isCancelled = true; };
+    return () => {
+      isCancelled = true;
+    };
   }, [selectedRoomId]);
+
+  useChatSSE(selectedRoomId, () => {
+    if (!selectedRoomId) return;
+    getChatMessages(selectedRoomId).then((result) => {
+      setMessages(result as ChatMessageItem[]);
+    });
+  });
 
   const handleSendMessage = async () => {
     if (!selectedRoomId || !messageInput.trim()) return;

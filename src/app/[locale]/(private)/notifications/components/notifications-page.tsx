@@ -1,6 +1,6 @@
 'use client';
 
-import { Bell, Check,CheckCheck } from 'lucide-react';
+import { Bell, Check, CheckCheck } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useCallback, useState } from 'react';
 
@@ -107,22 +107,20 @@ export function NotificationsPage({ initialItems, initialUnreadCount, total, pag
 
       {items.length === 0 ? (
         <Card className="flex flex-col items-center justify-center p-12">
-          <Bell size={40} className="mb-4 text-muted-foreground" />
-          <p className="text-center text-sm text-muted-foreground">{t('empty')}</p>
+          <Bell size={40} className="text-muted-foreground mb-4" />
+          <p className="text-muted-foreground text-center text-sm">{t('empty')}</p>
         </Card>
       ) : (
         <div className="space-y-2">
           {items.map((item) => (
             <Card
               key={item.id}
-              className={`flex items-start gap-3 p-4 transition-colors hover:bg-muted/50 ${
-                !item.read ? 'border-l-4 border-l-basic-blue' : ''
+              className={`hover:bg-muted/50 flex items-start gap-3 p-4 transition-colors ${
+                !item.read ? 'border-l-basic-blue border-l-4' : ''
               }`}
             >
               <Avatar className="h-10 w-10 shrink-0">
-                {item.sender?.photo ? (
-                  <AvatarImage src={item.sender.photo} alt={item.sender.fullName} />
-                ) : null}
+                {item.sender?.photo ? <AvatarImage src={item.sender.photo} alt={item.sender.fullName} /> : null}
                 <AvatarFallback>
                   {item.sender ? item.sender.fullName.charAt(0).toUpperCase() : <Bell size={16} />}
                 </AvatarFallback>
@@ -138,8 +136,8 @@ export function NotificationsPage({ initialItems, initialUnreadCount, total, pag
                     {t(`types.${item.type}`, { defaultMessage: item.type })}
                   </Badge>
                 </div>
-                <p className="mt-1 text-sm text-muted-foreground">{item.message}</p>
-                <div className="mt-2 flex items-center gap-3 text-xs text-muted-foreground">
+                <p className="text-muted-foreground mt-1 text-sm">{item.message}</p>
+                <div className="text-muted-foreground mt-2 flex items-center gap-3 text-xs">
                   {item.sender && (
                     <span>
                       {t('from')}: {item.sender.fullName}

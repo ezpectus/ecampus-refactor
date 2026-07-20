@@ -35,7 +35,10 @@ function signRefreshToken(userId: number, tokenVersion: number): string {
   });
 }
 
-export async function generateRefreshToken(userId: number, user: { id: number; username: string; role: string; schoolId: number | null; tokenVersion: number }) {
+export async function generateRefreshToken(
+  userId: number,
+  user: { id: number; username: string; role: string; schoolId: number | null; tokenVersion: number },
+) {
   const token = signRefreshToken(userId, user.tokenVersion);
   const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
 
@@ -156,11 +159,7 @@ export async function revokeAllRefreshTokens(userId: number) {
 export async function cleanupExpiredRefreshTokens() {
   await prisma.refreshToken.deleteMany({
     where: {
-      OR: [
-        { expiresAt: { lt: new Date() } },
-        { revokedAt: { not: null } },
-      ],
+      OR: [{ expiresAt: { lt: new Date() } }, { revokedAt: { not: null } }],
     },
   });
 }
-

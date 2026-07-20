@@ -20,11 +20,5 @@ export const DefaultAnnouncementSlide = () => {
     </RichText>
   );
 
-  return (
-    <AnnouncementSlide
-      title={title}
-      description={t('description')}
-      image="/images/welcome.png"
-    />
-  );
+  return <AnnouncementSlide title={title} description={t('description')} image="/images/welcome.png" />;
 };

@@ -3,11 +3,17 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Send } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useCallback,useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { getEmployeeOptions, getParentOptionsForTeacher, getStudentOptions, sendMail, sendMailToParents } from '@/actions/msg.actions';
+import {
+  getEmployeeOptions,
+  getParentOptionsForTeacher,
+  getStudentOptions,
+  sendMail,
+  sendMailToParents,
+} from '@/actions/msg.actions';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -130,7 +136,6 @@ export function Individual({ groupOptions }: Props) {
       label: employee.name,
     }));
   }, []);
-
 
   return (
     <Form {...form}>

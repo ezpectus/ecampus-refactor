@@ -1,6 +1,6 @@
 # 06 — Deployment & Docker Infrastructure
 
-**Project:** eCampus Student Portal
+**Project:** Student Portal
 **Last updated:** July 2026
 
 ---
@@ -66,13 +66,14 @@ FROM node:22-alpine AS runner
 
 ### Why multi-stage?
 
-| Stage | Purpose | Image size |
-|-------|---------|------------|
-| deps | Install all dependencies (dev + prod) | ~500MB |
-| builder | Compile Next.js, generate Prisma client | ~600MB |
-| runner | Production runtime only (no dev deps, no source) | ~150MB |
+| Stage   | Purpose                                          | Image size |
+| ------- | ------------------------------------------------ | ---------- |
+| deps    | Install all dependencies (dev + prod)            | ~500MB     |
+| builder | Compile Next.js, generate Prisma client          | ~600MB     |
+| runner  | Production runtime only (no dev deps, no source) | ~150MB     |
 
 The final runner image is **~150MB** because:
+
 - `output: 'standalone'` in `next.config.ts` bundles only needed server code
 - No `node_modules` in runner — only the standalone bundle
 - Alpine Linux base (~50MB)
@@ -106,7 +107,7 @@ services:
       postgres:
         condition: service_healthy
     volumes:
-      - uploads:/app/public/uploads        # ← persistent user uploads
+      - uploads:/app/public/uploads # ← persistent user uploads
     deploy:
       resources:
         limits:
@@ -210,14 +211,15 @@ ADMINER_PORT=8080
 
 ## Volume Persistence
 
-| Volume | Mount point | Purpose | Data survives restart? |
-|--------|-------------|---------|----------------------|
-| `pgdata` | `/var/lib/postgresql/data` | PostgreSQL database files | ✅ |
-| `uploads` | `/app/public/uploads` | User-uploaded avatars/files | ✅ |
+| Volume    | Mount point                | Purpose                     | Data survives restart? |
+| --------- | -------------------------- | --------------------------- | ---------------------- |
+| `pgdata`  | `/var/lib/postgresql/data` | PostgreSQL database files   | ✅                     |
+| `uploads` | `/app/public/uploads`      | User-uploaded avatars/files | ✅                     |
 
 ### Without volumes (data loss scenario)
 
 If volumes are not mounted:
+
 - **PostgreSQL data** lives in the container's writable layer
 - Container restart/rebuild → **all database data lost**
 - **User uploads** live in the container's writable layer
@@ -250,21 +252,23 @@ export async function GET() {
 // src/app/api/ready/route.ts
 export async function GET() {
   const checks = {
-    database: await checkDatabase(),      // prisma.$queryRaw('SELECT 1')
-    api: await checkExternalApi(),        // circuit breaker state
+    database: await checkDatabase(), // prisma.$queryRaw('SELECT 1')
+    api: await checkExternalApi(), // circuit breaker state
     circuitBreaker: getCircuitBreakerState(),
   };
 
-  const overallStatus = Object.values(checks).every(c => c.status === 'ok')
-    ? 'ok' : 'degraded';
+  const overallStatus = Object.values(checks).every((c) => c.status === 'ok') ? 'ok' : 'degraded';
 
-  return Response.json({
-    status: overallStatus,
-    timestamp: new Date().toISOString(),
-    version: process.env.npm_package_version,
-    uptime: Math.round(process.uptime()),
-    checks,
-  }, { status: overallStatus === 'ok' ? 200 : 503 });
+  return Response.json(
+    {
+      status: overallStatus,
+      timestamp: new Date().toISOString(),
+      version: process.env.npm_package_version,
+      uptime: Math.round(process.uptime()),
+      checks,
+    },
+    { status: overallStatus === 'ok' ? 200 : 503 },
+  );
 }
 ```
 
@@ -275,10 +279,10 @@ export async function GET() {
 ```yaml
 healthcheck:
   test: ['CMD-SHELL', 'wget --no-verbose --tries=1 --spider http://localhost:3000/api/healthz || exit 1']
-  interval: 15s       # Check every 15 seconds
-  timeout: 5s         # Max 5 seconds for response
-  retries: 5          # 5 consecutive failures = unhealthy
-  start_period: 20s   # Grace period during startup
+  interval: 15s # Check every 15 seconds
+  timeout: 5s # Max 5 seconds for response
+  retries: 5 # 5 consecutive failures = unhealthy
+  start_period: 20s # Grace period during startup
 ```
 
 ---
@@ -288,18 +292,21 @@ healthcheck:
 For local development without Docker:
 
 ### Windows
+
 ```bash
 scripts\start-no-docker.bat
 # Starts: npm run dev (with Turbopack)
 ```
 
 ### Unix
+
 ```bash
 ./scripts/start-no-docker.sh
 # Starts: npm run dev (with Turbopack)
 ```
 
 These scripts:
+
 1. Check if `.env` exists (copy from `.env.example` if not)
 2. Run `npm run db:push` (apply SQLite schema)
 3. Optionally run `npm run db:seed` (if database is empty)
@@ -323,11 +330,12 @@ npm run build:postgres
 ```typescript
 // next.config.ts
 const nextConfig = {
-  output: 'standalone',  // ← produces self-contained server bundle
+  output: 'standalone', // ← produces self-contained server bundle
 };
 ```
 
 Standalone output:
+
 - Bundles all server code + needed `node_modules` into `.next/standalone/`
 - No need to copy `node_modules` to production image
 - Smaller production image (~150MB vs ~500MB)

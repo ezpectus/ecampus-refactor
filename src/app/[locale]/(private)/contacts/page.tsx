@@ -44,36 +44,42 @@ export default async function ContactsPage({ params }: LocaleProps) {
             t.rich('content', {
               ...tags,
               h3: (chunks) => <Heading3 className="mt-14">{chunks}</Heading3>,
-              addresslink: (chunks) => addressUrl && (
-                <Link href={addressUrl} target="_blank" rel="noopener noreferrer">
-                  {chunks}
-                </Link>
-              ),
-              githublink: (chunks) => githubUrl && (
-                <Link href={githubUrl} target="_blank" rel="noopener noreferrer">
-                  {chunks}
-                </Link>
-              ),
-              facebooklink: (chunks) => facebookUrl && (
-                <Link href={facebookUrl} target="_blank" rel="noopener noreferrer">
-                  {chunks}
-                </Link>
-              ),
-              twitterlink: (chunks) => twitterUrl && (
-                <Link href={twitterUrl} target="_blank" rel="noopener noreferrer">
-                  {chunks}
-                </Link>
-              ),
-              instagramlink: (chunks) => instagramUrl && (
-                <Link href={instagramUrl} target="_blank" rel="noopener noreferrer">
-                  {chunks}
-                </Link>
-              ),
-              suggestionslink: (chunks) => suggestionsUrl && (
-                <TextButton size="huge" href={suggestionsUrl} icon={<ChatsTeardrop />}>
-                  {chunks}
-                </TextButton>
-              ),
+              addresslink: (chunks) =>
+                addressUrl && (
+                  <Link href={addressUrl} target="_blank" rel="noopener noreferrer">
+                    {chunks}
+                  </Link>
+                ),
+              githublink: (chunks) =>
+                githubUrl && (
+                  <Link href={githubUrl} target="_blank" rel="noopener noreferrer">
+                    {chunks}
+                  </Link>
+                ),
+              facebooklink: (chunks) =>
+                facebookUrl && (
+                  <Link href={facebookUrl} target="_blank" rel="noopener noreferrer">
+                    {chunks}
+                  </Link>
+                ),
+              twitterlink: (chunks) =>
+                twitterUrl && (
+                  <Link href={twitterUrl} target="_blank" rel="noopener noreferrer">
+                    {chunks}
+                  </Link>
+                ),
+              instagramlink: (chunks) =>
+                instagramUrl && (
+                  <Link href={instagramUrl} target="_blank" rel="noopener noreferrer">
+                    {chunks}
+                  </Link>
+                ),
+              suggestionslink: (chunks) =>
+                suggestionsUrl && (
+                  <TextButton size="huge" href={suggestionsUrl} icon={<ChatsTeardrop />}>
+                    {chunks}
+                  </TextButton>
+                ),
               emaillink: (chunks) => (
                 <TextButton size="huge" href="mailto:support@student-portal.app" icon={<EnvelopeSimple />}>
                   {chunks}

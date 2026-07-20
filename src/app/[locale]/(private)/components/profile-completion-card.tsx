@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
-import { CircleWavyCheck,WarningCircle } from '@/app/images';
+import { CircleWavyCheck, WarningCircle } from '@/app/images';
 import { Heading5 } from '@/components/typography/headers';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -43,7 +43,7 @@ export const ProfileCompletionCard = ({ user }: Props) => {
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">{t('progress')}</span>
-            <span className="font-medium text-foreground">{completionPercent}%</span>
+            <span className="text-foreground font-medium">{completionPercent}%</span>
           </div>
           <Progress value={completionPercent} className="h-2" />
         </div>

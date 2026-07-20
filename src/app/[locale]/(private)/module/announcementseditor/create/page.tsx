@@ -22,11 +22,7 @@ export default async function CreateAnnouncement({ params }: LocaleProps) {
   setRequestLocale(locale);
 
   const t = await getTranslations(INTL_NAMESPACE);
-  const [rolesData, studyFormsData, coursesData] = await Promise.all([
-    getRoles(),
-    getStudyForms(),
-    getCourses(),
-  ]);
+  const [rolesData, studyFormsData, coursesData] = await Promise.all([getRoles(), getStudyForms(), getCourses()]);
 
   return (
     <SubLayout pageTitle={t('create.title')}>

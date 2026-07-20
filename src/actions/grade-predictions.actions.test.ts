@@ -53,26 +53,20 @@ describe('getGradePredictions', () => {
       { name: 'Math', grade: 80, credits: 4, gradeHistory: [] },
       { name: 'Physics', grade: 60, credits: 3, gradeHistory: [] },
     ] as never);
-    mockPrisma.attendance.findMany.mockResolvedValue([
-      { present: 18, total: 20 },
-    ] as never);
+    mockPrisma.attendance.findMany.mockResolvedValue([{ present: 18, total: 20 }] as never);
 
     const result = await getGradePredictions();
 
     expect(result).not.toBeNull();
     expect(result!.courses).toHaveLength(2);
     expect(result!.totalCredits).toBe(7);
-    expect(result!.currentGpa).toBe(Math.round((80 * 4 + 60 * 3) / 7 * 10) / 10);
+    expect(result!.currentGpa).toBe(Math.round(((80 * 4 + 60 * 3) / 7) * 10) / 10);
   });
 
   it('marks high risk for low predicted grade', async () => {
     mockGetLocalUserLite.mockResolvedValue({ id: 1, role: 'STUDENT', schoolId: 1, tokenVersion: 0 } as never);
-    mockPrisma.course.findMany.mockResolvedValue([
-      { name: 'Math', grade: 40, credits: 4, gradeHistory: [] },
-    ] as never);
-    mockPrisma.attendance.findMany.mockResolvedValue([
-      { present: 5, total: 20 },
-    ] as never);
+    mockPrisma.course.findMany.mockResolvedValue([{ name: 'Math', grade: 40, credits: 4, gradeHistory: [] }] as never);
+    mockPrisma.attendance.findMany.mockResolvedValue([{ present: 5, total: 20 }] as never);
 
     const result = await getGradePredictions();
 
@@ -96,9 +90,7 @@ describe('getGradePredictions', () => {
         ],
       },
     ] as never);
-    mockPrisma.attendance.findMany.mockResolvedValue([
-      { present: 18, total: 20 },
-    ] as never);
+    mockPrisma.attendance.findMany.mockResolvedValue([{ present: 18, total: 20 }] as never);
 
     const result = await getGradePredictions();
 
@@ -120,9 +112,7 @@ describe('getGradePredictions', () => {
         ],
       },
     ] as never);
-    mockPrisma.attendance.findMany.mockResolvedValue([
-      { present: 18, total: 20 },
-    ] as never);
+    mockPrisma.attendance.findMany.mockResolvedValue([{ present: 18, total: 20 }] as never);
 
     const result = await getGradePredictions();
 
@@ -131,12 +121,8 @@ describe('getGradePredictions', () => {
 
   it('returns stable trend for less than 2 history entries', async () => {
     mockGetLocalUserLite.mockResolvedValue({ id: 1, role: 'STUDENT', schoolId: 1, tokenVersion: 0 } as never);
-    mockPrisma.course.findMany.mockResolvedValue([
-      { name: 'Math', grade: 70, credits: 4, gradeHistory: [] },
-    ] as never);
-    mockPrisma.attendance.findMany.mockResolvedValue([
-      { present: 18, total: 20 },
-    ] as never);
+    mockPrisma.course.findMany.mockResolvedValue([{ name: 'Math', grade: 70, credits: 4, gradeHistory: [] }] as never);
+    mockPrisma.attendance.findMany.mockResolvedValue([{ present: 18, total: 20 }] as never);
 
     const result = await getGradePredictions();
 
@@ -158,9 +144,7 @@ describe('getGradePredictions', () => {
       { name: 'Math', grade: 90, credits: 4, gradeHistory: [] },
       { name: 'Physics', grade: 50, credits: 3, gradeHistory: [] },
     ] as never);
-    mockPrisma.attendance.findMany.mockResolvedValue([
-      { present: 18, total: 20 },
-    ] as never);
+    mockPrisma.attendance.findMany.mockResolvedValue([{ present: 18, total: 20 }] as never);
 
     const result = await getGradePredictions();
 

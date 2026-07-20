@@ -91,7 +91,7 @@ export const CustomDashboard = ({ data }: Props) => {
           <CardContent>
             <div className="flex flex-wrap gap-3">
               {widgets.map((widget) => (
-                <label key={widget.id} className="flex items-center gap-2 rounded-lg border border-border px-3 py-2">
+                <label key={widget.id} className="border-border flex items-center gap-2 rounded-lg border px-3 py-2">
                   <Switch
                     checked={widget.visible}
                     onCheckedChange={(checked) => handleToggleWidget(widget.id, checked)}

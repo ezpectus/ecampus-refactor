@@ -30,19 +30,16 @@ export function GlobalSearch() {
     return () => window.removeEventListener('keydown', handler);
   }, []);
 
-  const debouncedSearch = useCallback(
-    async (q: string) => {
-      if (q.trim().length < 2) {
-        setResults(null);
-        return;
-      }
-      setLoading(true);
-      const res = await globalSearch(q);
-      setResults(res);
-      setLoading(false);
-    },
-    [],
-  );
+  const debouncedSearch = useCallback(async (q: string) => {
+    if (q.trim().length < 2) {
+      setResults(null);
+      return;
+    }
+    setLoading(true);
+    const res = await globalSearch(q);
+    setResults(res);
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => void debouncedSearch(query), 300);
@@ -68,8 +65,8 @@ export function GlobalSearch() {
         aria-label={t('placeholder')}
       >
         <Search size={16} />
-        <span className="hidden text-sm text-muted-foreground md:inline">{t('placeholder')}</span>
-        <kbd className="hidden rounded border border-border px-1.5 text-[10px] text-muted-foreground md:inline">
+        <span className="text-muted-foreground hidden text-sm md:inline">{t('placeholder')}</span>
+        <kbd className="border-border text-muted-foreground hidden rounded border px-1.5 text-[10px] md:inline">
           Ctrl+K
         </kbd>
       </Button>
@@ -79,7 +76,7 @@ export function GlobalSearch() {
           <DialogHeader className="sr-only">
             <DialogTitle>{t('title')}</DialogTitle>
           </DialogHeader>
-          <div className="border-b border-border p-4">
+          <div className="border-border border-b p-4">
             <Input
               autoFocus
               placeholder={t('placeholder')}
@@ -99,32 +96,27 @@ export function GlobalSearch() {
             )}
 
             {!loading && !hasResults && query.trim().length >= 2 && (
-              <p className="py-8 text-center text-sm text-muted-foreground">{t('no-results')}</p>
+              <p className="text-muted-foreground py-8 text-center text-sm">{t('no-results')}</p>
             )}
 
             {!loading && !hasResults && query.trim().length < 2 && (
-              <p className="py-8 text-center text-sm text-muted-foreground">{t('hint')}</p>
+              <p className="text-muted-foreground py-8 text-center text-sm">{t('hint')}</p>
             )}
 
             {!loading && hasResults && (
               <div className="space-y-4 p-2">
                 {results!.users.length > 0 && (
                   <section>
-                    <h3 className="mb-2 px-2 text-xs font-semibold uppercase text-muted-foreground">
-                      {t('users')}
-                    </h3>
+                    <h3 className="text-muted-foreground mb-2 px-2 text-xs font-semibold uppercase">{t('users')}</h3>
                     {results!.users.map((u) => (
-                      <div
-                        key={u.id}
-                        className="flex items-center gap-3 rounded-lg px-2 py-2"
-                      >
+                      <div key={u.id} className="flex items-center gap-3 rounded-lg px-2 py-2">
                         <Avatar className="h-8 w-8">
                           {u.photo ? <AvatarImage src={u.photo} alt={u.fullName} /> : null}
                           <AvatarFallback>{u.fullName.charAt(0).toUpperCase()}</AvatarFallback>
                         </Avatar>
                         <div className="min-w-0 flex-1">
                           <p className="truncate text-sm font-medium">{u.fullName}</p>
-                          <p className="truncate text-xs text-muted-foreground">
+                          <p className="text-muted-foreground truncate text-xs">
                             @{u.username}
                             {u.faculty ? ` · ${u.faculty}` : ''}
                           </p>
@@ -136,18 +128,16 @@ export function GlobalSearch() {
 
                 {results!.posts.length > 0 && (
                   <section>
-                    <h3 className="mb-2 px-2 text-xs font-semibold uppercase text-muted-foreground">
-                      {t('posts')}
-                    </h3>
+                    <h3 className="text-muted-foreground mb-2 px-2 text-xs font-semibold uppercase">{t('posts')}</h3>
                     {results!.posts.map((p) => (
                       <Link
                         key={p.id}
                         href="/module/feed"
                         onClick={handleClose}
-                        className="block rounded-lg px-2 py-2 transition-colors hover:bg-muted"
+                        className="hover:bg-muted block rounded-lg px-2 py-2 transition-colors"
                       >
                         <p className="truncate text-sm font-medium">{p.content}</p>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-muted-foreground text-xs">
                           {p.authorName} · {new Date(p.createdAt).toLocaleDateString()}
                         </p>
                       </Link>
@@ -157,7 +147,7 @@ export function GlobalSearch() {
 
                 {results!.notifications.length > 0 && (
                   <section>
-                    <h3 className="mb-2 px-2 text-xs font-semibold uppercase text-muted-foreground">
+                    <h3 className="text-muted-foreground mb-2 px-2 text-xs font-semibold uppercase">
                       {t('notifications')}
                     </h3>
                     {results!.notifications.map((n) => (
@@ -165,10 +155,10 @@ export function GlobalSearch() {
                         key={n.id}
                         href="/notifications"
                         onClick={handleClose}
-                        className="block rounded-lg px-2 py-2 transition-colors hover:bg-muted"
+                        className="hover:bg-muted block rounded-lg px-2 py-2 transition-colors"
                       >
                         <p className="truncate text-sm font-medium">{n.title}</p>
-                        <p className="truncate text-xs text-muted-foreground">{n.message}</p>
+                        <p className="text-muted-foreground truncate text-xs">{n.message}</p>
                       </Link>
                     ))}
                   </section>

@@ -1,6 +1,6 @@
 'use client';
 
-import { BookOpen, CalendarCheck,CreditCard, TrendingUp } from 'lucide-react';
+import { BookOpen, CalendarCheck, CreditCard, TrendingUp } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Card, CardContent } from '@/components/ui/card';

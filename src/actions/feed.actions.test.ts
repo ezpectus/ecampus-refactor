@@ -37,7 +37,13 @@ vi.mock('@/lib/validate', () => ({
 
 import { revalidatePath } from 'next/cache';
 
-import { createFeedComment, createFeedPost, deleteFeedPost, getFeedPosts, toggleFeedLike } from '@/actions/feed.actions';
+import {
+  createFeedComment,
+  createFeedPost,
+  deleteFeedPost,
+  getFeedPosts,
+  toggleFeedLike,
+} from '@/actions/feed.actions';
 import { getLocalUserLite } from '@/actions/local-user.actions';
 import { prisma } from '@/lib/prisma';
 
@@ -81,9 +87,7 @@ describe('getFeedPosts', () => {
         imageUrl: null,
         authorId: 1,
         author: { id: 1, fullName: 'Alice', photo: '' },
-        comments: [
-          { id: 1, content: 'Hi', authorId: 2, author: { id: 2, fullName: 'Bob' }, createdAt: date },
-        ],
+        comments: [{ id: 1, content: 'Hi', authorId: 2, author: { id: 2, fullName: 'Bob' }, createdAt: date }],
         likes: [{ id: 1 }],
         _count: { likes: 3 },
         createdAt: date,

@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useReducer, useRef } from 'react';
 
 import { getMail, getMails, markAsImportant } from '@/actions/msg.actions';
-import { ArrowClockwise, MagnifyingGlassRegular,Star } from '@/app/images';
+import { ArrowClockwise, MagnifyingGlassRegular, Star } from '@/app/images';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
@@ -67,7 +67,11 @@ export default function Inbox({ mails, filter }: Props) {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === '/' && document.activeElement?.tagName !== 'INPUT' && document.activeElement?.tagName !== 'TEXTAREA') {
+      if (
+        e.key === '/' &&
+        document.activeElement?.tagName !== 'INPUT' &&
+        document.activeElement?.tagName !== 'TEXTAREA'
+      ) {
         e.preventDefault();
         searchRef.current?.focus();
       }
@@ -147,10 +151,7 @@ export default function Inbox({ mails, filter }: Props) {
     ? state.mails.filter((mail) => {
         const query = state.searchQuery.toLowerCase();
         const nameField = filter === MailFilter.Outgoing ? mail.recipient.name : mail.sender.name;
-        return (
-          nameField.toLowerCase().includes(query) ||
-          mail.subject.toLowerCase().includes(query)
-        );
+        return nameField.toLowerCase().includes(query) || mail.subject.toLowerCase().includes(query);
       })
     : state.mails;
 
@@ -163,10 +164,20 @@ export default function Inbox({ mails, filter }: Props) {
               <span className="text-muted-foreground text-sm">
                 {state.selectedRows.length} {t('selected')}
               </span>
-              <button type="button" onClick={handleDeleteClick} className="flex cursor-pointer items-center justify-center" aria-label={t('actions.delete')}>
+              <button
+                type="button"
+                onClick={handleDeleteClick}
+                className="flex cursor-pointer items-center justify-center"
+                aria-label={t('actions.delete')}
+              >
                 <Trash2 className="h-6 w-6 text-neutral-500" />
               </button>
-              <button type="button" onClick={handleMarkAsImportant} className="flex cursor-pointer items-center justify-center" aria-label={t('actions.mark-important')}>
+              <button
+                type="button"
+                onClick={handleMarkAsImportant}
+                className="flex cursor-pointer items-center justify-center"
+                aria-label={t('actions.mark-important')}
+              >
                 <Star className="h-6 w-6 text-neutral-500" />
               </button>
             </>
@@ -174,7 +185,7 @@ export default function Inbox({ mails, filter }: Props) {
         </div>
         <div className="flex items-center gap-3">
           <div className="relative">
-            <MagnifyingGlassRegular className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
+            <MagnifyingGlassRegular className="absolute top-1/2 left-2.5 h-4 w-4 -translate-y-1/2 text-neutral-400" />
             <Input
               ref={searchRef}
               value={state.searchQuery}
@@ -185,7 +196,13 @@ export default function Inbox({ mails, filter }: Props) {
               data-testid="msg-search"
             />
           </div>
-          <button type="button" onClick={handleRefresh} className="flex cursor-pointer items-center justify-center" title={t('refresh')} aria-label={t('refresh')}>
+          <button
+            type="button"
+            onClick={handleRefresh}
+            className="flex cursor-pointer items-center justify-center"
+            title={t('refresh')}
+            aria-label={t('refresh')}
+          >
             <ArrowClockwise className={`h-5 w-5 text-neutral-500 ${state.isRefreshing ? 'animate-spin' : ''}`} />
           </button>
         </div>
@@ -230,7 +247,9 @@ export default function Inbox({ mails, filter }: Props) {
                 </TableCell>
                 <TableCell onClick={() => handleRowClick(mail)}>
                   <div className="flex max-w-[600px] items-center gap-2">
-                    <span className={`flex-1 overflow-hidden text-ellipsis whitespace-nowrap ${!mail.isRead ? 'font-semibold' : ''}`}>
+                    <span
+                      className={`flex-1 overflow-hidden text-ellipsis whitespace-nowrap ${!mail.isRead ? 'font-semibold' : ''}`}
+                    >
                       {mail.subject}
                     </span>
                     {mail.isImportant && (

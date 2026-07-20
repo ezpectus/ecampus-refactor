@@ -4,6 +4,10 @@
   "private": true,
   "author": "Ezpectus (Denys Stepanenko)",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ezpectus/student-portal.git"
+  },
   "engines": {
     "node": ">=22.0.0"
   },

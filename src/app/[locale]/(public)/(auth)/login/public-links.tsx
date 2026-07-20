@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 
-import { Chats,LifebuoyOutline, Student } from '@/app/images';
+import { Chats, LifebuoyOutline, Student } from '@/app/images';
 import { env } from '@/lib/env';
 
 import { PublicLink } from './public-link';

@@ -1,4 +1,4 @@
-import { beforeEach,describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('@/lib/prisma', () => ({
   prisma: {
@@ -53,7 +53,13 @@ describe('getAuditLogs', () => {
   it('fetches paginated audit logs for admin user', async () => {
     mockGetLocalUserLite.mockResolvedValue({ id: 1, role: 'ADMIN' } as never);
     mockPrisma.auditLog.findMany.mockResolvedValue([
-      { id: 1, action: 'login', entity: 'User', userId: 1, user: { id: 1, fullName: 'Admin', username: 'admin', email: 'admin@test.com' } },
+      {
+        id: 1,
+        action: 'login',
+        entity: 'User',
+        userId: 1,
+        user: { id: 1, fullName: 'Admin', username: 'admin', email: 'admin@test.com' },
+      },
     ] as never);
     mockPrisma.auditLog.count.mockResolvedValue(1 as never);
 
@@ -77,9 +83,7 @@ describe('getAuditLogs', () => {
 
     await getAuditLogs(2, 20);
 
-    expect(mockPrisma.auditLog.findMany).toHaveBeenCalledWith(
-      expect.objectContaining({ skip: 20 }),
-    );
+    expect(mockPrisma.auditLog.findMany).toHaveBeenCalledWith(expect.objectContaining({ skip: 20 }));
   });
 });
 

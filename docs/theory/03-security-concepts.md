@@ -1,6 +1,6 @@
 # 03 — Security Concepts: Theory & Practice
 
-**Project:** eCampus Student Portal
+**Project:** Student Portal
 **Audience:** Developers learning web security
 **Language:** English with code examples
 
@@ -47,17 +47,21 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJTVFVERU5UIiwiaWF
 ### Why use JWT?
 
 **Without JWT (session-based):**
+
 ```
 Login → Server creates session → Stores session ID in DB → Sends session cookie
 Request → Server reads cookie → Looks up session in DB → Gets user data
 ```
+
 **Problem:** Every request requires a database lookup.
 
 **With JWT (token-based):**
+
 ```
 Login → Server creates JWT (contains user data) → Sends JWT in cookie
 Request → Server reads JWT → Verifies signature → Gets user data from JWT
 ```
+
 **Benefit:** No database lookup per request. The JWT itself contains the user data, and the signature proves it hasn't been tampered with.
 
 ### In this project
@@ -76,7 +80,7 @@ const payload = {
 };
 
 const token = JWT.sign(payload, env.JWT_SECRET, {
-  expiresIn: '15m',              // short-lived access token
+  expiresIn: '15m', // short-lived access token
   issuer: 'student-portal-local', // prevents token confusion
 });
 
@@ -88,16 +92,16 @@ const payload = JWT.verify(token, env.JWT_SECRET, {
 
 ### JWT claims used in this project
 
-| Claim | Purpose | Example |
-|-------|---------|---------|
-| `exp` | Expiration time (Unix seconds) | `1690000000` (15 min from now) |
-| `iss` | Issuer (who created the token) | `student-portal-local` |
-| `iat` | Issued at (Unix seconds) | `1690000000` |
-| `userId` | User's database ID | `42` |
-| `role` | User's role | `STUDENT` |
-| `modules` | Authorized module list | `['rating', 'studysheet', 'calendar']` |
-| `schoolId` | School isolation ID | `1` |
-| `tokenVersion` | Logout-all-devices mechanism | `0` |
+| Claim          | Purpose                        | Example                                |
+| -------------- | ------------------------------ | -------------------------------------- |
+| `exp`          | Expiration time (Unix seconds) | `1690000000` (15 min from now)         |
+| `iss`          | Issuer (who created the token) | `student-portal-local`                 |
+| `iat`          | Issued at (Unix seconds)       | `1690000000`                           |
+| `userId`       | User's database ID             | `42`                                   |
+| `role`         | User's role                    | `STUDENT`                              |
+| `modules`      | Authorized module list         | `['rating', 'studysheet', 'calendar']` |
+| `schoolId`     | School isolation ID            | `1`                                    |
+| `tokenVersion` | Logout-all-devices mechanism   | `0`                                    |
 
 ### Why `tokenVersion`?
 
@@ -165,8 +169,8 @@ let jwksCache: ReturnType<typeof createRemoteJWKSet> | null = null;
 function getJwks() {
   if (!jwksCache) {
     jwksCache = createRemoteJWKSet(new URL(env.JWKS_URI!), {
-      cooldownDuration: 30_000,   // 30s between fetches
-      cacheMaxAge: 600_000,       // 10min cache for keys
+      cooldownDuration: 30_000, // 30s between fetches
+      cacheMaxAge: 600_000, // 10min cache for keys
     });
   }
   return jwksCache;
@@ -174,7 +178,7 @@ function getJwks() {
 
 export async function verifyRemoteJWT<T>(token: string): Promise<T> {
   const { payload } = await jwtVerify(token, getJwks(), {
-    issuer: env.JWT_ISSUER,  // optional issuer check
+    issuer: env.JWT_ISSUER, // optional issuer check
   });
   return payload as T;
 }
@@ -192,10 +196,10 @@ After 10min: Fetch fresh keys (in case keys rotated)
 
 ### HS256 vs RS256
 
-| Algorithm | Key type | Use case |
-|-----------|----------|----------|
-| HS256 (HMAC) | Shared secret | Same service signs + verifies (local auth) |
-| RS256 (RSA) | Public/private pair | Different services (external API signs, we verify) |
+| Algorithm    | Key type            | Use case                                           |
+| ------------ | ------------------- | -------------------------------------------------- |
+| HS256 (HMAC) | Shared secret       | Same service signs + verifies (local auth)         |
+| RS256 (RSA)  | Public/private pair | Different services (external API signs, we verify) |
 
 ---
 
@@ -226,6 +230,7 @@ After 30 days:
 ### Why rotation?
 
 If a refresh token is stolen, the attacker can use it once. After that one use:
+
 - The old token is revoked
 - A new token is issued (to the legitimate user)
 - If the attacker tries to use the old token again → reuse detected → ALL tokens revoked
@@ -345,7 +350,7 @@ export async function requireCsrf() {
 
 // Usage in every mutation:
 export async function updateGrade(input) {
-  await requireCsrf();  // ← first line
+  await requireCsrf(); // ← first line
   // ...
 }
 ```
@@ -353,6 +358,7 @@ export async function updateGrade(input) {
 ### Defense in depth: Origin header check
 
 Even if the CSRF cookie is somehow leaked, the Origin header check provides a second layer:
+
 - `Origin: https://student-portal.com` (legitimate)
 - `Origin: https://evil.com` (blocked — doesn't match host)
 
@@ -386,15 +392,15 @@ Browser only executes scripts with the correct nonce
 // src/middleware.ts
 function buildCspHeader(nonce: string): string {
   return [
-    "default-src 'self'",                                          // block everything by default
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' ...`,     // only nonce'd scripts
-    "style-src 'self' 'unsafe-inline'",                            // Tailwind needs inline styles
-    "img-src 'self' data: https: blob:",                           // images from any HTTPS
+    "default-src 'self'", // block everything by default
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' ...`, // only nonce'd scripts
+    "style-src 'self' 'unsafe-inline'", // Tailwind needs inline styles
+    "img-src 'self' data: https: blob:", // images from any HTTPS
     "font-src 'self' data:",
     "connect-src 'self' https://www.google-analytics.com ...",
     "frame-src 'self' https://www.google.com/recaptcha/ ...",
-    "object-src 'none'",                                           // no Flash/Java
-    "base-uri 'self'",                                             // no <base> injection
+    "object-src 'none'", // no Flash/Java
+    "base-uri 'self'", // no <base> injection
   ].join('; ');
 }
 
@@ -423,10 +429,10 @@ This means even if an attacker injects a script tag, it won't have the correct n
 
 ### Three cookie security flags
 
-| Flag | What it does | Why it matters |
-|------|-------------|----------------|
-| `httpOnly: true` | JavaScript can't read the cookie | Prevents XSS from stealing tokens |
-| `secure: true` | Cookie only sent over HTTPS | Prevents man-in-the-middle from reading cookies |
+| Flag              | What it does                                              | Why it matters                                           |
+| ----------------- | --------------------------------------------------------- | -------------------------------------------------------- |
+| `httpOnly: true`  | JavaScript can't read the cookie                          | Prevents XSS from stealing tokens                        |
+| `secure: true`    | Cookie only sent over HTTPS                               | Prevents man-in-the-middle from reading cookies          |
 | `sameSite: 'lax'` | Cookie sent on same-site requests + top-level navigations | Prevents CSRF (cross-site requests don't include cookie) |
 
 ### In this project
@@ -435,15 +441,15 @@ This means even if an attacker injects a script tag, it won't have the correct n
 // Access token cookie
 resolvedCookies.set(TOKEN_COOKIE_NAME, token, {
   domain: MAIN_COOKIE_DOMAIN,
-  httpOnly: true,           // ← JS can't read this
-  secure: isProduction,     // ← HTTPS only in production
-  sameSite: 'lax',          // ← blocks cross-site POST
+  httpOnly: true, // ← JS can't read this
+  secure: isProduction, // ← HTTPS only in production
+  sameSite: 'lax', // ← blocks cross-site POST
   expires,
 });
 
 // CSRF cookie (needs to be readable by JS)
 res.cookies.set(CSRF_COOKIE_NAME, csrfToken, {
-  httpOnly: false,          // ← JS CAN read this (needed for double-submit)
+  httpOnly: false, // ← JS CAN read this (needed for double-submit)
   sameSite: 'lax',
   path: '/',
 });
@@ -522,8 +528,8 @@ Rate limiting restricts the number of requests a user can make in a time window.
 
 ```typescript
 // src/lib/rate-limit.ts
-const WINDOW_MS = 15 * 60 * 1000;  // 15 minutes
-const MAX_ATTEMPTS = 10;            // 10 attempts per window
+const WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+const MAX_ATTEMPTS = 10; // 10 attempts per window
 
 export function checkRateLimit(identifier: string) {
   const key = `login:${identifier}`;
@@ -545,11 +551,11 @@ export function checkRateLimit(identifier: string) {
 
 ### Limits
 
-| Action | Max attempts | Window |
-|--------|-------------|--------|
-| Login | 10 | 15 minutes |
-| Password reset | 5 | 15 minutes |
-| Registration | 5 | 1 hour |
+| Action         | Max attempts | Window     |
+| -------------- | ------------ | ---------- |
+| Login          | 10           | 15 minutes |
+| Password reset | 5            | 15 minutes |
+| Registration   | 5            | 1 hour     |
 
 ### Limitation: in-memory
 
@@ -577,7 +583,7 @@ Every database query that involves school-scoped data **must** filter by `school
 // ✅ CORRECT — school isolation enforced
 const posts = await prisma.feedPost.findMany({
   where: {
-    ...(user.schoolId ? { schoolId: user.schoolId } : {}),  // ← filter by school
+    ...(user.schoolId ? { schoolId: user.schoolId } : {}), // ← filter by school
   },
 });
 
@@ -598,6 +604,7 @@ const where = user.schoolId ? { schoolId: user.schoolId } : {};
 ### Why this matters
 
 Without school isolation:
+
 - School A's admin can see School B's students
 - School A's teacher can edit School B's grades
 - A data breach at one school compromises all schools
@@ -609,6 +616,7 @@ Without school isolation:
 ### What are secrets?
 
 Secrets are sensitive values that must not be exposed:
+
 - `JWT_SECRET` — signing key for JWTs
 - `POSTGRES_PASSWORD` — database password
 - `JWKS_URI` — (not secret, but shouldn't be in client bundle)

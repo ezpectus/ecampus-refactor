@@ -1,6 +1,6 @@
 # 08 — Monitoring, Health Checks & Resilience
 
-**Project:** eCampus Student Portal
+**Project:** Student Portal
 **Last updated:** July 2026
 
 ---
@@ -37,16 +37,18 @@ export async function GET() {
     circuitBreaker: getCircuitBreakerState(),
   };
 
-  const overallStatus = Object.values(checks).every(c => c.status === 'ok')
-    ? 'ok' : 'degraded';
+  const overallStatus = Object.values(checks).every((c) => c.status === 'ok') ? 'ok' : 'degraded';
 
-  return Response.json({
-    status: overallStatus,
-    timestamp: new Date().toISOString(),
-    version: process.env.npm_package_version,
-    uptime: Math.round(process.uptime()),
-    checks,
-  }, { status: overallStatus === 'ok' ? 200 : 503 });
+  return Response.json(
+    {
+      status: overallStatus,
+      timestamp: new Date().toISOString(),
+      version: process.env.npm_package_version,
+      uptime: Math.round(process.uptime()),
+      checks,
+    },
+    { status: overallStatus === 'ok' ? 200 : 503 },
+  );
 }
 ```
 
@@ -78,8 +80,8 @@ export async function GET() {
 // src/lib/circuit-breaker.ts
 type CircuitState = 'closed' | 'open' | 'half-open';
 
-const FAILURE_THRESHOLD = 5;       // 5 failures → open
-const RESET_TIMEOUT_MS = 30_000;   // 30s → half-open
+const FAILURE_THRESHOLD = 5; // 5 failures → open
+const RESET_TIMEOUT_MS = 30_000; // 30s → half-open
 ```
 
 ### States
@@ -140,13 +142,13 @@ export async function apiFetch<T>(url: string, init?: RequestInit) {
 // src/lib/retry.ts
 export async function retryWithBackoff<T>(
   fn: () => Promise<T>,
-  options: { maxAttempts: number; baseDelayMs: number }
+  options: { maxAttempts: number; baseDelayMs: number },
 ): Promise<T> {
   for (let attempt = 1; attempt <= options.maxAttempts; attempt++) {
     try {
       return await fn();
     } catch (error) {
-      if (error instanceof PermanentError) throw error;  // no retry for 4xx
+      if (error instanceof PermanentError) throw error; // no retry for 4xx
       if (attempt === options.maxAttempts) throw error;
 
       const delay = options.baseDelayMs * Math.pow(2, attempt - 1);
@@ -158,13 +160,13 @@ export async function retryWithBackoff<T>(
 
 ### Error type classification
 
-| Error type | Retry? | Example |
-|-----------|--------|---------|
-| `TransientError` | ✅ | 500, 502, 503, network timeout |
-| `PermanentError` | ❌ | 400, 401, 403, 404, 409 |
-| `ValidationError` | ❌ | Zod validation failure |
-| `UnauthorizedError` | ❌ | Not authenticated |
-| `NotFoundError` | ❌ | Resource doesn't exist |
+| Error type          | Retry? | Example                        |
+| ------------------- | ------ | ------------------------------ |
+| `TransientError`    | ✅     | 500, 502, 503, network timeout |
+| `PermanentError`    | ❌     | 400, 401, 403, 404, 409        |
+| `ValidationError`   | ❌     | Zod validation failure         |
+| `UnauthorizedError` | ❌     | Not authenticated              |
+| `NotFoundError`     | ❌     | Resource doesn't exist         |
 
 ---
 
@@ -198,12 +200,12 @@ authLogger.warn('Login failed: non-OK response', { status: String(response.statu
 
 ### Log levels
 
-| Level | When to use | Production? |
-|-------|-------------|-------------|
-| `debug` | Detailed state, query logs | ❌ (dev only) |
-| `info` | Normal operations (login, logout) | ✅ |
-| `warn` | Expected failures (bad credentials, rate limit) | ✅ |
-| `error` | Unexpected failures (DB error, API down) | ✅ |
+| Level   | When to use                                     | Production?   |
+| ------- | ----------------------------------------------- | ------------- |
+| `debug` | Detailed state, query logs                      | ❌ (dev only) |
+| `info`  | Normal operations (login, logout)               | ✅            |
+| `warn`  | Expected failures (bad credentials, rate limit) | ✅            |
+| `error` | Unexpected failures (DB error, API down)        | ✅            |
 
 ---
 
@@ -219,7 +221,7 @@ export async function getAnnouncements() {
     if (!response.ok) return [];
     return await response.json();
   } catch {
-    return [];  // ← safe default, no error to caller
+    return []; // ← safe default, no error to caller
   }
 }
 ```
@@ -255,7 +257,7 @@ const handleAction = async () => {
     await someServerAction();
     toast({ title: t('success.title'), description: t('success.description') });
   } catch {
-    errorToast();  // shows global.server-error toast
+    errorToast(); // shows global.server-error toast
   }
 };
 ```
@@ -279,13 +281,17 @@ export const SessionExpiryBanner = () => {
       const ms = exp * 1000 - Date.now();
       setRemainingMs(ms);
 
-      if (ms < 5 * 60 * 1000) {  // less than 5 minutes
+      if (ms < 5 * 60 * 1000) {
+        // less than 5 minutes
         // Show warning banner
       }
     };
 
-    const interval = setInterval(checkExpiry, 60_000);  // check every minute
-    return () => { mounted = false; clearInterval(interval); };
+    const interval = setInterval(checkExpiry, 60_000); // check every minute
+    return () => {
+      mounted = false;
+      clearInterval(interval);
+    };
   }, []);
 
   // ... render banner
@@ -296,24 +302,24 @@ export const SessionExpiryBanner = () => {
 
 ## Resilience Summary
 
-| Threat | Mitigation | Status |
-|--------|------------|--------|
-| External API down | Circuit breaker (5 failures → 30s fast-fail) | ✅ |
-| External API slow | AbortSignal.timeout(10s) | ✅ |
-| Transient network error | Retry with exponential backoff (2 attempts) | ✅ |
-| Database unavailable | Error boundaries + safe defaults | ✅ |
-| Middleware crash | try/catch fallback to intlMiddleware | ✅ |
-| Rate limit bypass | In-memory rate limiting (per process) | ⚠️ (no Redis) |
-| CSRF attack | Double-submit cookie + Origin validation | ✅ |
-| XSS attack | CSP headers + nonce-based script loading | ✅ |
-| Brute force | Rate limiting (10 attempts / 15 min) | ✅ |
-| Token theft | httpOnly + secure + sameSite cookies | ✅ |
-| Token reuse | Refresh token rotation + reuse detection | ✅ |
-| Session fixation | tokenVersion increment on logout-all | ✅ |
-| Audit log failure | Non-blocking (try/catch, console.error) | ✅ |
-| File upload DoS | 5MB limit + type allow-list | ✅ |
-| Disk full (uploads) | Docker volume + no auto-cleanup | ⚠️ |
-| OOM kill | Docker memory limit 512M | ⚠️ (may be tight) |
+| Threat                  | Mitigation                                   | Status            |
+| ----------------------- | -------------------------------------------- | ----------------- |
+| External API down       | Circuit breaker (5 failures → 30s fast-fail) | ✅                |
+| External API slow       | AbortSignal.timeout(10s)                     | ✅                |
+| Transient network error | Retry with exponential backoff (2 attempts)  | ✅                |
+| Database unavailable    | Error boundaries + safe defaults             | ✅                |
+| Middleware crash        | try/catch fallback to intlMiddleware         | ✅                |
+| Rate limit bypass       | In-memory rate limiting (per process)        | ⚠️ (no Redis)     |
+| CSRF attack             | Double-submit cookie + Origin validation     | ✅                |
+| XSS attack              | CSP headers + nonce-based script loading     | ✅                |
+| Brute force             | Rate limiting (10 attempts / 15 min)         | ✅                |
+| Token theft             | httpOnly + secure + sameSite cookies         | ✅                |
+| Token reuse             | Refresh token rotation + reuse detection     | ✅                |
+| Session fixation        | tokenVersion increment on logout-all         | ✅                |
+| Audit log failure       | Non-blocking (try/catch, console.error)      | ✅                |
+| File upload DoS         | 5MB limit + type allow-list                  | ✅                |
+| Disk full (uploads)     | Docker volume + no auto-cleanup              | ⚠️                |
+| OOM kill                | Docker memory limit 512M                     | ⚠️ (may be tight) |
 
 ---
 

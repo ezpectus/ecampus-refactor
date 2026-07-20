@@ -148,7 +148,13 @@ export async function updateGrade(input: z.infer<typeof updateGradeSchema>) {
     action: 'update_grade',
     entity: 'Course',
     entityId: validated.courseId,
-    metadata: { studentId: course.userId, oldGrade: course.grade, newGrade: validated.grade, gradeType: validated.gradeType, courseName: course.name },
+    metadata: {
+      studentId: course.userId,
+      oldGrade: course.grade,
+      newGrade: validated.grade,
+      gradeType: validated.gradeType,
+      courseName: course.name,
+    },
   });
 
   revalidateTag(RATING_CACHE_TAG);

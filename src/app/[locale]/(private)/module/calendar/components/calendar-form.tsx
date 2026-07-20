@@ -92,13 +92,7 @@ export const CalendarForm = ({ event, onSubmit }: Props) => {
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
         <Label htmlFor="title">{t('fields.title')}</Label>
-        <Input
-          id="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          maxLength={200}
-          required
-        />
+        <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} maxLength={200} required />
       </div>
 
       <div className="flex flex-col gap-2">
@@ -125,24 +119,14 @@ export const CalendarForm = ({ event, onSubmit }: Props) => {
         </div>
         <div className="flex flex-1 flex-col gap-2">
           <Label htmlFor="endDate">{t('fields.endDate')}</Label>
-          <Input
-            id="endDate"
-            type="datetime-local"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-          />
+          <Input id="endDate" type="datetime-local" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
         </div>
       </div>
 
       <div className="flex gap-3">
         <div className="flex flex-1 flex-col gap-2">
           <Label htmlFor="location">{t('fields.location')}</Label>
-          <Input
-            id="location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            maxLength={200}
-          />
+          <Input id="location" value={location} onChange={(e) => setLocation(e.target.value)} maxLength={200} />
         </div>
         <div className="flex flex-1 flex-col gap-2">
           <Label htmlFor="type">{t('fields.type')}</Label>

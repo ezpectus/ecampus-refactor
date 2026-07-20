@@ -1,22 +1,23 @@
 # 01 — Technology Stack Overview
 
-**Project:** eCampus Student Portal
+**Project:** Student Portal
 **Last updated:** July 2026
 
 ---
 
 ## Core Framework
 
-| Technology | Version | Role |
-|-----------|---------|------|
-| **Next.js** | 15.5.20 | Application framework (App Router, Turbopack) |
-| **React** | 19.2.0 | UI library (Server Components + Client Components) |
-| **TypeScript** | 5.9.3 | Type-safe JavaScript (strict mode) |
-| **Node.js** | ≥22.0.0 | JavaScript runtime |
+| Technology     | Version | Role                                               |
+| -------------- | ------- | -------------------------------------------------- |
+| **Next.js**    | 15.5.20 | Application framework (App Router, Turbopack)      |
+| **React**      | 19.2.0  | UI library (Server Components + Client Components) |
+| **TypeScript** | 5.9.3   | Type-safe JavaScript (strict mode)                 |
+| **Node.js**    | ≥22.0.0 | JavaScript runtime                                 |
 
 ### Why Next.js 15 + React 19?
 
 Next.js 15 with App Router provides:
+
 - **Server Components by default** — pages render on the server, reducing client bundle size
 - **Server Actions** — mutations without writing API endpoints; functions run server-side, called from client
 - **Streaming + Suspense** — progressive page hydration
@@ -25,6 +26,7 @@ Next.js 15 with App Router provides:
 - **File-based routing** — `page.tsx`, `layout.tsx`, `error.tsx`, `loading.tsx` per route segment
 
 React 19 provides:
+
 - **Server Components** — zero client JS for static content
 - **use() hook** — Suspense-compatible data fetching
 - **Actions** — form submissions via `action` prop (no `onSubmit` + `preventDefault` needed)
@@ -34,14 +36,14 @@ React 19 provides:
 
 ## Styling
 
-| Technology | Version | Role |
-|-----------|---------|------|
-| **Tailwind CSS** | 4.1.15 | Utility-first CSS framework |
-| **tw-animate-css** | 1.4.0 | Animation utilities for Tailwind |
-| **class-variance-authority** | 0.7.1 | Component variant management |
-| **clsx** | 2.1.1 | Conditional class names |
-| **tailwind-merge** | 3.3.1 | Dedup Tailwind classes |
-| **prettier-plugin-tailwindcss** | 0.7.1 | Tailwind class sorting in Prettier |
+| Technology                      | Version | Role                               |
+| ------------------------------- | ------- | ---------------------------------- |
+| **Tailwind CSS**                | 4.1.15  | Utility-first CSS framework        |
+| **tw-animate-css**              | 1.4.0   | Animation utilities for Tailwind   |
+| **class-variance-authority**    | 0.7.1   | Component variant management       |
+| **clsx**                        | 2.1.1   | Conditional class names            |
+| **tailwind-merge**              | 3.3.1   | Dedup Tailwind classes             |
+| **prettier-plugin-tailwindcss** | 0.7.1   | Tailwind class sorting in Prettier |
 
 ### How styling works
 
@@ -63,7 +65,9 @@ const buttonVariants = cva('inline-flex items-center justify-center', {
 });
 
 // Usage
-<Button variant="primary" size="small">Click me</Button>
+<Button variant="primary" size="small">
+  Click me
+</Button>;
 ```
 
 Tailwind 4 uses CSS-native `@property` and cascade layers. No `tailwind.config.js` needed — configuration is in CSS `@theme` block.
@@ -72,17 +76,18 @@ Tailwind 4 uses CSS-native `@property` and cascade layers. No `tailwind.config.j
 
 ## UI Components
 
-| Technology | Version | Role |
-|-----------|---------|------|
-| **shadcn/ui** | — | Component collection (43+ components) |
-| **Radix UI** | various | Headless accessible primitives |
-| **Lucide React** | 0.546.0 | Icon library |
-| **cmdk** | 1.1.1 | Command palette (Cmd+K) |
-| **Embla Carousel** | 8.6.0 | Carousel (login page) |
+| Technology         | Version | Role                                  |
+| ------------------ | ------- | ------------------------------------- |
+| **shadcn/ui**      | —       | Component collection (43+ components) |
+| **Radix UI**       | various | Headless accessible primitives        |
+| **Lucide React**   | 0.546.0 | Icon library                          |
+| **cmdk**           | 1.1.1   | Command palette (Cmd+K)               |
+| **Embla Carousel** | 8.6.0   | Carousel (login page)                 |
 
 ### shadcn/ui philosophy
 
 shadcn/ui is **not a package** — components are copied into `src/components/ui/` and owned by the project. This means:
+
 - Full control over styling and behavior
 - No version lock-in
 - Components use Radix UI for accessibility (ARIA, keyboard nav, focus traps)
@@ -95,11 +100,11 @@ shadcn/ui is **not a package** — components are copied into `src/components/ui
 
 ## Forms & Validation
 
-| Technology | Version | Role |
-|-----------|---------|------|
-| **React Hook Form** | 7.65.0 | Form state management |
-| **Zod** | 4.1.12 | Schema validation (forms, env vars, server inputs) |
-| **@hookform/resolvers** | 5.2.2 | Zod resolver for RHF |
+| Technology              | Version | Role                                               |
+| ----------------------- | ------- | -------------------------------------------------- |
+| **React Hook Form**     | 7.65.0  | Form state management                              |
+| **Zod**                 | 4.1.12  | Schema validation (forms, env vars, server inputs) |
+| **@hookform/resolvers** | 5.2.2   | Zod resolver for RHF                               |
 
 ### Pattern
 
@@ -119,13 +124,14 @@ const form = useForm<FormValues>({
 });
 
 // 3. Submit with loading state
-<Button loading={form.formState.isSubmitting}>Submit</Button>
+<Button loading={form.formState.isSubmitting}>Submit</Button>;
 
 // 4. Server-side validation (defense in depth)
 const validated = validateInput(schema, input, 'actionName');
 ```
 
 Zod is also used for **environment variable validation** at startup:
+
 ```ts
 // src/lib/env.ts
 const envSchema = z.object({
@@ -140,13 +146,13 @@ export const env = envSchema.parse(cleanEnv); // throws if invalid
 
 ## Data Layer
 
-| Technology | Version | Role |
-|-----------|---------|------|
-| **Prisma** | 7.8.0 | ORM with type-safe queries |
-| **@prisma/adapter-better-sqlite3** | 7.8.0 | SQLite adapter (local dev) |
-| **@prisma/adapter-pg** | 7.8.0 | PostgreSQL adapter (production) |
-| **better-sqlite3** | 12.11.1 | Native SQLite driver |
-| **pg** | 8.22.0 | PostgreSQL driver |
+| Technology                         | Version | Role                            |
+| ---------------------------------- | ------- | ------------------------------- |
+| **Prisma**                         | 7.8.0   | ORM with type-safe queries      |
+| **@prisma/adapter-better-sqlite3** | 7.8.0   | SQLite adapter (local dev)      |
+| **@prisma/adapter-pg**             | 7.8.0   | PostgreSQL adapter (production) |
+| **better-sqlite3**                 | 12.11.1 | Native SQLite driver            |
+| **pg**                             | 8.22.0  | PostgreSQL driver               |
 
 ### Dual-database strategy
 
@@ -166,8 +172,9 @@ const adapter = isPostgres
 ```
 
 Two separate Prisma schemas exist:
+
 - `prisma/schema.prisma` — SQLite (provider: sqlite)
-- `prisma-postgres/schema.prisma` — PostgreSQL (provider: postgresql)
+- `prisma/schema-postgres.prisma` — PostgreSQL (provider: postgresql)
 
 Both must be kept in sync manually.
 
@@ -175,12 +182,12 @@ Both must be kept in sync manually.
 
 ## Authentication & Security
 
-| Technology | Version | Role |
-|-----------|---------|------|
-| **jsonwebtoken** | 9.0.2 | JWT signing/verification (local auth) |
-| **jose** | 6.2.3 | JWKS-based remote JWT verification |
-| **bcryptjs** | 2.4.3 | Password hashing |
-| **server-only** | 0.0.1 | Prevents server code in client bundles |
+| Technology       | Version | Role                                   |
+| ---------------- | ------- | -------------------------------------- |
+| **jsonwebtoken** | 9.0.2   | JWT signing/verification (local auth)  |
+| **jose**         | 6.2.3   | JWKS-based remote JWT verification     |
+| **bcryptjs**     | 2.4.3   | Password hashing                       |
+| **server-only**  | 0.0.1   | Prevents server code in client bundles |
 
 ### Auth flow
 
@@ -199,9 +206,9 @@ External auth mode:
 
 ## Internationalization
 
-| Technology | Version | Role |
-|-----------|---------|------|
-| **next-intl** | 4.13.2 | i18n for App Router |
+| Technology    | Version | Role                |
+| ------------- | ------- | ------------------- |
+| **next-intl** | 4.13.2  | i18n for App Router |
 
 - **Default locale:** Ukrainian (uk)
 - **Supported:** English (en)
@@ -214,9 +221,9 @@ External auth mode:
 
 ## Charts & Data Visualization
 
-| Technology | Version | Role |
-|-----------|---------|------|
-| **Recharts** | 3.9.2 | React charting library (Area, Bar, Pie) |
+| Technology   | Version | Role                                    |
+| ------------ | ------- | --------------------------------------- |
+| **Recharts** | 3.9.2   | React charting library (Area, Bar, Pie) |
 
 Used in: dashboard (GPA trend, grade distribution, attendance), analytics module (10 widget types).
 
@@ -224,39 +231,39 @@ Used in: dashboard (GPA trend, grade distribution, attendance), analytics module
 
 ## Testing
 
-| Technology | Version | Role |
-|-----------|---------|------|
-| **Vitest** | 4.1.10 | Unit test runner |
-| **@testing-library/react** | 16.1.0 | Component testing |
-| **@testing-library/jest-dom** | 6.6.3 | DOM assertion matchers |
-| **Playwright** | 1.54.0 | E2E browser testing |
-| **jsdom** | 25.0.1 | DOM environment for Vitest |
+| Technology                    | Version | Role                       |
+| ----------------------------- | ------- | -------------------------- |
+| **Vitest**                    | 4.1.10  | Unit test runner           |
+| **@testing-library/react**    | 16.1.0  | Component testing          |
+| **@testing-library/jest-dom** | 6.6.3   | DOM assertion matchers     |
+| **Playwright**                | 1.54.0  | E2E browser testing        |
+| **jsdom**                     | 25.0.1  | DOM environment for Vitest |
 
 ---
 
 ## Build & Quality
 
-| Technology | Version | Role |
-|-----------|---------|------|
-| **ESLint** | 9 | Linter (Next.js + Prettier config) |
-| **Prettier** | 3.6.2 | Code formatter |
-| **eslint-plugin-simple-import-sort** | 12.1.1 | Auto-sort imports |
-| **@svgr/webpack** | 8.1.0 | SVG → React component loader |
-| **tsx** | 4.20.5 | TypeScript execution (scripts, seed) |
+| Technology                           | Version | Role                                 |
+| ------------------------------------ | ------- | ------------------------------------ |
+| **ESLint**                           | 9       | Linter (Next.js + Prettier config)   |
+| **Prettier**                         | 3.6.2   | Code formatter                       |
+| **eslint-plugin-simple-import-sort** | 12.1.1  | Auto-sort imports                    |
+| **@svgr/webpack**                    | 8.1.0   | SVG → React component loader         |
+| **tsx**                              | 4.20.5  | TypeScript execution (scripts, seed) |
 
 ---
 
 ## Utility Libraries
 
-| Technology | Version | Role |
-|-----------|---------|------|
-| **dayjs** | 1.11.18 | Date formatting and manipulation |
-| **radash** | 12.1.1 | Utility functions (group, etc.) |
-| **query-string** | 9.3.1 | URL query string parsing |
-| **url-pattern** | 1.0.3 | URL pattern matching (middleware) |
-| **ua-parser-js** | 2.0.10 | User-agent parsing |
-| **file-saver** | 2.0.5 | Client-side file download (CSV export) |
-| **react19-google-recaptcha-v3** | 1.0.0 | reCAPTCHA v3 integration |
+| Technology                      | Version | Role                                   |
+| ------------------------------- | ------- | -------------------------------------- |
+| **dayjs**                       | 1.11.18 | Date formatting and manipulation       |
+| **radash**                      | 12.1.1  | Utility functions (group, etc.)        |
+| **query-string**                | 9.3.1   | URL query string parsing               |
+| **url-pattern**                 | 1.0.3   | URL pattern matching (middleware)      |
+| **ua-parser-js**                | 2.0.10  | User-agent parsing                     |
+| **file-saver**                  | 2.0.5   | Client-side file download (CSV export) |
+| **react19-google-recaptcha-v3** | 1.0.0   | reCAPTCHA v3 integration               |
 
 ---
 

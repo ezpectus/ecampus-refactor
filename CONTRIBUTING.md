@@ -4,7 +4,7 @@ Thank you for your interest in contributing! This document covers the basics.
 
 ## Prerequisites
 
-- Node.js 18+ (20+ recommended)
+- Node.js 22+
 - npm 10+
 - SQLite (included, zero config) or PostgreSQL (optional)
 
@@ -91,6 +91,7 @@ src/
 ## Reporting Issues
 
 Use the [GitHub issue tracker](https://github.com/ezpectus/student-portal/issues). Please include:
+
 - Steps to reproduce
 - Expected vs actual behavior
 - Environment details (OS, Node version, browser)

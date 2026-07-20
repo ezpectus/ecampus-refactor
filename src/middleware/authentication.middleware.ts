@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { NextRequest,NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 import { authorizationMiddleware } from './authorization.middleware';
 import { PUBLIC_PATHS } from './constants';

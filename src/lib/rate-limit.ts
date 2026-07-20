@@ -24,7 +24,11 @@ const DEFAULT_CONFIG: Required<RateLimitConfig> = {
 
 const store = new Map<string, RateLimitEntry>();
 
-let redisClient: { incr: (key: string) => Promise<number>; expire: (key: string, seconds: number) => Promise<number>; del: (key: string) => Promise<number> } | null = null;
+let redisClient: {
+  incr: (key: string) => Promise<number>;
+  expire: (key: string, seconds: number) => Promise<number>;
+  del: (key: string) => Promise<number>;
+} | null = null;
 let redisAvailable = false;
 
 async function getRedisClient() {

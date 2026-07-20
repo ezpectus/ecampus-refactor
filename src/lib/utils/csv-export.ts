@@ -7,10 +7,9 @@ export function exportToCsv(filename: string, headers: string[], rows: (string |
     return str;
   };
 
-  const csvContent = [
-    headers.map(escapeCell).join(','),
-    ...rows.map((row) => row.map(escapeCell).join(',')),
-  ].join('\n');
+  const csvContent = [headers.map(escapeCell).join(','), ...rows.map((row) => row.map(escapeCell).join(','))].join(
+    '\n',
+  );
 
   const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
   const link = document.createElement('a');

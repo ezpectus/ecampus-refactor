@@ -122,20 +122,20 @@ export function SettingsForm({ user }: Props) {
   return (
     <Card>
       <CardContent className="flex flex-col gap-8 space-y-1.5 p-6 md:p-10">
-        <div className="rounded-xl border border-border bg-muted/40 p-4">
+        <div className="border-border bg-muted/40 rounded-xl border p-4">
           <Heading5>{t('section.preferences')}</Heading5>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            <div className="flex items-center justify-between rounded-lg border border-border bg-card p-3">
+            <div className="border-border bg-card flex items-center justify-between rounded-lg border p-3">
               <div>
-                <p className="text-sm font-medium text-foreground">{t('preferences.theme')}</p>
-                <p className="text-xs text-muted-foreground">{t('preferences.theme-hint')}</p>
+                <p className="text-foreground text-sm font-medium">{t('preferences.theme')}</p>
+                <p className="text-muted-foreground text-xs">{t('preferences.theme-hint')}</p>
               </div>
               <ThemeToggle />
             </div>
-            <div className="flex items-center justify-between rounded-lg border border-border bg-card p-3">
+            <div className="border-border bg-card flex items-center justify-between rounded-lg border p-3">
               <div>
-                <p className="text-sm font-medium text-foreground">{t('preferences.language')}</p>
-                <p className="text-xs text-muted-foreground">{t('preferences.language-hint')}</p>
+                <p className="text-foreground text-sm font-medium">{t('preferences.language')}</p>
+                <p className="text-muted-foreground text-xs">{t('preferences.language-hint')}</p>
               </div>
               <LocaleSwitch />
             </div>
@@ -210,34 +210,31 @@ export function SettingsForm({ user }: Props) {
             </Button>
           </form>
         </Form>
-        <div className="rounded-xl border border-border bg-muted/40 p-4">
+        <div className="border-border bg-muted/40 rounded-xl border p-4">
           <Heading5>{t('notifications.title')}</Heading5>
-          <p className="mt-1 text-sm text-muted-foreground">{t('notifications.description')}</p>
+          <p className="text-muted-foreground mt-1 text-sm">{t('notifications.description')}</p>
           <div className="mt-4 flex flex-col gap-3">
-            <div className="flex items-center justify-between rounded-lg border border-border bg-card p-3">
+            <div className="border-border bg-card flex items-center justify-between rounded-lg border p-3">
               <div>
-                <p className="text-sm font-medium text-foreground">{t('notifications.email')}</p>
-                <p className="text-xs text-muted-foreground">{t('notifications.email-hint')}</p>
+                <p className="text-foreground text-sm font-medium">{t('notifications.email')}</p>
+                <p className="text-muted-foreground text-xs">{t('notifications.email-hint')}</p>
               </div>
-              <Switch
-                checked={notifPrefs.notifyEmail}
-                onCheckedChange={(v) => handleNotifToggle('notifyEmail', v)}
-              />
+              <Switch checked={notifPrefs.notifyEmail} onCheckedChange={(v) => handleNotifToggle('notifyEmail', v)} />
             </div>
-            <div className="flex items-center justify-between rounded-lg border border-border bg-card p-3">
+            <div className="border-border bg-card flex items-center justify-between rounded-lg border p-3">
               <div>
-                <p className="text-sm font-medium text-foreground">{t('notifications.announcements')}</p>
-                <p className="text-xs text-muted-foreground">{t('notifications.announcements-hint')}</p>
+                <p className="text-foreground text-sm font-medium">{t('notifications.announcements')}</p>
+                <p className="text-muted-foreground text-xs">{t('notifications.announcements-hint')}</p>
               </div>
               <Switch
                 checked={notifPrefs.notifyAnnouncements}
                 onCheckedChange={(v) => handleNotifToggle('notifyAnnouncements', v)}
               />
             </div>
-            <div className="flex items-center justify-between rounded-lg border border-border bg-card p-3">
+            <div className="border-border bg-card flex items-center justify-between rounded-lg border p-3">
               <div>
-                <p className="text-sm font-medium text-foreground">{t('notifications.messages')}</p>
-                <p className="text-xs text-muted-foreground">{t('notifications.messages-hint')}</p>
+                <p className="text-foreground text-sm font-medium">{t('notifications.messages')}</p>
+                <p className="text-muted-foreground text-xs">{t('notifications.messages-hint')}</p>
               </div>
               <Switch
                 checked={notifPrefs.notifyMessages}
@@ -246,9 +243,9 @@ export function SettingsForm({ user }: Props) {
             </div>
           </div>
         </div>
-        <div className="rounded-xl border border-status-danger-300/30 bg-status-danger-300/5 p-4">
+        <div className="border-status-danger-300/30 bg-status-danger-300/5 rounded-xl border p-4">
           <Heading5>{t('section.security')}</Heading5>
-          <p className="mt-2 text-sm text-muted-foreground">{t('security.logout-all-description')}</p>
+          <p className="text-muted-foreground mt-2 text-sm">{t('security.logout-all-description')}</p>
           <Button
             variant="secondary"
             size="medium"

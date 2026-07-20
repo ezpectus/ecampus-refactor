@@ -4,13 +4,7 @@ import dayjs from 'dayjs';
 import { useTranslations } from 'next-intl';
 
 import { Badge } from '@/components/ui/badge';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
 
 import { AdminUserDetail } from '../types';
@@ -48,12 +42,12 @@ export const UserDetailDialog = ({ user, open, onOpenChange }: Props) => {
         </DialogHeader>
 
         <div className="flex flex-wrap gap-2">
-          <Badge variant={roleBadgeVariant[user.role] ?? 'neutral'}>
-            {tRole(`role-${user.role.toLowerCase()}`)}
-          </Badge>
+          <Badge variant={roleBadgeVariant[user.role] ?? 'neutral'}>{tRole(`role-${user.role.toLowerCase()}`)}</Badge>
           {user.status && (
             <Badge variant={statusBadgeVariant[user.status] ?? 'neutral'}>
-              {tRole(`status-${user.status === 'Studying' ? 'studying' : user.status === 'OnAcademicLeave' ? 'leave' : 'dismissed'}`)}
+              {tRole(
+                `status-${user.status === 'Studying' ? 'studying' : user.status === 'OnAcademicLeave' ? 'leave' : 'dismissed'}`,
+              )}
             </Badge>
           )}
           {user.codeOfHonorSigned ? (
@@ -83,15 +77,27 @@ export const UserDetailDialog = ({ user, open, onOpenChange }: Props) => {
         <Separator />
 
         <div>
-          <h4 className="mb-3 text-sm font-semibold uppercase text-neutral-500">{t('courses')}</h4>
+          <h4 className="mb-3 text-sm font-semibold text-neutral-500 uppercase">{t('courses')}</h4>
           <div className="space-y-2">
             {user.courses.map((course) => (
               <div key={course.id} className="flex items-center justify-between rounded-lg border p-3">
                 <div>
                   <p className="font-medium">{course.name}</p>
-                  <p className="text-xs text-neutral-400">{course.credits} {t('credits')}</p>
+                  <p className="text-xs text-neutral-400">
+                    {course.credits} {t('credits')}
+                  </p>
                 </div>
-                <Badge variant={course.grade >= 90 ? 'success' : course.grade >= 75 ? 'blue' : course.grade >= 60 ? 'yellow' : 'error'}>
+                <Badge
+                  variant={
+                    course.grade >= 90
+                      ? 'success'
+                      : course.grade >= 75
+                        ? 'blue'
+                        : course.grade >= 60
+                          ? 'yellow'
+                          : 'error'
+                  }
+                >
                   {course.grade}
                 </Badge>
               </div>
@@ -102,7 +108,7 @@ export const UserDetailDialog = ({ user, open, onOpenChange }: Props) => {
         <Separator />
 
         <div>
-          <h4 className="mb-3 text-sm font-semibold uppercase text-neutral-500">{t('attendance')}</h4>
+          <h4 className="mb-3 text-sm font-semibold text-neutral-500 uppercase">{t('attendance')}</h4>
           <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
             {user.attendance.map((a) => {
               const pct = a.total > 0 ? Math.round((a.present / a.total) * 100) : 0;
@@ -110,7 +116,9 @@ export const UserDetailDialog = ({ user, open, onOpenChange }: Props) => {
                 <div key={a.id} className="rounded-lg border p-2 text-center">
                   <p className="text-xs font-medium">{a.month}</p>
                   <p className="text-lg font-bold">{pct}%</p>
-                  <p className="text-xs text-neutral-400">{a.present}/{a.total}</p>
+                  <p className="text-xs text-neutral-400">
+                    {a.present}/{a.total}
+                  </p>
                 </div>
               );
             })}
@@ -123,7 +131,7 @@ export const UserDetailDialog = ({ user, open, onOpenChange }: Props) => {
 
 const InfoRow = ({ label, value }: { label: string; value: string }) => (
   <div>
-    <p className="text-xs font-medium uppercase text-neutral-400">{label}</p>
+    <p className="text-xs font-medium text-neutral-400 uppercase">{label}</p>
     <p className="text-sm text-neutral-900">{value}</p>
   </div>
 );

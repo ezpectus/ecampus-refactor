@@ -28,15 +28,11 @@ export const DeleteUserDialog = ({ open, onOpenChange, onConfirm, userName }: Pr
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{t('title')}</AlertDialogTitle>
-          <AlertDialogDescription>
-            {t('description', { name: userName })}
-          </AlertDialogDescription>
+          <AlertDialogDescription>{t('description', { name: userName })}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm}>
-            {t('confirm')}
-          </AlertDialogAction>
+          <AlertDialogAction onClick={onConfirm}>{t('confirm')}</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

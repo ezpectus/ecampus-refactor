@@ -1,7 +1,7 @@
 # Architecture Before Refactoring
 
 **Date:** 18.07.2026  
-**Project:** eCampus KPI (ecampus.kpi.ua)  
+**Project:** eCampus KPI (ecampus.kpi.ua)
 
 ---
 
@@ -11,35 +11,35 @@ eCampus KPI is the frontend of the educational portal of Kyiv Polytechnic Instit
 
 **Type:** Legacy frontend (production, used by the university)  
 **Code age:** ~2 years of active development  
-**Size:** ~200+ TypeScript/TSX files in `src/`  
+**Size:** ~200+ TypeScript/TSX files in `src/`
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology | Version |
-|------|-----------|--------|
-| Framework | Next.js (App Router, Turbopack) | 15.4.8 |
-| UI Library | React (Server Components) | 19.2.0 |
-| Language | TypeScript (strict) | 5.9.x |
-| Styling | Tailwind CSS | 4.1.x |
-| UI Components | shadcn/ui (Radix UI) | 42 components |
-| i18n | next-intl | 4.4.0 |
-| Forms | React Hook Form + Zod | 7.x / 4.x |
-| Auth | JWT (jsonwebtoken) | 9.0.2 |
-| HTTP | campusFetch (wrapper over fetch) | — |
-| Icons | Custom SVG (159 files) + lucide-react | — |
-| Dates | dayjs | — |
-| Deploy | Docker multi-stage (node:22-alpine) | — |
-| CI/CD | GitHub Actions | — |
-| Dep updates | Dependabot (weekly) | — |
+| Layer         | Technology                            | Version       |
+| ------------- | ------------------------------------- | ------------- |
+| Framework     | Next.js (App Router, Turbopack)       | 15.4.8        |
+| UI Library    | React (Server Components)             | 19.2.0        |
+| Language      | TypeScript (strict)                   | 5.9.x         |
+| Styling       | Tailwind CSS                          | 4.1.x         |
+| UI Components | shadcn/ui (Radix UI)                  | 42 components |
+| i18n          | next-intl                             | 4.4.0         |
+| Forms         | React Hook Form + Zod                 | 7.x / 4.x     |
+| Auth          | JWT (jsonwebtoken)                    | 9.0.2         |
+| HTTP          | campusFetch (wrapper over fetch)      | —             |
+| Icons         | Custom SVG (159 files) + lucide-react | —             |
+| Dates         | dayjs                                 | —             |
+| Deploy        | Docker multi-stage (node:22-alpine)   | —             |
+| CI/CD         | GitHub Actions                        | —             |
+| Dep updates   | Dependabot (weekly)                   | —             |
 
 ---
 
 ## Project Structure
 
 ```
-ecampus-refactor/
+student-portal/
 ├── src/
 │   ├── app/                          # Next.js App Router
 │   │   ├── layout.tsx                # Root layout (html, body, GA)
@@ -281,10 +281,12 @@ ecampus-refactor/
 ## Module System
 
 48 modules are defined in `src/lib/constants/modules.ts`. Each module has:
+
 - `name` — URL slug (e.g., `studysheet`, `certificates`, `msg`)
 - `isExternal` — function or boolean: if `true`, module opens on an external URL (legacy campus), if `false` — rendered inside Next.js
 
 **Internal modules (rendered in Next.js):**
+
 - `studysheet` — study sheets
 - `attestationresults` — attestation
 - `vedomoststud` — grade sheets
@@ -304,30 +306,37 @@ ecampus-refactor/
 ## Architectural Weak Points
 
 ### 1. Authentication — Trusting Unsigned JWT
+
 JWT is decoded without signature verification (`JWT.decode` instead of `JWT.verify`). The payload (including module list) is fully controlled by the client. This is not a bug — it's an architectural decision, but it's vulnerable.
 
 > **Reference:** `hft-skills/coding-skills/jwt-json-web-tokens/SKILL.md` — Anti-pattern: "No signature verification — Tampered token accepted."
 
 ### 2. No API-Level Caching
+
 `campusFetch` defaults to `cache: 'no-cache'`. Every request to the backend bypasses cache. For ISR pages, you need to explicitly pass `next: { revalidate }`, but most actions don't.
 
 ### 3. Inconsistent Error Handling
+
 Three different patterns in actions (throw / return [] / return null). No unified strategy. Client code doesn't know what to expect.
 
 > **Reference:** `hft-skills/coding-skills/error-handling-strategies/SKILL.md` — Anti-pattern: "Catch and ignore — Silent failures, bugs hidden."
 
 ### 4. Single Client-Side page.tsx
+
 `studysheet/[id]/page.tsx` — the only page marked `'use client'` with `useEffect` fetch. All other page.tsx files are server components. This breaks pattern consistency.
 
 ### 5. Error Boundary Renders Nothing
+
 `error.tsx` in `(private)` shows a toast and renders `<></>`. User sees a blank white screen.
 
 ### 6. No Tests
+
 Zero tests. Refactoring without tests is dangerous.
 
 > **Reference:** `hft-skills/coding-skills/refactoring-strategies/SKILL.md` — "Never refactor without tests. Make small, atomic changes (1-5 lines per step). Run tests after each step."
 
 ### 7. Dead Code
+
 3 unused npm dependencies, 3 unused UI components, Storybook with 1 story, unused `types.ts`.
 
 > **Reference:** `hft-skills/coding-skills/technical-debt-management/SKILL.md` — prioritize debt by impact and effort.

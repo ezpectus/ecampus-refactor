@@ -3,15 +3,7 @@
 import { ArrowLeft, BookOpen, CalendarCheck } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts';
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 import { type ChildAttendance, type ChildCourse, getChildAttendance, getChildCourses } from '@/actions/parent.actions';
 import { Button } from '@/components/ui/button';
@@ -38,10 +30,7 @@ export const ChildDetail = ({ child, onBack }: Props) => {
 
   useEffect(() => {
     setLoading(true);
-    Promise.all([
-      getChildCourses(child.studentId),
-      getChildAttendance(child.studentId),
-    ])
+    Promise.all([getChildCourses(child.studentId), getChildAttendance(child.studentId)])
       .then(([c, a]) => {
         setCourses(c);
         setAttendance(a);
@@ -63,7 +52,7 @@ export const ChildDetail = ({ child, onBack }: Props) => {
         </Button>
         <div>
           <h2 className="text-xl font-bold">{child.studentName}</h2>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             {child.faculty ?? '—'} · {child.groupName ?? '—'} · {t('study-year')}: {child.studyYear}
           </p>
         </div>
@@ -77,7 +66,7 @@ export const ChildDetail = ({ child, onBack }: Props) => {
             </div>
             <div>
               <p className="text-xl font-bold">{courses.length}</p>
-              <p className="text-xs text-muted-foreground">{t('courses')}</p>
+              <p className="text-muted-foreground text-xs">{t('courses')}</p>
             </div>
           </CardContent>
         </Card>
@@ -88,7 +77,7 @@ export const ChildDetail = ({ child, onBack }: Props) => {
             </div>
             <div>
               <p className="text-xl font-bold">{child.gpa}</p>
-              <p className="text-xs text-muted-foreground">{t('gpa')}</p>
+              <p className="text-muted-foreground text-xs">{t('gpa')}</p>
             </div>
           </CardContent>
         </Card>

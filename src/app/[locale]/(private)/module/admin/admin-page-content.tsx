@@ -3,8 +3,8 @@
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
-import { deleteUser,getAdminUserById } from '@/actions/admin.actions';
-import { Description,Heading2 } from '@/components/typography';
+import { deleteUser, getAdminUserById } from '@/actions/admin.actions';
+import { Description, Heading2 } from '@/components/typography';
 import { Card, CardContent } from '@/components/ui/card';
 import { useServerErrorToast } from '@/hooks/use-server-error-toast';
 import { useToast } from '@/hooks/use-toast';
@@ -92,20 +92,11 @@ export const AdminPageContent = ({ users, totalCount, faculties, stats, dbStats 
       <Card className="mt-6">
         <CardContent className="flex flex-col gap-4 p-4 md:p-6">
           <AdminFilters faculties={faculties} />
-          <AdminTable
-            items={users}
-            totalCount={totalCount}
-            onView={handleView}
-            onDelete={handleDeleteClick}
-          />
+          <AdminTable items={users} totalCount={totalCount} onView={handleView} onDelete={handleDeleteClick} />
         </CardContent>
       </Card>
 
-      <UserDetailDialog
-        user={detailUser}
-        open={detailOpen}
-        onOpenChange={setDetailOpen}
-      />
+      <UserDetailDialog user={detailUser} open={detailOpen} onOpenChange={setDetailOpen} />
 
       <AdminDbViewer initialStats={dbStats} />
 

@@ -1,4 +1,4 @@
-import { type ClassValue,clsx } from 'clsx';
+import { type ClassValue, clsx } from 'clsx';
 import { uid } from 'radash';
 import type { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
@@ -37,7 +37,13 @@ export function linkifyText(text: string): ReactNode[] {
       urlRegex.lastIndex = 0;
       const occurrence = parts.slice(0, index).filter((candidate) => candidate === part).length;
       return (
-        <a key={`${part}-${occurrence}`} href={part} target="_blank" rel="noopener noreferrer" className="text-basic-blue hover:underline">
+        <a
+          key={`${part}-${occurrence}`}
+          href={part}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-basic-blue hover:underline"
+        >
           {part}
         </a>
       );

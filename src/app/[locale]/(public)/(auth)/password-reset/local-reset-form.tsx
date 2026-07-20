@@ -52,7 +52,7 @@ export const LocalPasswordResetForm = ({ initialToken }: { initialToken?: string
   };
 
   if (done) {
-    return <p className="py-4 text-center text-sm text-muted-foreground">{t('redirecting')}</p>;
+    return <p className="text-muted-foreground py-4 text-center text-sm">{t('redirecting')}</p>;
   }
 
   return (

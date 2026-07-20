@@ -1,6 +1,6 @@
 # 03 — Request Pipeline & Data Flow
 
-**Project:** eCampus Student Portal
+**Project:** Student Portal
 **Last updated:** July 2026
 
 ---
@@ -136,10 +136,10 @@ User clicks link or submits form
 export const getAnnouncements = async () => {
   try {
     const response = await retryWithBackoff(() => apiFetch('announcements'));
-    if (!response.ok) return [];  // safe default
+    if (!response.ok) return []; // safe default
     return await response.json();
   } catch {
-    return [];  // safe default — page renders empty state
+    return []; // safe default — page renders empty state
   }
 };
 ```
@@ -192,7 +192,7 @@ const handleUpdate = async () => {
     await updateGrade({ courseId: 1, grade: 95 });
     toast({ title: t('success') });
   } catch {
-    errorToast();  // shows global.server-error toast
+    errorToast(); // shows global.server-error toast
   }
 };
 ```
@@ -259,13 +259,13 @@ Next request:
 
 ### Cache tags used
 
-| Tag | File | Invalidated by |
-|-----|------|----------------|
-| `USER_PROFILE_CACHE_TAG` | `cache-tags.ts` | Photo change, email change, profile update |
-| `RATING_CACHE_TAG` | `cache-tags.ts` | Grade update |
-| `DASHBOARD_CACHE_TAG` | `cache-tags.ts` | Grade update, attendance change |
-| `ANNOUNCEMENTS_CACHE_TAG` | `cache-tags.ts` | Announcement create/update/delete |
-| `ADMIN_CACHE_TAG` | `cache-tags.ts` | User status change, user deletion |
+| Tag                       | File            | Invalidated by                             |
+| ------------------------- | --------------- | ------------------------------------------ |
+| `USER_PROFILE_CACHE_TAG`  | `cache-tags.ts` | Photo change, email change, profile update |
+| `RATING_CACHE_TAG`        | `cache-tags.ts` | Grade update                               |
+| `DASHBOARD_CACHE_TAG`     | `cache-tags.ts` | Grade update, attendance change            |
+| `ANNOUNCEMENTS_CACHE_TAG` | `cache-tags.ts` | Announcement create/update/delete          |
+| `ADMIN_CACHE_TAG`         | `cache-tags.ts` | User status change, user deletion          |
 
 ---
 

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { NotFoundError, PermanentError, TransientError, UnauthorizedError,ValidationError } from '@/lib/errors';
+import { NotFoundError, PermanentError, TransientError, UnauthorizedError, ValidationError } from '@/lib/errors';
 import { retryWithBackoff } from '@/lib/retry';
 
 describe('retryWithBackoff', () => {
@@ -30,9 +30,9 @@ describe('retryWithBackoff', () => {
 
   it('throws after max attempts', async () => {
     const op = vi.fn().mockRejectedValue(new Error('always fails'));
-    await expect(
-      retryWithBackoff(op, { maxAttempts: 3, baseDelayMs: 1, maxDelayMs: 5 }),
-    ).rejects.toThrow('always fails');
+    await expect(retryWithBackoff(op, { maxAttempts: 3, baseDelayMs: 1, maxDelayMs: 5 })).rejects.toThrow(
+      'always fails',
+    );
     expect(op).toHaveBeenCalledTimes(3);
   });
 
@@ -43,10 +43,7 @@ describe('retryWithBackoff', () => {
   });
 
   it('retries on TransientError', async () => {
-    const op = vi
-      .fn()
-      .mockRejectedValueOnce(new TransientError('fail'))
-      .mockResolvedValueOnce('ok');
+    const op = vi.fn().mockRejectedValueOnce(new TransientError('fail')).mockResolvedValueOnce('ok');
     const result = await retryWithBackoff(op, { maxAttempts: 3, baseDelayMs: 1 });
     expect(result).toBe('ok');
     expect(op).toHaveBeenCalledTimes(2);

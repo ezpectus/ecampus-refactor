@@ -24,25 +24,28 @@ export const CuratorSearch = () => {
   const unknownValue = t('unknown-value');
   const requestIdRef = useRef(0);
 
-  const searchGroups = useCallback(async (name: string) => {
-    const currentRequestId = ++requestIdRef.current;
-    try {
-      setIsLoading(true);
+  const searchGroups = useCallback(
+    async (name: string) => {
+      const currentRequestId = ++requestIdRef.current;
+      try {
+        setIsLoading(true);
 
-      const response = name ? await searchByGroupName(name) : [];
+        const response = name ? await searchByGroupName(name) : [];
 
-      if (currentRequestId !== requestIdRef.current) return;
+        if (currentRequestId !== requestIdRef.current) return;
 
-      setGroups(response);
-    } catch (error) {
-      if (currentRequestId !== requestIdRef.current) return;
-      errorToast();
-    } finally {
-      if (currentRequestId === requestIdRef.current) {
-        setIsLoading(false);
+        setGroups(response);
+      } catch (error) {
+        if (currentRequestId !== requestIdRef.current) return;
+        errorToast();
+      } finally {
+        if (currentRequestId === requestIdRef.current) {
+          setIsLoading(false);
+        }
       }
-    }
-  }, [errorToast]);
+    },
+    [errorToast],
+  );
 
   useEffect(() => {
     searchGroups(search);

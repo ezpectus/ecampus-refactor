@@ -39,12 +39,18 @@ export interface CalendarEventData {
 const eventSchema = z.object({
   title: z.string().min(1, 'Title is required').max(200, 'Title must be at most 200 characters'),
   description: z.string().max(2000, 'Description must be at most 2000 characters').optional().default(''),
-  startDate: z.string().min(1, 'Start date is required').refine((s) => !Number.isNaN(Date.parse(s)), {
-    message: 'Must be a valid ISO date',
-  }),
-  endDate: z.string().optional().refine((s) => !s || !Number.isNaN(Date.parse(s)), {
-    message: 'Must be a valid ISO date',
-  }),
+  startDate: z
+    .string()
+    .min(1, 'Start date is required')
+    .refine((s) => !Number.isNaN(Date.parse(s)), {
+      message: 'Must be a valid ISO date',
+    }),
+  endDate: z
+    .string()
+    .optional()
+    .refine((s) => !s || !Number.isNaN(Date.parse(s)), {
+      message: 'Must be a valid ISO date',
+    }),
   location: z.string().max(200, 'Location must be at most 200 characters').optional().default(''),
   type: z.enum(['general', 'exam', 'conference', 'holiday', 'deadline']).default('general'),
 });

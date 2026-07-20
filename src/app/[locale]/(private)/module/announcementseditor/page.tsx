@@ -1,8 +1,6 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import {
-  getAdminAnnouncements,
-} from '@/actions/announcement.actions';
+import { getAdminAnnouncements } from '@/actions/announcement.actions';
 import { SubLayout } from '@/app/[locale]/(private)/sub-layout';
 import { Description, Heading2 } from '@/components/typography';
 import { LOCALE } from '@/i18n/routing';
@@ -22,7 +20,7 @@ export async function generateMetadata({ params }: LocaleProps) {
 }
 
 interface PageProps extends LocaleProps {
-  searchParams: Promise<{ page: number; search: string; language: LOCALE; }>;
+  searchParams: Promise<{ page: number; search: string; language: LOCALE }>;
 }
 
 export default async function AnnouncementsPage({ params, searchParams }: PageProps) {

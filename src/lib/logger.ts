@@ -46,12 +46,7 @@ const mergeContext = (base: LogContext | undefined, override: LogContext | undef
   return { ...base, ...override };
 };
 
-const log = (
-  level: LogLevel,
-  message: string,
-  context?: LogContext,
-  scope?: string,
-) => {
+const log = (level: LogLevel, message: string, context?: LogContext, scope?: string) => {
   if (!shouldLog(level)) return;
 
   const timestamp = new Date().toISOString();
@@ -91,8 +86,7 @@ const createScopedLogger = (scope: string, baseContext?: LogContext): ScopedLogg
     error: (message: string, context?: LogContext) => scopedLog('error', message, context),
     createScoped: (childScope: string, childContext?: LogContext) =>
       createScopedLogger(`${scope}:${childScope}`, mergeContext(baseContext, childContext)),
-    withRequestId: (requestId: string) =>
-      createScopedLogger(scope, mergeContext(baseContext, { requestId })),
+    withRequestId: (requestId: string) => createScopedLogger(scope, mergeContext(baseContext, { requestId })),
   };
 };
 

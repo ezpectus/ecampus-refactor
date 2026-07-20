@@ -200,7 +200,13 @@ export async function redirectToEmploymentSystem() {
   redirect(url);
 }
 
-export async function registerUser(name: string, email: string, password: string, role: 'STUDENT' | 'TEACHER' = 'STUDENT', schoolCode?: string) {
+export async function registerUser(
+  name: string,
+  email: string,
+  password: string,
+  role: 'STUDENT' | 'TEACHER' = 'STUDENT',
+  schoolCode?: string,
+) {
   if (env.NEXT_PUBLIC_LOCAL_AUTH === 'true') {
     const { localRegister } = await import('./local-auth.actions');
     const localResult = await localRegister({ fullName: name, email, password, role, schoolCode: schoolCode ?? '' });
@@ -228,4 +234,3 @@ export async function registerUser(name: string, email: string, password: string
 
   return { ok: true } as const;
 }
-

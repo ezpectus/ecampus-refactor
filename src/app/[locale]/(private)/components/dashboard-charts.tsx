@@ -74,13 +74,7 @@ export const DashboardCharts = ({ gpaTrend, gradeDistribution, attendanceData }:
                 contentStyle={{ borderRadius: 8, border: '1px solid #e5e7eb' }}
                 labelStyle={{ fontWeight: 600 }}
               />
-              <Area
-                type="monotone"
-                dataKey="gpa"
-                stroke="#3b82f6"
-                strokeWidth={2}
-                fill="url(#gpaGradient)"
-              />
+              <Area type="monotone" dataKey="gpa" stroke="#3b82f6" strokeWidth={2} fill="url(#gpaGradient)" />
             </AreaChart>
           </ResponsiveContainer>
         </CardContent>
@@ -106,18 +100,13 @@ export const DashboardCharts = ({ gpaTrend, gradeDistribution, attendanceData }:
                   <Cell key={entry.name} fill={entry.color} />
                 ))}
               </Pie>
-              <Tooltip
-                contentStyle={{ borderRadius: 8, border: '1px solid #e5e7eb' }}
-              />
+              <Tooltip contentStyle={{ borderRadius: 8, border: '1px solid #e5e7eb' }} />
             </PieChart>
           </ResponsiveContainer>
           <div className="mt-4 flex flex-wrap justify-center gap-4">
             {gradeDistribution.map((entry) => (
               <div key={entry.name} className="flex items-center gap-2">
-                <div
-                  className="h-3 w-3 rounded-full"
-                  style={{ backgroundColor: entry.color }}
-                />
+                <div className="h-3 w-3 rounded-full" style={{ backgroundColor: entry.color }} />
                 <span className="text-sm text-neutral-600">
                   {entry.name}: {entry.value}
                 </span>
@@ -151,9 +140,7 @@ export const DashboardCharts = ({ gpaTrend, gradeDistribution, attendanceData }:
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
               <XAxis dataKey="month" tick={{ fontSize: 12 }} />
               <YAxis tick={{ fontSize: 12 }} />
-              <Tooltip
-                contentStyle={{ borderRadius: 8, border: '1px solid #e5e7eb' }}
-              />
+              <Tooltip contentStyle={{ borderRadius: 8, border: '1px solid #e5e7eb' }} />
               <Bar dataKey="attended" fill="#22c55e" radius={[4, 4, 0, 0]} />
               <Bar dataKey="missed" fill="#ef4444" radius={[4, 4, 0, 0]} />
             </BarChart>

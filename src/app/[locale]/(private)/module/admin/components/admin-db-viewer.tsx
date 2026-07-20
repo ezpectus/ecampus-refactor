@@ -106,26 +106,54 @@ export const AdminDbViewer = ({ initialStats }: Props) => {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      {columns.map((column) => <TableHead key={column}>{column}</TableHead>)}
+                      {columns.map((column) => (
+                        <TableHead key={column}>{column}</TableHead>
+                      ))}
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {rows.length === 0 ? (
-                      <TableRow><TableCell colSpan={Math.max(columns.length, 1)} className="py-8 text-center">{t('empty')}</TableCell></TableRow>
-                    ) : rows.map((row, index) => (
-                      <TableRow key={String(row.id ?? index)}>
-                        {columns.map((column) => <TableCell key={column} className="max-w-[240px] truncate text-xs">{formatValue(row[column])}</TableCell>)}
+                      <TableRow>
+                        <TableCell colSpan={Math.max(columns.length, 1)} className="py-8 text-center">
+                          {t('empty')}
+                        </TableCell>
                       </TableRow>
-                    ))}
+                    ) : (
+                      rows.map((row, index) => (
+                        <TableRow key={String(row.id ?? index)}>
+                          {columns.map((column) => (
+                            <TableCell key={column} className="max-w-[240px] truncate text-xs">
+                              {formatValue(row[column])}
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      ))
+                    )}
                   </TableBody>
                 </Table>
               </div>
               <div className="mt-4 flex items-center justify-between text-sm text-neutral-500">
                 <span>{t('showing', { total })}</span>
                 <div className="flex gap-2">
-                  <Button variant="tertiary" size="small" disabled={page <= 1 || loading} onClick={() => loadTable(activeTable, page - 1)}>{t('previous')}</Button>
-                  <span className="px-2 py-2">{page} / {maxPage}</span>
-                  <Button variant="tertiary" size="small" disabled={page >= maxPage || loading} onClick={() => loadTable(activeTable, page + 1)}>{t('next')}</Button>
+                  <Button
+                    variant="tertiary"
+                    size="small"
+                    disabled={page <= 1 || loading}
+                    onClick={() => loadTable(activeTable, page - 1)}
+                  >
+                    {t('previous')}
+                  </Button>
+                  <span className="px-2 py-2">
+                    {page} / {maxPage}
+                  </span>
+                  <Button
+                    variant="tertiary"
+                    size="small"
+                    disabled={page >= maxPage || loading}
+                    onClick={() => loadTable(activeTable, page + 1)}
+                  >
+                    {t('next')}
+                  </Button>
                 </div>
               </div>
             </TabsContent>

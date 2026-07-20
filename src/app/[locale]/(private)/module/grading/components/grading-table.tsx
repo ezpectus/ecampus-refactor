@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
-import { type CourseStudent,getCourseStudents, updateGrade } from '@/actions/grading.actions';
+import { type CourseStudent, getCourseStudents, updateGrade } from '@/actions/grading.actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -29,10 +29,18 @@ export const GradingTable = ({ courseName }: Props) => {
   const [editGradeType, setEditGradeType] = useState<GradeType>('NUMERIC');
 
   useEffect(() => {
+    let isCancelled = false;
     setLoading(true);
     getCourseStudents(courseName)
-      .then(setStudents)
-      .finally(() => setLoading(false));
+      .then((result) => {
+        if (!isCancelled) setStudents(result);
+      })
+      .finally(() => {
+        if (!isCancelled) setLoading(false);
+      });
+    return () => {
+      isCancelled = true;
+    };
   }, [courseName]);
 
   const handleSave = async (student: CourseStudent) => {
@@ -82,10 +90,7 @@ export const GradingTable = ({ courseName }: Props) => {
             <TableCell className="text-muted-foreground">{student.credits}</TableCell>
             <TableCell>
               {editingId === student.id ? (
-                <Select
-                  value={editGradeType}
-                  onValueChange={(v) => setEditGradeType(v as GradeType)}
-                >
+                <Select value={editGradeType} onValueChange={(v) => setEditGradeType(v as GradeType)}>
                   <SelectTrigger className="h-8 w-24">
                     <SelectValue />
                   </SelectTrigger>
@@ -114,27 +119,16 @@ export const GradingTable = ({ courseName }: Props) => {
                   data-testid="grade-input"
                 />
               ) : (
-                <span className="font-semibold">
-                  {displayGrade(student.grade, student.gradeType as GradeType)}
-                </span>
+                <span className="font-semibold">{displayGrade(student.grade, student.gradeType as GradeType)}</span>
               )}
             </TableCell>
             <TableCell>
               {editingId === student.id ? (
                 <div className="flex gap-1">
-                  <Button
-                    size="small"
-                    variant="primary"
-                    onClick={() => handleSave(student)}
-                    data-testid="grade-save"
-                  >
+                  <Button size="small" variant="primary" onClick={() => handleSave(student)} data-testid="grade-save">
                     {t('actions.save')}
                   </Button>
-                  <Button
-                    size="small"
-                    variant="tertiary"
-                    onClick={() => setEditingId(null)}
-                  >
+                  <Button size="small" variant="tertiary" onClick={() => setEditingId(null)}>
                     {t('actions.cancel')}
                   </Button>
                 </div>

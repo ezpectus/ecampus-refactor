@@ -113,7 +113,16 @@ export const getAnalytics = unstable_cache(
     const admin = await requireAdmin();
     if (!admin) {
       return {
-        overview: { totalUsers: 0, students: 0, teachers: 0, parents: 0, admins: 0, activeStudents: 0, newUsersThisMonth: 0, avgGpa: 0 },
+        overview: {
+          totalUsers: 0,
+          students: 0,
+          teachers: 0,
+          parents: 0,
+          admins: 0,
+          activeStudents: 0,
+          newUsersThisMonth: 0,
+          avgGpa: 0,
+        },
         roleDistribution: [],
         monthlyRegistrations: [],
         facultyDistribution: [],
@@ -134,9 +143,22 @@ export const getAnalytics = unstable_cache(
       const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
 
       const [
-        totalUsers, students, teachers, parents, admins,
-        activeStudents, newUsersThisMonth, studentGpas,
-        roleGroups, recentUsers, facultyData, recentActivity, allCourses, cohortData, teachersWithCourses, studentsAtRisk,
+        totalUsers,
+        students,
+        teachers,
+        parents,
+        admins,
+        activeStudents,
+        newUsersThisMonth,
+        studentGpas,
+        roleGroups,
+        recentUsers,
+        facultyData,
+        recentActivity,
+        allCourses,
+        cohortData,
+        teachersWithCourses,
+        studentsAtRisk,
       ] = await Promise.all([
         prisma.user.count({ where: schoolFilter }),
         prisma.user.count({ where: { role: 'STUDENT', ...schoolFilter } }),
@@ -147,18 +169,53 @@ export const getAnalytics = unstable_cache(
         prisma.user.count({ where: { createdAt: { gte: monthAgo }, ...schoolFilter } }),
         prisma.user.findMany({ where: { role: 'STUDENT', ...schoolFilter }, select: { gpa: true } }),
         prisma.user.groupBy({ by: ['role'], where: schoolFilter, _count: true }),
-        prisma.user.findMany({ where: { createdAt: { gte: new Date(now.getFullYear() - 1, 0, 1) }, ...schoolFilter }, select: { createdAt: true } }),
-        prisma.user.groupBy({ by: ['faculty'], where: { role: 'STUDENT', faculty: { not: null }, ...schoolFilter }, _count: true, _avg: { gpa: true } }),
-        prisma.user.findMany({ where: { lastActiveAt: { gte: monthAgo }, ...schoolFilter }, select: { lastActiveAt: true } }),
-        prisma.course.findMany({ where: schoolId !== undefined ? { schoolId } : {}, select: { name: true, grade: true, gradeType: true } }),
-        prisma.user.groupBy({ by: ['studyYear'], where: { role: 'STUDENT', studyYear: { gt: 0 }, ...schoolFilter }, _count: true, _avg: { gpa: true } }),
-        prisma.user.findMany({ where: { role: 'TEACHER', ...schoolFilter }, select: { fullName: true, username: true, taughtCourses: { select: { grade: true } } } }),
-        prisma.user.findMany({ where: { role: 'STUDENT', ...schoolFilter }, select: { fullName: true, username: true, groupName: true, gpa: true, attendance: { select: { present: true, total: true } }, courses: { select: { grade: true } } } }),
+        prisma.user.findMany({
+          where: { createdAt: { gte: new Date(now.getFullYear() - 1, 0, 1) }, ...schoolFilter },
+          select: { createdAt: true },
+        }),
+        prisma.user.groupBy({
+          by: ['faculty'],
+          where: { role: 'STUDENT', faculty: { not: null }, ...schoolFilter },
+          _count: true,
+          _avg: { gpa: true },
+        }),
+        prisma.user.findMany({
+          where: { lastActiveAt: { gte: monthAgo }, ...schoolFilter },
+          select: { lastActiveAt: true },
+        }),
+        prisma.course.findMany({
+          where: schoolId !== undefined ? { schoolId } : {},
+          select: { name: true, grade: true, gradeType: true },
+        }),
+        prisma.user.groupBy({
+          by: ['studyYear'],
+          where: { role: 'STUDENT', studyYear: { gt: 0 }, ...schoolFilter },
+          _count: true,
+          _avg: { gpa: true },
+        }),
+        prisma.user.findMany({
+          where: { role: 'TEACHER', ...schoolFilter },
+          select: { fullName: true, username: true, taughtCourses: { select: { grade: true } } },
+        }),
+        prisma.user.findMany({
+          where: { role: 'STUDENT', ...schoolFilter },
+          select: {
+            fullName: true,
+            username: true,
+            groupName: true,
+            gpa: true,
+            attendance: { select: { present: true, total: true } },
+            courses: { select: { grade: true } },
+          },
+        }),
       ]);
 
-      const avgGpa = studentGpas.length > 0
-        ? Math.round((studentGpas.reduce((sum: number, u: { gpa: number }) => sum + u.gpa, 0) / studentGpas.length) * 100) / 100
-        : 0;
+      const avgGpa =
+        studentGpas.length > 0
+          ? Math.round(
+              (studentGpas.reduce((sum: number, u: { gpa: number }) => sum + u.gpa, 0) / studentGpas.length) * 100,
+            ) / 100
+          : 0;
 
       const roleDistribution: RoleDistribution[] = roleGroups.map((g: { role: string; _count: number }) => ({
         role: g.role,
@@ -209,7 +266,9 @@ export const getAnalytics = unstable_cache(
         { grade: 'F (<60)', count: buckets.F, color: '#ef4444' },
       ];
 
-      const cohorts: CohortData[] = (cohortData as { studyYear: number; _count: number; _avg: { gpa: number | null } }[])
+      const cohorts: CohortData[] = (
+        cohortData as { studyYear: number; _count: number; _avg: { gpa: number | null } }[]
+      )
         .map((c) => ({
           year: c.studyYear,
           students: c._count,
@@ -236,13 +295,16 @@ export const getAnalytics = unstable_cache(
         .sort((a, b) => b.failureRate - a.failureRate || b.failures - a.failures)
         .slice(0, 10);
 
-      const teacherEffectiveness: TeacherEffectiveness[] = (teachersWithCourses as { fullName: string; username: string; taughtCourses: { grade: number }[] }[])
+      const teacherEffectiveness: TeacherEffectiveness[] = (
+        teachersWithCourses as { fullName: string; username: string; taughtCourses: { grade: number }[] }[]
+      )
         .map((t) => {
           const courseCount = t.taughtCourses.length;
           const failures = t.taughtCourses.filter((c) => c.grade < 60).length;
-          const avgGrade = courseCount > 0
-            ? Math.round((t.taughtCourses.reduce((sum, c) => sum + c.grade, 0) / courseCount) * 100) / 100
-            : 0;
+          const avgGrade =
+            courseCount > 0
+              ? Math.round((t.taughtCourses.reduce((sum, c) => sum + c.grade, 0) / courseCount) * 100) / 100
+              : 0;
 
           return {
             teacherName: t.fullName || t.username,
@@ -257,11 +319,21 @@ export const getAnalytics = unstable_cache(
         .sort((a, b) => b.failureRate - a.failureRate || a.avgGrade - b.avgGrade)
         .slice(0, 10);
 
-      const riskStudents: RiskStudent[] = (studentsAtRisk as { fullName: string; username: string; groupName: string | null; gpa: number; attendance: { present: number; total: number }[]; courses: { grade: number }[] }[])
+      const riskStudents: RiskStudent[] = (
+        studentsAtRisk as {
+          fullName: string;
+          username: string;
+          groupName: string | null;
+          gpa: number;
+          attendance: { present: number; total: number }[];
+          courses: { grade: number }[];
+        }[]
+      )
         .map((s) => {
           const attendanceTotal = s.attendance.reduce((sum, a) => sum + a.total, 0);
           const attendancePresent = s.attendance.reduce((sum, a) => sum + a.present, 0);
-          const attendanceRate = attendanceTotal > 0 ? Math.round((attendancePresent / attendanceTotal) * 100) / 100 : 1;
+          const attendanceRate =
+            attendanceTotal > 0 ? Math.round((attendancePresent / attendanceTotal) * 100) / 100 : 1;
           const failingCourses = s.courses.filter((c) => c.grade < 60).length;
           const attendanceRisk = (1 - attendanceRate) * 40;
           const gpaRisk = (1 - s.gpa / 100) * 40;
@@ -295,7 +367,16 @@ export const getAnalytics = unstable_cache(
       };
     } catch {
       return {
-        overview: { totalUsers: 0, students: 0, teachers: 0, parents: 0, admins: 0, activeStudents: 0, newUsersThisMonth: 0, avgGpa: 0 },
+        overview: {
+          totalUsers: 0,
+          students: 0,
+          teachers: 0,
+          parents: 0,
+          admins: 0,
+          activeStudents: 0,
+          newUsersThisMonth: 0,
+          avgGpa: 0,
+        },
         roleDistribution: [],
         monthlyRegistrations: [],
         facultyDistribution: [],

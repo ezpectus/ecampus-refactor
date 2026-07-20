@@ -55,7 +55,7 @@ export async function InfoBlock({ user, className }: Props) {
 
         {user.intellectProfile && (
           <Link
-            className="text-lg font-semibold text-basic-blue hover:underline"
+            className="text-basic-blue text-lg font-semibold hover:underline"
             href={user.intellectProfile}
             target="_blank"
             rel="noopener noreferrer"

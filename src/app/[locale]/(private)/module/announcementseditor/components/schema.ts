@@ -30,10 +30,7 @@ const announcementLinkFormSchema = z
 
 const announcementFormSchema = z.object({
   title: z.string().min(1, 'Title is required').max(100, 'Title must be at most 100 characters'),
-  description: z
-    .string()
-    .min(1, 'Description is required')
-    .max(700, 'Description must be at most 700 characters'),
+  description: z.string().min(1, 'Description is required').max(700, 'Description must be at most 700 characters'),
   /** API: required field, `null` or URI; form may use `''` for empty — map with {@link toAnnouncementCreate}. */
   image: z.union([
     z.literal(''),
@@ -44,9 +41,13 @@ const announcementFormSchema = z.object({
   start: rfc3339LikeDate('Start date is required'),
   end: rfc3339LikeDate('End date is required'),
   language: z.string().length(2, 'Language must be a 2-letter code'),
-  scheduledAt: z.union([z.literal(''), z.null(), z.string().refine((s) => !s || !Number.isNaN(Date.parse(s)), {
-    message: 'Must be a valid ISO / RFC 3339 date',
-  })]),
+  scheduledAt: z.union([
+    z.literal(''),
+    z.null(),
+    z.string().refine((s) => !s || !Number.isNaN(Date.parse(s)), {
+      message: 'Must be a valid ISO / RFC 3339 date',
+    }),
+  ]),
   autoTranslate: z.boolean(),
 });
 
@@ -78,10 +79,9 @@ export const toAnnouncementCreate = (values: AnnouncementFormValues): Announceme
       ...rest,
       image: image === '' ? null : image,
       link: hasLink ? { title: link.title.trim(), uri: link.uri.trim() } : null,
-      scheduledAt: announcement.scheduledAt === '' || announcement.scheduledAt === null
-        ? null
-        : announcement.scheduledAt,
-    autoTranslate: announcement.autoTranslate,
+      scheduledAt:
+        announcement.scheduledAt === '' || announcement.scheduledAt === null ? null : announcement.scheduledAt,
+      autoTranslate: announcement.autoTranslate,
     },
     filter,
   };

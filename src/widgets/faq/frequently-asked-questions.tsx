@@ -23,11 +23,12 @@ export const FrequentlyAskedQuestions = async ({ i18nNamespace, sections }: Freq
             {(tags) =>
               t.rich(`sections.${section}.content`, {
                 ...tags,
-                documentlink: (chunks) => documentUrl && (
-                  <Link href={documentUrl} target="_blank" rel="noopener noreferrer">
-                    {chunks}
-                  </Link>
-                ),
+                documentlink: (chunks) =>
+                  documentUrl && (
+                    <Link href={documentUrl} target="_blank" rel="noopener noreferrer">
+                      {chunks}
+                    </Link>
+                  ),
                 curatorlink: (chunks) => <Link href="/curator-search">{chunks}</Link>,
                 restorepasswordlink: (chunks) => <Link href="/password-reset">{chunks}</Link>,
               })

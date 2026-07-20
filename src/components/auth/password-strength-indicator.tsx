@@ -59,7 +59,7 @@ export const PasswordStrengthIndicator = ({ password }: Props) => {
           />
         ))}
       </div>
-      <span className="text-xs text-muted-foreground">{t(level)}</span>
+      <span className="text-muted-foreground text-xs">{t(level)}</span>
     </div>
   );
 };

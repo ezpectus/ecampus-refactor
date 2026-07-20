@@ -26,9 +26,7 @@ export async function getMails(filter: MailFilter = MailFilter.Incoming) {
     if (!user) return [];
 
     try {
-      const where = filter === MailFilter.Incoming
-        ? { userId: user.id }
-        : { senderId: user.id };
+      const where = filter === MailFilter.Incoming ? { userId: user.id } : { senderId: user.id };
 
       const notifications = await prisma.notification.findMany({
         where,
@@ -91,9 +89,7 @@ export async function getFacultyOptions() {
         select: { faculty: true },
         distinct: ['faculty'],
       });
-      return faculties
-        .map((f, i) => ({ id: i + 1, name: f.faculty ?? '' }))
-        .filter((f) => f.name !== '');
+      return faculties.map((f, i) => ({ id: i + 1, name: f.faculty ?? '' })).filter((f) => f.name !== '');
     } catch {
       return [];
     }
@@ -119,9 +115,7 @@ export async function getAllGroups() {
         select: { groupName: true },
         distinct: ['groupName'],
       });
-      return groups
-        .map((g, i) => ({ id: i + 1, name: g.groupName ?? '' }))
-        .filter((g) => g.name !== '');
+      return groups.map((g, i) => ({ id: i + 1, name: g.groupName ?? '' })).filter((g) => g.name !== '');
     } catch {
       return [];
     }

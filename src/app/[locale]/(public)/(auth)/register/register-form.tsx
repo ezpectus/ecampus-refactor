@@ -23,17 +23,22 @@ export const RegisterForm = () => {
   const router = useRouter();
   const { errorToast } = useServerErrorToast();
 
-  const FormSchema = z.object({
-    name: z.string().min(1, { message: t('validation.name-required') }),
-    email: z.string().min(1, { message: t('validation.email-required') }).email({ message: t('validation.email-invalid') }),
-    schoolCode: z.string().min(1, { message: t('validation.school-code-required') }),
-    password: z.string().min(8, { message: t('validation.password-min') }),
-    passwordConfirm: z.string().min(1, { message: t('validation.password-confirm-required') }),
-    role: z.enum(['STUDENT', 'TEACHER']),
-  }).refine((data) => data.password === data.passwordConfirm, {
-    message: t('validation.password-match'),
-    path: ['passwordConfirm'],
-  });
+  const FormSchema = z
+    .object({
+      name: z.string().min(1, { message: t('validation.name-required') }),
+      email: z
+        .string()
+        .min(1, { message: t('validation.email-required') })
+        .email({ message: t('validation.email-invalid') }),
+      schoolCode: z.string().min(1, { message: t('validation.school-code-required') }),
+      password: z.string().min(8, { message: t('validation.password-min') }),
+      passwordConfirm: z.string().min(1, { message: t('validation.password-confirm-required') }),
+      role: z.enum(['STUDENT', 'TEACHER']),
+    })
+    .refine((data) => data.password === data.passwordConfirm, {
+      message: t('validation.password-match'),
+      path: ['passwordConfirm'],
+    });
 
   type FormData = z.infer<typeof FormSchema>;
 
@@ -131,11 +136,7 @@ export const RegisterForm = () => {
           render={({ field }) => (
             <FormItem className="mb-6 grid w-full items-center gap-2">
               <Label>{t('field.role')}</Label>
-              <RadioGroup
-                value={field.value}
-                onValueChange={field.onChange}
-                className="flex gap-6"
-              >
+              <RadioGroup value={field.value} onValueChange={field.onChange} className="flex gap-6">
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="STUDENT" id="role-student" />
                   <Label htmlFor="role-student">{t('field.role-student')}</Label>
@@ -157,11 +158,13 @@ export const RegisterForm = () => {
           {t('button.login')}
         </Link>
       </form>
-      <DemoCredentials onSelect={(_username, password) => {
-        form.setValue('schoolCode', 'demo');
-        form.setValue('password', password);
-        form.setValue('passwordConfirm', password);
-      }} />
+      <DemoCredentials
+        onSelect={(_username, password) => {
+          form.setValue('schoolCode', 'demo');
+          form.setValue('password', password);
+          form.setValue('passwordConfirm', password);
+        }}
+      />
     </Form>
   );
 };

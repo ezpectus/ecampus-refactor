@@ -1,6 +1,6 @@
 # 07 — Frontend Components & UI Architecture
 
-**Project:** eCampus Student Portal
+**Project:** Student Portal
 **Last updated:** July 2026
 
 ---
@@ -50,6 +50,7 @@ loading.tsx       → Server component (Suspense fallback)
 ```
 
 **Server component characteristics:**
+
 - No `'use client'` directive
 - Can use `async/await` directly
 - Can call server actions directly
@@ -82,6 +83,7 @@ hooks/*.ts        → Always client (React hooks)
 ```
 
 **Client component characteristics:**
+
 - Must have `'use client'` as first line
 - Can use hooks, browser APIs, event handlers
 - Cannot be `async` (must use effects for async operations)
@@ -105,6 +107,7 @@ page.tsx (server) → fetches data → passes to *.content.tsx (client)
 ```
 
 This is the standard pattern in this project:
+
 1. `page.tsx` fetches data on the server (fast, secure, no client JS)
 2. `page.tsx` passes data as props to a client component
 3. Client component handles interactivity (filters, sorting, forms)
@@ -230,6 +233,7 @@ export const ThingsTable = memo(function ThingsTable({ items, totalCount }: Prop
 ```
 
 ### Key conventions
+
 - **Single `<Table>`** for all breakpoints (no mobile card view)
 - **Empty state:** inline `<p>` with translated message
 - **Pagination:** conditional via `<Show when={...}>` (hidden when single page)
@@ -295,6 +299,7 @@ export const AnnouncementForm = ({ initialValues, id }: Props) => {
 ```
 
 ### Key conventions
+
 - **Schema inline** above `useForm` (no separate `schema.ts` unless large/shared)
 - **Translated validation messages** via `t('validation.*')`
 - **Loading button** — `loading={form.formState.isSubmitting}` (auto-disables + spinner)
@@ -353,6 +358,7 @@ export const useTheme = () => {
 ### Hydration safety
 
 The `mounted` flag prevents hydration mismatch:
+
 - Server renders `theme = 'light'` (default)
 - Client first render: `theme = 'light'`, `mounted = false` (matches server)
 - After mount: `useEffect` reads `localStorage`, sets real theme, `mounted = true`

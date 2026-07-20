@@ -7,21 +7,30 @@ A production-grade SaaS web application for educational institutions. Built with
 ## Features
 
 ### Student
+
 - **Grades & Academic Performance** — view grades by semester, GPA, credit modules, attestation results
+- **Grade Predictions** — heuristic-based forecasting with trend analysis and risk assessment
+- **AI Chat Assistant** — keyword-based study tips and academic guidance with history persistence
+- **Student Feed** — social posts with image upload, likes, comments, and real-time SSE updates
 - **Schedule** — weekly timetable with course, room, and teacher info
 - **Messages** — send and receive messages with faculty, groups, and individual students
 - **Certificates** — request official documents, track status, download PDF
 - **Profile** — manage contacts, bio, avatar, and account settings
 - **Announcements** — institution-wide and course-level notices
 - **Directory** — search faculty and staff by name, department, or contact type
+- **Notifications** — real-time notification center with popover, dedicated page, read/unread management
 
 ### Faculty / Staff
+
 - **Grade Book** — select course, view enrolled students, edit grades inline with audit trail
 - **Certificate Management** — approve, reject, sign, and process student certificate requests
 - **Announcement Editor** — create, edit, and publish announcements with audience targeting
 - **Student Directory** — search and view student contact information
+- **QR Attendance** — generate QR codes for attendance sessions, students scan to mark presence
+- **Chat Rooms** — school-scoped chat rooms for real-time communication
 
 ### Admin Panel
+
 - **User Management** — view, filter, search, and delete users (120+ seeded)
 - **User Detail View** — full profile with courses, grades, attendance, contact info
 - **Statistics Dashboard** — total users, active students, average GPA at a glance
@@ -31,12 +40,14 @@ A production-grade SaaS web application for educational institutions. Built with
 - **Audit Logs** — all admin and grade mutations logged with user, action, metadata, IP
 
 ### Parent Portal
+
 - **Child Overview** — cards showing each linked child with photo, GPA, faculty, study year
 - **Grades Detail** — full course list with grades, credits, teacher names, grade type (numeric/letter/ECTS)
 - **Attendance Chart** — monthly attendance bar chart with present/total breakdown
 - **Read-Only Access** — parents see child's academic data without edit permissions
 
 ### Authentication
+
 - **Local Auth System** — Prisma-backed registration and login with JWT
 - **Role Selection** — register as Student or Teacher
 - **School Affiliation** — registration requires a school code; users, courses, and admin data are scoped to that school
@@ -47,34 +58,40 @@ A production-grade SaaS web application for educational institutions. Built with
 - **Rate Limiting** — login (10 per 15min) and password reset (5 per 15min) throttled to prevent brute-force attacks
 
 ### Platform
+
 - **Authentication** — JWT-based with httpOnly cookies, middleware route protection, user registration
 - **Database** — Prisma 7 ORM with SQLite (dev) / Neon Postgres (prod), driver adapters
-- **Multi-locale** — Ukrainian (default) and English, extensible to any locale
+- **Multi-locale** — Ukrainian (default), English, Polish, German — extensible to any locale
 - **Server-Side Rendering** — all pages SSR with ISR caching (5-min revalidate)
 - **Security** — CSP headers, HSTS, cookie security flags, CSRF protection (middleware + server-side validation), env validation (Zod), URL allow-listing
 - **Responsive** — mobile-first design with TailwindCSS, works on all breakpoints
 - **Accessible** — ARIA labels, keyboard navigation, semantic HTML
 - **Dark Mode** — theme toggle with TailwindCSS dark: variants and localStorage persistence
-- **Command Palette** — Cmd+K global search and navigation
+- **Command Palette** — Cmd+K global search across posts, users, and notifications
+- **Email** — Nodemailer SMTP with graceful fallback when not configured (password reset emails)
+- **Real-time** — SSE endpoints for live feed updates, chat messages, and notification delivery
+- **Rate Limiting** — in-memory for single-instance, Redis for multi-instance (auto-detected via `REDIS_URL`)
+- **Image Upload** — file-based image upload for feed posts (5MB limit, MIME type validation)
+- **Monitoring** — `/api/healthz` liveness + `/api/ready` readiness with DB health, circuit breaker state, uptime
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Framework | Next.js 15 (App Router, Turbopack, Server Components) |
-| UI | React 19, TailwindCSS 4, Radix UI primitives |
-| Language | TypeScript 5.9 (strict mode) |
-| Database | Prisma 7 ORM + SQLite (dev) / Neon Postgres (prod) |
-| Auth | bcryptjs password hashing + JWT in httpOnly cookies |
-| Security | CSRF protection (double-submit cookie + Origin validation), school-scoped data isolation, audit logging |
-| Forms | React Hook Form 7 + Zod 4 validation |
-| i18n | next-intl (Ukrainian / English) |
-| Charts | Recharts 3 (dashboard analytics) |
-| Icons | Lucide React + centralized SVG index (@svgr/webpack) |
-| Deploy | Vercel / Netlify / Docker multi-stage (node:22-alpine) |
-| Testing | Vitest (unit), Playwright (E2E) |
+| Layer     | Technology                                                                                              |
+| --------- | ------------------------------------------------------------------------------------------------------- |
+| Framework | Next.js 15 (App Router, Turbopack, Server Components)                                                   |
+| UI        | React 19, TailwindCSS 4, Radix UI primitives                                                            |
+| Language  | TypeScript 5.9 (strict mode)                                                                            |
+| Database  | Prisma 7 ORM + SQLite (dev) / Neon Postgres (prod)                                                      |
+| Auth      | bcryptjs password hashing + JWT in httpOnly cookies                                                     |
+| Security  | CSRF protection (double-submit cookie + Origin validation), school-scoped data isolation, audit logging |
+| Forms     | React Hook Form 7 + Zod 4 validation                                                                    |
+| i18n      | next-intl (Ukrainian / English / Polish / German)                                                       |
+| Charts    | Recharts 3 (dashboard analytics)                                                                        |
+| Icons     | Lucide React + centralized SVG index (@svgr/webpack)                                                    |
+| Deploy    | Vercel / Netlify / Docker multi-stage (node:22-alpine)                                                  |
+| Testing   | Vitest (unit), Playwright (E2E)                                                                         |
 
 ---
 
@@ -82,12 +99,12 @@ A production-grade SaaS web application for educational institutions. Built with
 
 The database is pre-seeded with four test accounts. Use these to log in immediately:
 
-| Role | Username | Password | School code | Access |
-|------|----------|----------|---------------|--------|
-| Admin | `admin` | `test12345` | `demo` | Admin Panel, Analytics Dashboard, all modules |
-| Teacher | `teacher` | `test12345` | `demo` | Modules, student directory, grade book |
-| Student | `student` | `test12345` | `demo` | Grades, schedule, messages, certificates |
-| Parent | `parent` | `test12345` | `demo` | Parent Portal — view child's grades & attendance |
+| Role    | Username  | Password    | School code | Access                                           |
+| ------- | --------- | ----------- | ----------- | ------------------------------------------------ |
+| Admin   | `admin`   | `test12345` | `demo`      | Admin Panel, Analytics Dashboard, all modules    |
+| Teacher | `teacher` | `test12345` | `demo`      | Modules, student directory, grade book           |
+| Student | `student` | `test12345` | `demo`      | Grades, schedule, messages, certificates         |
+| Parent  | `parent`  | `test12345` | `demo`      | Parent Portal — view child's grades & attendance |
 
 > 120 additional students and teachers are also seeded under the `demo` school.
 
@@ -131,21 +148,21 @@ Log in with any test account from the table above.
 
 ### Database Commands
 
-| Command | Description |
-|---------|-------------|
-| `npm run db:push` | Create/update SQLite database schema |
-| `npm run db:seed` | Seed database with demo school, 120+ users, courses, attendance |
-| `npm run db:studio` | Open Prisma Studio (visual DB browser at localhost:5555) |
-| `npm run db:generate` | Regenerate Prisma client for local SQLite |
-| `npm run db:push:postgres` | Apply the PostgreSQL schema to Neon |
-| `npm run db:generate:postgres` | Generate Prisma client from the Neon schema |
-| `npm run build:postgres` | Generate PostgreSQL client and build production app |
-| `npm run health` | Monitor the configured external API in a log window |
-| `scripts\\start-no-docker.bat` | Start frontend, Prisma Studio, API health, and info windows |
-| `scripts\\start-docker.bat` | Build/start Next.js + PostgreSQL with Compose |
-| `scripts/setup-local.bat` | Install, generate, push, and seed SQLite |
-| `scripts/setup-neon.bat` | Generate, push, and seed Neon PostgreSQL |
-| `/module/admin` | Admin-only panel with database explorer |
+| Command                        | Description                                                     |
+| ------------------------------ | --------------------------------------------------------------- |
+| `npm run db:push`              | Create/update SQLite database schema                            |
+| `npm run db:seed`              | Seed database with demo school, 120+ users, courses, attendance |
+| `npm run db:studio`            | Open Prisma Studio (visual DB browser at localhost:5555)        |
+| `npm run db:generate`          | Regenerate Prisma client for local SQLite                       |
+| `npm run db:push:postgres`     | Apply the PostgreSQL schema to Neon                             |
+| `npm run db:generate:postgres` | Generate Prisma client from the Neon schema                     |
+| `npm run build:postgres`       | Generate PostgreSQL client and build production app             |
+| `npm run health`               | Monitor the configured external API in a log window             |
+| `scripts\\start-no-docker.bat` | Start frontend, Prisma Studio, API health, and info windows     |
+| `scripts\\start-docker.bat`    | Build/start Next.js + PostgreSQL with Compose                   |
+| `scripts/setup-local.bat`      | Install, generate, push, and seed SQLite                        |
+| `scripts/setup-neon.bat`       | Generate, push, and seed Neon PostgreSQL                        |
+| `/module/admin`                | Admin-only panel with database explorer                         |
 
 ---
 
@@ -153,11 +170,11 @@ Log in with any test account from the table above.
 
 ### Deployment Modes
 
-| Mode | `NEXT_PUBLIC_LOCAL_AUTH` | `NEXT_PUBLIC_SHOW_DEMO_CREDENTIALS` | Purpose |
-|------|--------------------------|--------------------------------------|---------|
-| **Local dev** | `true` | `true` | Development — demo buttons + registration |
-| **Portfolio demo** | `true` | `true` | Deployed demo — visitors can try demo accounts and register their own |
-| **Production** | `false` | `false` | Real deployment — external API auth, no demo buttons |
+| Mode               | `NEXT_PUBLIC_LOCAL_AUTH` | `NEXT_PUBLIC_SHOW_DEMO_CREDENTIALS` | Purpose                                                               |
+| ------------------ | ------------------------ | ----------------------------------- | --------------------------------------------------------------------- |
+| **Local dev**      | `true`                   | `true`                              | Development — demo buttons + registration                             |
+| **Portfolio demo** | `true`                   | `true`                              | Deployed demo — visitors can try demo accounts and register their own |
+| **Production**     | `false`                  | `false`                             | Real deployment — external API auth, no demo buttons                  |
 
 > The repo ships with `.env.development` (local dev) and `.env.production` (portfolio demo) pre-configured. Switch `NEXT_PUBLIC_SHOW_DEMO_CREDENTIALS=false` and `NEXT_PUBLIC_LOCAL_AUTH=false` for a real production deployment.
 
@@ -174,7 +191,7 @@ Log in with any test account from the table above.
 4. Run `npm run db:push:postgres` against Neon (or configure it as the Vercel build step)
 5. Deploy — Vercel auto-detects Next.js
 
-The production schema is kept in `prisma-postgres/schema.prisma`; the local schema remains in `prisma/schema.prisma` for SQLite.
+The production schema is kept in `prisma/schema-postgres.prisma`; the local schema remains in `prisma/schema.prisma` for SQLite.
 
 ```bash
 # Configure DATABASE_URL to Neon first
@@ -206,7 +223,7 @@ chmod +x scripts/*.sh
 docker compose up --build
 ```
 
-The Compose stack starts PostgreSQL first, applies `prisma-postgres/schema.prisma`, seeds the demo users, and then starts Next.js. The database volume is persisted as `pgdata`.
+The Compose stack starts PostgreSQL first, applies `prisma/schema-postgres.prisma`, seeds the demo users, and then starts Next.js. The database volume is persisted as `pgdata`.
 
 ### No-Docker logs
 
@@ -306,23 +323,30 @@ The current anti-pattern and verification checklist lives in `docs/engineering-q
 ## Key Design Decisions
 
 ### Dual Auth System
+
 When `NEXT_PUBLIC_LOCAL_AUTH=true`, the app uses Prisma + SQLite for authentication. This enables standalone demo deployment without an external API. When set to `false`, it falls back to the original remote API auth.
 
 ### Prisma ORM
+
 Type-safe database access with automatic migrations. SQLite for zero-config local development, Neon Postgres for production. The Prisma client is singleton-instantiated to prevent connection pooling issues in dev.
 
 ### Server-Side Rendering
+
 All pages are server components that fetch data via Server Actions. No client-side loading spinners — data is ready on first render. Interactive parts (filters, tabs) are isolated into small client components.
 
 ### Centralized Icon System
+
 All SVG icons are imported from a single index (`@/app/images`). Lucide React used for supplementary icons. This prevents duplicate imports and ensures consistent optimization.
 
 ### Error Handling
+
 Two patterns, used consistently:
+
 - **Throw** on non-OK — for mutations and critical reads (caller shows error toast)
 - **Return safe default** — for list/search reads where the page can render an empty state
 
 ### Environment Validation
+
 All environment variables are validated through a Zod schema at startup. No `process.env.X!` assertions — if a variable is missing, the app fails fast with a clear error.
 
 ---
@@ -356,25 +380,26 @@ All environment variables are validated through a Zod schema at startup. No `pro
 
 ## Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start dev server (Turbopack) |
-| `npm run build` | Production build; verify output in a normal terminal because some IDE terminal bridges hide stdout |
-| `npm run start` | Start production server |
-| `npm run lint` | Run ESLint |
-| `npm run tsc` | Type-check without emitting |
-| `npm run db:push` | Create/update database schema |
-| `npm run db:seed` | Seed database with demo data |
-| `npm run db:studio` | Open Prisma Studio (DB browser) |
-| `npm run db:generate` | Regenerate Prisma client |
-| `npm test` | Run unit tests (Vitest) |
-| `npm run test:e2e` | Run E2E tests (Playwright) |
+| Command               | Description                                                                                        |
+| --------------------- | -------------------------------------------------------------------------------------------------- |
+| `npm run dev`         | Start dev server (Turbopack)                                                                       |
+| `npm run build`       | Production build; verify output in a normal terminal because some IDE terminal bridges hide stdout |
+| `npm run start`       | Start production server                                                                            |
+| `npm run lint`        | Run ESLint                                                                                         |
+| `npm run tsc`         | Type-check without emitting                                                                        |
+| `npm run db:push`     | Create/update database schema                                                                      |
+| `npm run db:seed`     | Seed database with demo data                                                                       |
+| `npm run db:studio`   | Open Prisma Studio (DB browser)                                                                    |
+| `npm run db:generate` | Regenerate Prisma client                                                                           |
+| `npm test`            | Run unit tests (Vitest)                                                                            |
+| `npm run test:e2e`    | Run E2E tests (Playwright)                                                                         |
 
 ---
 
 ## Documentation
 
 ### Infrastructure (`docs/infrastructure/`)
+
 - `01-stack-overview.md` — Full technology stack with versions and rationale
 - `02-architecture-diagram.md` — High-level architecture, directory structure, route groups, access control matrix
 - `03-request-pipeline.md` — Request lifecycle, server action patterns, external API data flow, cache invalidation
@@ -385,6 +410,7 @@ All environment variables are validated through a Zod schema at startup. No `pro
 - `08-monitoring-health.md` — Health endpoints, circuit breaker, retry, structured logging, resilience
 
 ### Theory (`docs/theory/`)
+
 - `01-patterns-architecture.md` — 13 design patterns with code examples and rationale
 - `02-react-server-components.md` — RSC concepts, hydration, server actions, caching, error boundaries
 - `03-security-concepts.md` — 12 security concepts with project-specific examples

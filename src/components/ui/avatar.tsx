@@ -31,4 +31,4 @@ const AvatarFallback = ({ className, ref, ...props }: React.ComponentProps<typeo
 );
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName;
 
-export { Avatar, AvatarFallback,AvatarImage };
+export { Avatar, AvatarFallback, AvatarImage };

@@ -142,7 +142,12 @@ export const AllDocsTable = memo(function DocsTable({ certificates, totalCount }
                     shouldDisable={shouldDisableRejectButton}
                     triggerButton={
                       <div>
-                        <Button variant="secondary" size="small" aria-label={tTable('button.reject')} disabled={shouldDisableRejectButton}>
+                        <Button
+                          variant="secondary"
+                          size="small"
+                          aria-label={tTable('button.reject')}
+                          disabled={shouldDisableRejectButton}
+                        >
                           <X />
                         </Button>
                       </div>

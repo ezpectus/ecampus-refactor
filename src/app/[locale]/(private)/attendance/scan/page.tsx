@@ -5,7 +5,10 @@ import { LocaleProps } from '@/types/locale-props';
 
 import { AttendanceScanContent } from './scan-content';
 
-export default async function AttendanceScanPage({ params, searchParams }: LocaleProps & { searchParams: Promise<{ token?: string }> }) {
+export default async function AttendanceScanPage({
+  params,
+  searchParams,
+}: LocaleProps & { searchParams: Promise<{ token?: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
 

@@ -60,7 +60,12 @@ export const LoginCarousel = () => {
                 <span>
                   {t('credits-by')}{' '}
                   {image.creditsUrl ? (
-                    <Link className="text-basic-white" href={image.creditsUrl} target="_blank" rel="noopener noreferrer">
+                    <Link
+                      className="text-basic-white"
+                      href={image.creditsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       {image.credits}
                     </Link>
                   ) : (

@@ -1,10 +1,10 @@
 'use client';
 
-import { AlertTriangle,Minus, TrendingDown, TrendingUp } from 'lucide-react';
+import { AlertTriangle, Minus, TrendingDown, TrendingUp } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
-import { getGradePredictions,type SemesterPrediction } from '@/actions/grade-predictions.actions';
+import { getGradePredictions, type SemesterPrediction } from '@/actions/grade-predictions.actions';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -12,7 +12,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 const TrendIcon = ({ trend }: { trend: 'up' | 'down' | 'stable' }) => {
   if (trend === 'up') return <TrendingUp className="h-4 w-4 text-green-500" />;
   if (trend === 'down') return <TrendingDown className="h-4 w-4 text-red-500" />;
-  return <Minus className="h-4 w-4 text-muted-foreground" />;
+  return <Minus className="text-muted-foreground h-4 w-4" />;
 };
 
 const riskVariant = {
@@ -27,10 +27,16 @@ export const GradePredictionsWidget = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isCancelled = false;
     getGradePredictions().then((result) => {
-      setData(result);
-      setLoading(false);
+      if (!isCancelled) {
+        setData(result);
+        setLoading(false);
+      }
     });
+    return () => {
+      isCancelled = true;
+    };
   }, []);
 
   if (loading) {
@@ -65,7 +71,9 @@ export const GradePredictionsWidget = () => {
           </div>
           <div>
             <p className="text-muted-foreground text-xs">{t('predicted-gpa')}</p>
-            <p className={`text-2xl font-bold ${data.predictedGpa < data.currentGpa ? 'text-red-500' : 'text-green-500'}`}>
+            <p
+              className={`text-2xl font-bold ${data.predictedGpa < data.currentGpa ? 'text-red-500' : 'text-green-500'}`}
+            >
               {data.predictedGpa}
             </p>
           </div>
@@ -83,16 +91,11 @@ export const GradePredictionsWidget = () => {
           )}
         </div>
 
-        <p className="text-sm text-muted-foreground">
-          {t(data.summaryKey, data.summaryParams)}
-        </p>
+        <p className="text-muted-foreground text-sm">{t(data.summaryKey, data.summaryParams)}</p>
 
         <div className="flex flex-col gap-2">
           {data.courses.map((course) => (
-            <div
-              key={course.courseName}
-              className="flex items-center justify-between rounded-lg border p-3"
-            >
+            <div key={course.courseName} className="flex items-center justify-between rounded-lg border p-3">
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium">{course.courseName}</span>
@@ -109,15 +112,15 @@ export const GradePredictionsWidget = () => {
                 </div>
                 <div className="text-right">
                   <p className="text-muted-foreground text-xs">{t('forecast')}</p>
-                  <p className={`text-sm font-bold ${
-                    course.predictedGrade < course.currentGrade ? 'text-red-500' : 'text-green-500'
-                  }`}>
+                  <p
+                    className={`text-sm font-bold ${
+                      course.predictedGrade < course.currentGrade ? 'text-red-500' : 'text-green-500'
+                    }`}
+                  >
                     {course.predictedGrade}
                   </p>
                 </div>
-                <Badge variant={riskVariant[course.riskLevel]}>
-                  {t(`risk.${course.riskLevel}`)}
-                </Badge>
+                <Badge variant={riskVariant[course.riskLevel]}>{t(`risk.${course.riskLevel}`)}</Badge>
               </div>
             </div>
           ))}

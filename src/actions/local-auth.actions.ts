@@ -6,7 +6,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
-import { SID_COOKIE_NAME,TOKEN_COOKIE_NAME } from '@/lib/constants/cookies';
+import { SID_COOKIE_NAME, TOKEN_COOKIE_NAME } from '@/lib/constants/cookies';
 import { env } from '@/lib/env';
 import { getModulesForRole } from '@/lib/get-modules-for-role';
 import { prisma } from '@/lib/prisma';
@@ -21,7 +21,11 @@ const ACCESS_TOKEN_EXPIRES_IN = '15m';
 export async function localLogin(username: string, password: string, rememberMe: boolean) {
   const identifier = username.trim().toLowerCase();
 
-  const rateLimit = await checkRateLimit(identifier, 'login', { maxAttempts: 10, windowMs: 60_000, lockoutMs: 5 * 60_000 });
+  const rateLimit = await checkRateLimit(identifier, 'login', {
+    maxAttempts: 10,
+    windowMs: 60_000,
+    lockoutMs: 5 * 60_000,
+  });
   if (!rateLimit.allowed) {
     return { ok: false, error: 'rate-limited' as const, retryAfterMs: rateLimit.retryAfterMs };
   }
@@ -44,9 +48,16 @@ export async function localLogin(username: string, password: string, rememberMe:
   await resetRateLimit(identifier, 'login');
 
   const token = JWT.sign(
-    { userId: user.id, username: user.username, role: user.role, modules: getModulesForRole(user.role), schoolId: user.schoolId, tokenVersion: user.tokenVersion },
+    {
+      userId: user.id,
+      username: user.username,
+      role: user.role,
+      modules: getModulesForRole(user.role),
+      schoolId: user.schoolId,
+      tokenVersion: user.tokenVersion,
+    },
     env.JWT_SECRET,
-    { expiresIn: ACCESS_TOKEN_EXPIRES_IN, issuer: 'student-portal-local' }
+    { expiresIn: ACCESS_TOKEN_EXPIRES_IN, issuer: 'student-portal-local' },
   );
 
   await generateRefreshToken(user.id, user);
@@ -105,7 +116,11 @@ export async function localRegister(data: {
   const username = email.split('@')[0];
   const schoolCode = validated.schoolCode.trim().toLowerCase();
 
-  const rateLimit = await checkRateLimit(email, 'register', { maxAttempts: 5, windowMs: 60 * 60_000, lockoutMs: 60 * 60_000 });
+  const rateLimit = await checkRateLimit(email, 'register', {
+    maxAttempts: 5,
+    windowMs: 60 * 60_000,
+    lockoutMs: 60 * 60_000,
+  });
   if (!rateLimit.allowed) {
     return { ok: false, error: 'rate-limited' as const };
   }
@@ -147,9 +162,16 @@ export async function localRegister(data: {
   });
 
   const token = JWT.sign(
-    { userId: user.id, username: user.username, role: user.role, modules: getModulesForRole(user.role), schoolId: user.schoolId, tokenVersion: user.tokenVersion },
+    {
+      userId: user.id,
+      username: user.username,
+      role: user.role,
+      modules: getModulesForRole(user.role),
+      schoolId: user.schoolId,
+      tokenVersion: user.tokenVersion,
+    },
     env.JWT_SECRET,
-    { expiresIn: ACCESS_TOKEN_EXPIRES_IN, issuer: 'student-portal-local' }
+    { expiresIn: ACCESS_TOKEN_EXPIRES_IN, issuer: 'student-portal-local' },
   );
 
   await generateRefreshToken(user.id, user);

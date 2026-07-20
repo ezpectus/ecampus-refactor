@@ -112,14 +112,17 @@ const FormMessage = ({ className, children, ref, ...props }: React.ComponentProp
   }
 
   return (
-    <div ref={ref} id={formMessageId} className={cn('flex items-center gap-0.5 text-status-danger-300 text-sm font-medium', className)} {...props}>
+    <div
+      ref={ref}
+      id={formMessageId}
+      className={cn('text-status-danger-300 flex items-center gap-0.5 text-sm font-medium', className)}
+      {...props}
+    >
       <Warning className="size-4" />
-      <p>
-      {body}
-      </p>
+      <p>{body}</p>
     </div>
   );
 };
 FormMessage.displayName = 'FormMessage';
 
-export { Form, FormControl, FormDescription, FormField,FormItem, FormLabel, FormMessage, useFormField };
+export { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, useFormField };

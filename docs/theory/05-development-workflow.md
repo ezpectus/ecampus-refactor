@@ -1,6 +1,6 @@
 # 05 — Development Workflow, Testing & CI/CD Concepts
 
-**Project:** eCampus Student Portal
+**Project:** Student Portal
 **Audience:** Developers learning modern web development workflow
 **Language:** English with code examples
 
@@ -70,8 +70,8 @@ Write code → npm run dev (Turbopack HMR)
 
 ```bash
 # 1. Clone repository
-git clone <repo-url>
-cd ecampus-refactor
+git clone https://github.com/ezpectus/student-portal.git
+cd student-portal
 
 # 2. Install dependencies
 npm install
@@ -127,6 +127,7 @@ npm run db:studio    # Open Prisma Studio (GUI database browser)
 ### What is HMR?
 
 HMR updates modules in the browser **without a full page reload**. This means:
+
 - You edit a component → browser updates that component only
 - State is preserved (form inputs, scroll position)
 - Changes appear in milliseconds
@@ -139,6 +140,7 @@ npm run dev
 ```
 
 Turbopack is a Rust-based bundler (replacing Webpack):
+
 - **10x faster** initial compile than Webpack
 - **Near-instant** HMR (even on large projects)
 - Built into Next.js 15 (no configuration needed)
@@ -182,25 +184,25 @@ TypeScript strict mode enables all type-checking options:
 
 ### What each option does
 
-| Option | What it catches | Example |
-|--------|----------------|---------|
-| `strict` | All strict checks | Enables all below |
-| `strictNullChecks` | `null`/`undefined` not assignable to other types | `const x: string = null` → error |
-| `noUnusedLocals` | Variables declared but never used | `const x = 1;` (never used) → error |
-| `noUnusedParameters` | Function params never used | `function f(a, b) { return a; }` → error on `b` |
-| `noImplicitReturns` | Not all code paths return a value | `if (x) return 1;` (no else) → error |
-| `noFallthroughCasesInSwitch` | Switch cases that fall through | `case 1: case 2: break;` → error on case 1 |
+| Option                       | What it catches                                  | Example                                         |
+| ---------------------------- | ------------------------------------------------ | ----------------------------------------------- |
+| `strict`                     | All strict checks                                | Enables all below                               |
+| `strictNullChecks`           | `null`/`undefined` not assignable to other types | `const x: string = null` → error                |
+| `noUnusedLocals`             | Variables declared but never used                | `const x = 1;` (never used) → error             |
+| `noUnusedParameters`         | Function params never used                       | `function f(a, b) { return a; }` → error on `b` |
+| `noImplicitReturns`          | Not all code paths return a value                | `if (x) return 1;` (no else) → error            |
+| `noFallthroughCasesInSwitch` | Switch cases that fall through                   | `case 1: case 2: break;` → error on case 1      |
 
 ### Why strict mode matters
 
 ```typescript
 // Without strict mode — runtime crash
 function getUser(id: number) {
-  return db.users.find(id);  // might return null
+  return db.users.find(id); // might return null
 }
 
 const user = getUser(42);
-console.log(user.name);  // 💥 TypeError: Cannot read property 'name' of null
+console.log(user.name); // 💥 TypeError: Cannot read property 'name' of null
 
 // With strict mode — caught at compile time
 function getUser(id: number): User | null {
@@ -208,10 +210,10 @@ function getUser(id: number): User | null {
 }
 
 const user = getUser(42);
-console.log(user.name);  // ❌ TypeScript error: Object is possibly 'null'
+console.log(user.name); // ❌ TypeScript error: Object is possibly 'null'
 // Fix:
 if (user) {
-  console.log(user.name);  // ✅ TypeScript knows user is not null here
+  console.log(user.name); // ✅ TypeScript knows user is not null here
 }
 ```
 
@@ -237,24 +239,24 @@ ESLint is a linter that analyzes code for potential problems and enforces coding
 ```json
 // eslint.config.mjs (simplified)
 {
-  extends: ['next/core-web-vitals', 'prettier'],
-  plugins: ['simple-import-sort'],
-  rules: {
-    'simple-import-sort/imports': 'error',
-    'simple-import-sort/exports': 'error',
-  },
+  "extends": ["next/core-web-vitals", "prettier"],
+  "plugins": ["simple-import-sort"],
+  "rules": {
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error"
+  }
 }
 ```
 
 ### What ESLint catches
 
-| Rule | What it catches | Example |
-|------|----------------|---------|
-| `react-hooks/exhaustive-deps` | Missing useEffect dependencies | `useEffect(() => { fn() }, [])` where `fn` uses state |
-| `no-unused-vars` | Unused variables | `const x = 1;` (never used) |
-| `react/no-unescaped-entities` | Unescaped quotes in JSX | `<p>It's nice</p>` → should be `It&apos;s` |
-| `simple-import-sort/imports` | Unsorted imports | Auto-fixable with `--fix` |
-| `next/no-img-element` | Using `<img>` instead of `<Image>` | Performance warning |
+| Rule                          | What it catches                    | Example                                               |
+| ----------------------------- | ---------------------------------- | ----------------------------------------------------- |
+| `react-hooks/exhaustive-deps` | Missing useEffect dependencies     | `useEffect(() => { fn() }, [])` where `fn` uses state |
+| `no-unused-vars`              | Unused variables                   | `const x = 1;` (never used)                           |
+| `react/no-unescaped-entities` | Unescaped quotes in JSX            | `<p>It's nice</p>` → should be `It&apos;s`            |
+| `simple-import-sort/imports`  | Unsorted imports                   | Auto-fixable with `--fix`                             |
+| `next/no-img-element`         | Using `<img>` instead of `<Image>` | Performance warning                                   |
 
 ### Running ESLint
 
@@ -309,8 +311,10 @@ Prettier is an opinionated code formatter. It enforces consistent style without 
 
 ```typescript
 // Before Prettier
-const x={a:1,b:2,c:3}
-function foo( a , b ){return a+b}
+const x = { a: 1, b: 2, c: 3 };
+function foo(a, b) {
+  return a + b;
+}
 
 // After Prettier
 const x = { a: 1, b: 2, c: 3 };
@@ -324,12 +328,13 @@ function foo(a, b) {
 ```json
 // eslint.config.mjs
 {
-  extends: ['next/core-web-vitals', 'prettier'],
+  "extends": ["next/core-web-vitals", "prettier"]
   // 'prettier' preset disables ESLint rules that conflict with Prettier
 }
 ```
 
 This means:
+
 - **ESLint** catches code quality issues (unused vars, hook deps)
 - **Prettier** handles formatting (spaces, quotes, line length)
 - They don't conflict (Prettier rules override ESLint formatting rules)
@@ -422,12 +427,12 @@ npm run test:coverage  # Run tests + show coverage report
 
 ### What to test
 
-| Layer | What to test | Example |
-|-------|-------------|---------|
+| Layer                 | What to test                             | Example                                 |
+| --------------------- | ---------------------------------------- | --------------------------------------- |
 | **Utility functions** | Pure functions with known inputs/outputs | JWT decode, date formatting, validation |
-| **Server actions** | Auth checks, validation, error handling | `updateGrade` throws without auth |
-| **Hooks** | State changes, side effects | `useTableSort` sorts correctly |
-| **Components** | Rendering, user interactions | Form submits with valid data |
+| **Server actions**    | Auth checks, validation, error handling  | `updateGrade` throws without auth       |
+| **Hooks**             | State changes, side effects              | `useTableSort` sorts correctly          |
+| **Components**        | Rendering, user interactions             | Form submits with valid data            |
 
 ### What NOT to test
 
@@ -498,14 +503,14 @@ npm run test:e2e:ui     # Run with UI (visible browser)
 
 ### Unit vs E2E tests
 
-| Factor | Unit tests (Vitest) | E2E tests (Playwright) |
-|--------|--------------------|-----------------------|
-| Speed | Fast (<1s per test) | Slow (5-30s per test) |
-| Scope | Single function/component | Full user flow |
-| Environment | jsdom (simulated) | Real browser |
-| Database | Mocked | Real database |
-| When to run | Every save / CI | Before deploy / CI |
-| Cost | Low | High (browser startup) |
+| Factor      | Unit tests (Vitest)       | E2E tests (Playwright) |
+| ----------- | ------------------------- | ---------------------- |
+| Speed       | Fast (<1s per test)       | Slow (5-30s per test)  |
+| Scope       | Single function/component | Full user flow         |
+| Environment | jsdom (simulated)         | Real browser           |
+| Database    | Mocked                    | Real database          |
+| When to run | Every save / CI           | Before deploy / CI     |
+| Cost        | Low                       | High (browser startup) |
 
 ---
 
@@ -673,14 +678,14 @@ Developer pushes code
 
 ### Docker vs traditional deployment
 
-| Factor | Traditional (PM2, systemd) | Docker |
-|--------|---------------------------|--------|
-| Environment | "Works on my machine" risk | Identical everywhere |
-| Dependencies | Install on server | Bundled in image |
-| Rollback | Difficult | `docker compose down` + old image |
-| Scaling | Manual process | `docker compose up --scale app=3` |
-| Isolation | Shared OS | Container isolation |
-| Resource limits | OS-level | Container-level (memory, CPU) |
+| Factor          | Traditional (PM2, systemd) | Docker                            |
+| --------------- | -------------------------- | --------------------------------- |
+| Environment     | "Works on my machine" risk | Identical everywhere              |
+| Dependencies    | Install on server          | Bundled in image                  |
+| Rollback        | Difficult                  | `docker compose down` + old image |
+| Scaling         | Manual process             | `docker compose up --scale app=3` |
+| Isolation       | Shared OS                  | Container isolation               |
+| Resource limits | OS-level                   | Container-level (memory, CPU)     |
 
 ---
 
@@ -688,13 +693,13 @@ Developer pushes code
 
 ### Environment files
 
-| File | Purpose | Git tracked? |
-|------|---------|-------------|
-| `.env.example` | Template with no real values | ✅ |
-| `.env.docker.example` | Docker template | ✅ |
-| `.env` | Local development values | ❌ (gitignored) |
-| `.env.docker` | Docker deployment values | ❌ (gitignored) |
-| `.env.production` | Production values | ❌ (gitignored) |
+| File                  | Purpose                      | Git tracked?    |
+| --------------------- | ---------------------------- | --------------- |
+| `.env.example`        | Template with no real values | ✅              |
+| `.env.docker.example` | Docker template              | ✅              |
+| `.env`                | Local development values     | ❌ (gitignored) |
+| `.env.docker`         | Docker deployment values     | ❌ (gitignored) |
+| `.env.production`     | Production values            | ❌ (gitignored) |
 
 ### Environment variable validation
 
@@ -792,16 +797,16 @@ if (process.env.NODE_ENV === 'development') {
 
 ### Common debugging scenarios
 
-| Problem | How to debug |
-|---------|-------------|
-| Hydration mismatch | Check `useEffect` vs render for browser APIs |
-| "Cannot read property of undefined" | Check Prisma `select` vs `include` |
-| Auth not working | Check cookie domain, JWT_SECRET, token expiry |
-| Build fails | `npm run tsc` to find type errors |
-| Lint fails | `npm run lint -- --fix` for auto-fixable issues |
-| Test fails | Read error message, add `console.log` in test |
-| DB query slow | Check indexes, use Prisma query logging |
-| OOM (out of memory) | Check for memory leaks, increase Docker memory limit |
+| Problem                             | How to debug                                         |
+| ----------------------------------- | ---------------------------------------------------- |
+| Hydration mismatch                  | Check `useEffect` vs render for browser APIs         |
+| "Cannot read property of undefined" | Check Prisma `select` vs `include`                   |
+| Auth not working                    | Check cookie domain, JWT_SECRET, token expiry        |
+| Build fails                         | `npm run tsc` to find type errors                    |
+| Lint fails                          | `npm run lint -- --fix` for auto-fixable issues      |
+| Test fails                          | Read error message, add `console.log` in test        |
+| DB query slow                       | Check indexes, use Prisma query logging              |
+| OOM (out of memory)                 | Check for memory leaks, increase Docker memory limit |
 
 ---
 

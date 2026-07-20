@@ -44,9 +44,7 @@ export function PreviewDialog({ isOpen, dispatch, selectedMail }: Props) {
                   <span className="font-medium">{t('dialog.to')}</span> {selectedMail.recipient.name}
                 </Paragraph>
               </div>
-              <div className="whitespace-pre-wrap pt-2 text-base leading-relaxed">
-                {selectedMail.content}
-              </div>
+              <div className="pt-2 text-base leading-relaxed whitespace-pre-wrap">{selectedMail.content}</div>
             </div>
           </>
         )}

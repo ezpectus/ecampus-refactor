@@ -45,10 +45,11 @@ export const SessionExpiryBanner = () => {
   const minutes = Math.max(1, Math.ceil(remainingMs / 60000));
 
   return (
-    <Alert variant="default" className="fixed bottom-4 right-4 z-50 max-w-sm border-status-warning-300/50 bg-status-warning-300/10">
-      <AlertDescription className="text-sm">
-        {t('expiring-soon', { minutes })}
-      </AlertDescription>
+    <Alert
+      variant="default"
+      className="border-status-warning-300/50 bg-status-warning-300/10 fixed right-4 bottom-4 z-50 max-w-sm"
+    >
+      <AlertDescription className="text-sm">{t('expiring-soon', { minutes })}</AlertDescription>
     </Alert>
   );
 };

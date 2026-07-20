@@ -61,9 +61,11 @@ export const getDashboardData = unstable_cache(
       }),
     ]);
 
-    const averageScore = courses.length > 0
-      ? Math.round((courses.reduce((sum: number, c: { grade: number }) => sum + c.grade, 0) / courses.length) * 100) / 100
-      : 0;
+    const averageScore =
+      courses.length > 0
+        ? Math.round((courses.reduce((sum: number, c: { grade: number }) => sum + c.grade, 0) / courses.length) * 100) /
+          100
+        : 0;
 
     const creditsEarned = courses.reduce((sum: number, c: { credits: number }) => sum + c.credits, 0);
     const coursesActive = courses.length;
@@ -89,15 +91,15 @@ export const getDashboardData = unstable_cache(
       { name: 'F', value: gradeBuckets.F, color: '#ef4444' },
     ];
 
-    const attendanceData: AttendancePoint[] = attendance.map((a: { month: string; present: number; total: number }) => ({
-      month: a.month,
-      attended: a.present,
-      missed: a.total - a.present,
-    }));
+    const attendanceData: AttendancePoint[] = attendance.map(
+      (a: { month: string; present: number; total: number }) => ({
+        month: a.month,
+        attended: a.present,
+        missed: a.total - a.present,
+      }),
+    );
 
-    const gpaTrend: GpaTrendPoint[] = [
-      { semester: '1', gpa: averageScore },
-    ];
+    const gpaTrend: GpaTrendPoint[] = [{ semester: '1', gpa: averageScore }];
 
     return {
       metrics: {

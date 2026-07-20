@@ -1,6 +1,6 @@
-import { describe, expect,it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
-import { formatDate, formatTime,isOutdated } from '@/lib/date.utils';
+import { formatDate, formatTime, isOutdated } from '@/lib/date.utils';
 
 describe('isOutdated', () => {
   it('returns true for past dates', () => {

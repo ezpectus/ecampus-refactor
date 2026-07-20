@@ -1,37 +1,37 @@
-"use client";
+'use client';
 
-import { useTranslations } from "next-intl";
+import { useTranslations } from 'next-intl';
 
-import { updateAnnouncement } from "@/actions/announcement.actions";
-import { useServerErrorToast } from "@/hooks/use-server-error-toast";
-import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "@/i18n/routing";
+import { updateAnnouncement } from '@/actions/announcement.actions';
+import { useServerErrorToast } from '@/hooks/use-server-error-toast';
+import { useToast } from '@/hooks/use-toast';
+import { useRouter } from '@/i18n/routing';
 
-import { AnnouncementEditorView } from "../../components/announcement-editor-view";
+import { AnnouncementEditorView } from '../../components/announcement-editor-view';
 import { AnnouncementFormValues, toAnnouncementCreate } from '../../components/schema';
-import { LIST_PATH } from "../../constants";
+import { LIST_PATH } from '../../constants';
 
 interface Props {
-    id: number;
-    initialValues: AnnouncementFormValues;
-    rolesData: string[];
-    studyFormsData: string[];
-    coursesData: number[];
+  id: number;
+  initialValues: AnnouncementFormValues;
+  rolesData: string[];
+  studyFormsData: string[];
+  coursesData: number[];
 }
 
 export function EditAnnouncementPage({ id, initialValues, rolesData, studyFormsData, coursesData }: Props) {
-    const t = useTranslations('private.announcementseditor');
+  const t = useTranslations('private.announcementseditor');
   const { toast } = useToast();
   const router = useRouter();
   const { errorToast } = useServerErrorToast();
 
   const handleSubmit = async (values: AnnouncementFormValues) => {
     try {
-        await updateAnnouncement(id, toAnnouncementCreate(values));
-        toast({ title: t('edit.success') });
-        router.push(LIST_PATH);
+      await updateAnnouncement(id, toAnnouncementCreate(values));
+      toast({ title: t('edit.success') });
+      router.push(LIST_PATH);
     } catch {
-        errorToast();
+      errorToast();
     }
   };
 

@@ -13,13 +13,21 @@ export async function GET() {
   const encoder = new TextEncoder();
   let lastCheck = new Date();
 
+  let interval: ReturnType<typeof setInterval>;
+  let keepAlive: ReturnType<typeof setInterval>;
+
   const stream = new ReadableStream({
     async start(controller) {
       const sendEvent = (data: unknown) => {
-        controller.enqueue(encoder.encode(`data: ${JSON.stringify(data)}\n\n`));
+        try {
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify(data)}\n\n`));
+        } catch {
+          clearInterval(interval);
+          clearInterval(keepAlive);
+        }
       };
 
-      const interval = setInterval(async () => {
+      interval = setInterval(async () => {
         try {
           const unread = await prisma.notification.count({
             where: { userId: user.id, read: false, createdAt: { gt: lastCheck } },
@@ -36,7 +44,7 @@ export async function GET() {
 
       sendEvent({ type: 'connected', userId: user.id });
 
-      const keepAlive = setInterval(() => {
+      keepAlive = setInterval(() => {
         try {
           controller.enqueue(encoder.encode(': keepalive\n\n'));
         } catch {
@@ -44,17 +52,10 @@ export async function GET() {
           clearInterval(interval);
         }
       }, 30_000);
-
-      controller.enqueue = new Proxy(controller.enqueue, {
-        apply(target, thisArg, args) {
-          try {
-            return Reflect.apply(target, thisArg, args);
-          } catch {
-            clearInterval(interval);
-            clearInterval(keepAlive);
-          }
-        },
-      });
+    },
+    cancel() {
+      clearInterval(interval);
+      clearInterval(keepAlive);
     },
   });
 
