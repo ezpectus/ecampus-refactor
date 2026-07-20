@@ -1,16 +1,16 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { createFeedComment, createFeedPost, deleteFeedPost, type FeedPostItem, getFeedPosts, toggleFeedLike } from '@/actions/feed.actions';
+import { createFeedComment, createFeedPost, deleteFeedPost, type FeedPostItem, getFeedPosts, toggleFeedLike, uploadFeedImage } from '@/actions/feed.actions';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { PaginationWithLinks } from '@/components/ui/pagination-with-links';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Textarea } from '@/components/ui/textarea';
 import { Show } from '@/components/utils/show';
+import { useFeedSSE } from '@/hooks/use-feed-sse';
 import { usePagination } from '@/hooks/use-pagination';
 import { useServerErrorToast } from '@/hooks/use-server-error-toast';
 import { useToast } from '@/hooks/use-toast';
@@ -33,6 +33,8 @@ export const FeedContent = ({ currentUserId, isAdmin }: Props) => {
   const [postContent, setPostContent] = useState('');
   const [postImage, setPostImage] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { paginatedItems } = usePagination(PAGE_SIZE_DEFAULT, posts);
 
@@ -46,11 +48,13 @@ export const FeedContent = ({ currentUserId, isAdmin }: Props) => {
     loadPosts();
   }, [loadPosts]);
 
+  useFeedSSE(loadPosts);
+
   const handlePost = async () => {
     if (!postContent.trim()) return;
     setSubmitting(true);
     try {
-      await createFeedPost({ content: postContent.trim(), imageUrl: postImage.trim() || '' });
+      await createFeedPost({ content: postContent.trim(), imageUrl: postImage || '' });
       setPostContent('');
       setPostImage('');
       toast({ title: t('post-created') });
@@ -59,6 +63,24 @@ export const FeedContent = ({ currentUserId, isAdmin }: Props) => {
       errorToast();
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+      const imageUrl = await uploadFeedImage(formData);
+      setPostImage(imageUrl);
+      toast({ title: t('image-uploaded') });
+    } catch {
+      errorToast();
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
 
@@ -104,11 +126,31 @@ export const FeedContent = ({ currentUserId, isAdmin }: Props) => {
             maxLength={2000}
             rows={3}
           />
-          <Input
-            value={postImage}
-            onChange={(e) => setPostImage(e.target.value)}
-            placeholder={t('image-url-placeholder')}
-          />
+          <div className="flex items-center gap-2">
+            <Button
+              variant="tertiary"
+              size="small"
+              onClick={() => fileInputRef.current?.click()}
+              loading={uploading}
+            >
+              {t('upload-image')}
+            </Button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+              onChange={handleImageUpload}
+              className="hidden"
+            />
+            {postImage && (
+              <div className="flex items-center gap-2">
+                <img src={postImage} alt="" className="h-10 w-10 rounded object-cover" />
+                <Button variant="tertiary" size="small" onClick={() => setPostImage('')}>
+                  ✕
+                </Button>
+              </div>
+            )}
+          </div>
           <div className="flex justify-end">
             <Button onClick={handlePost} loading={submitting} disabled={!postContent.trim()}>
               {t('post')}

@@ -58,7 +58,7 @@ const loginSchema = z.object({
 export async function loginWithCredentials(username: string, password: string, rememberMe: boolean) {
   const validated = validateInput(loginSchema, { username, password, rememberMe }, 'loginWithCredentials');
 
-  const rateLimit = checkRateLimit(validated.username);
+  const rateLimit = await checkRateLimit(validated.username);
   if (!rateLimit.allowed) {
     return { ok: false, error: 'rate-limited' as const, retryAfterMs: rateLimit.retryAfterMs };
   }
@@ -67,7 +67,7 @@ export async function loginWithCredentials(username: string, password: string, r
     const { localLogin } = await import('./local-auth.actions');
     const localResult = await localLogin(validated.username, validated.password, validated.rememberMe);
     if (localResult) {
-      resetRateLimit(validated.username);
+      await resetRateLimit(validated.username);
       return true;
     }
   }
@@ -101,7 +101,7 @@ export async function loginWithCredentials(username: string, password: string, r
   const { sessionId, access_token } = jsonResponse;
 
   await setLoginCookies(access_token, sessionId, rememberMe);
-  resetRateLimit(username);
+  await resetRateLimit(username);
   return true;
 }
 
@@ -128,7 +128,7 @@ export async function resetPassword(username: string, recaptchaToken: string) {
     return null;
   }
 
-  const rateLimit = checkRateLimit(validated.username, 'password-reset');
+  const rateLimit = await checkRateLimit(validated.username, 'password-reset');
   if (!rateLimit.allowed) {
     return { ok: false, error: 'rate-limited' as const, retryAfterMs: rateLimit.retryAfterMs };
   }
@@ -148,7 +148,7 @@ export async function resetPassword(username: string, recaptchaToken: string) {
       throwApiError(response.status, 'password-reset');
     }
 
-    resetRateLimit(username, 'password-reset');
+    await resetRateLimit(username, 'password-reset');
     return null;
   } catch (error) {
     if (error instanceof Error) throw error;

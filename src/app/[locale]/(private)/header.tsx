@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { logout } from '@/actions/auth.actions';
 import { SignOut } from '@/app/images';
 import { NotificationCenter } from '@/components/notifications/notification-center';
+import { GlobalSearch } from '@/components/search/global-search';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Paragraph } from '@/components/typography/paragraph';
 import { Button } from '@/components/ui/button';
@@ -66,6 +67,7 @@ export const Header = ({ user }: Props) => {
         <SidebarTrigger />
       </Show>
       <div className="flex items-center gap-8">
+        <GlobalSearch />
         <ThemeToggle />
         <LocaleSwitch />
         <NotificationCenter />

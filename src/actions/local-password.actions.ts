@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import JWT from 'jsonwebtoken';
 import { z } from 'zod';
 
+import { sendEmail } from '@/lib/email';
 import { env } from '@/lib/env';
 import { prisma } from '@/lib/prisma';
 import { checkRateLimit } from '@/lib/rate-limit';
@@ -17,7 +18,7 @@ export async function requestPasswordReset(identifier: string) {
   const validated = validateInput(passwordResetSchema, { identifier }, 'requestPasswordReset');
   const normalized = validated.identifier.trim().toLowerCase();
 
-  const rateLimit = checkRateLimit(normalized, 'password-reset', { maxAttempts: 5, windowMs: 60 * 60_000, lockoutMs: 60 * 60_000 });
+  const rateLimit = await checkRateLimit(normalized, 'password-reset', { maxAttempts: 5, windowMs: 60 * 60_000, lockoutMs: 60 * 60_000 });
   if (!rateLimit.allowed) {
     return { ok: false, error: 'rate-limited' as const };
   }
@@ -50,6 +51,15 @@ export async function requestPasswordReset(identifier: string) {
       type: 'password-reset',
     },
   });
+
+  if (user.email) {
+    await sendEmail({
+      to: user.email,
+      subject: 'Password Reset — Student Portal',
+      html: `<p>A password reset was requested for your account.</p><p><a href="${resetLink}">Reset your password</a></p><p>If you did not request this, you can safely ignore this email.</p>`,
+      text: `A password reset was requested for your account. Use this link to reset your password: ${resetLink}`,
+    });
+  }
 
   return { ok: true as const };
 }

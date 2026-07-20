@@ -41,9 +41,31 @@ export const NotificationCenter = () => {
     };
 
     void load();
-    const timer = window.setInterval(() => void load(), 15000);
+
+    let eventSource: EventSource | null = null;
+    try {
+      eventSource = new EventSource('/api/notifications/stream');
+      eventSource.addEventListener('data', (e) => {
+        try {
+          const data = JSON.parse(e.data);
+          if (data.type === 'notifications' && data.count > 0) {
+            void load();
+          }
+        } catch {
+          // ignore parse errors
+        }
+      });
+      eventSource.onerror = () => {
+        eventSource?.close();
+      };
+    } catch {
+      // SSE not available, fall back to polling
+    }
+
+    const timer = window.setInterval(() => void load(), 30000);
     return () => {
       cancelled = true;
+      eventSource?.close();
       window.clearInterval(timer);
     };
   }, []);

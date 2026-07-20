@@ -12,7 +12,7 @@ const FEED_PATH = '/module/feed';
 
 const createPostSchema = z.object({
   content: z.string().min(1).max(2000),
-  imageUrl: z.string().url().startsWith('https://').optional().or(z.literal('')),
+  imageUrl: z.string().max(500).optional().or(z.literal('')),
 });
 
 const createCommentSchema = z.object({
@@ -100,6 +100,31 @@ export async function createFeedPost(params: z.infer<typeof createPostSchema>): 
   });
 
   revalidatePath(FEED_PATH);
+}
+
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
+const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+
+export async function uploadFeedImage(formData: FormData): Promise<string> {
+  await requireCsrf();
+  const user = await getLocalUserLite();
+  if (!user) throw new Error('Unauthorized');
+
+  const file = formData.get('image') as File | null;
+  if (!file) throw new Error('No file provided');
+  if (!ALLOWED_IMAGE_TYPES.includes(file.type)) throw new Error('Invalid file type');
+  if (file.size > MAX_IMAGE_SIZE) throw new Error('File too large (max 5MB)');
+
+  const { writeFile, mkdir } = await import('fs/promises');
+  const { join } = await import('path');
+
+  const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg';
+  const filename = `feed_${user.id}_${Date.now()}.${ext}`;
+  const uploadDir = join(process.cwd(), 'public', 'uploads', 'feed');
+  await mkdir(uploadDir, { recursive: true });
+  await writeFile(join(uploadDir, filename), new Uint8Array(await file.arrayBuffer()));
+
+  return `/uploads/feed/${filename}`;
 }
 
 export async function deleteFeedPost(postId: number): Promise<void> {

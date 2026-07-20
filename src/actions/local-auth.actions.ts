@@ -21,7 +21,7 @@ const ACCESS_TOKEN_EXPIRES_IN = '15m';
 export async function localLogin(username: string, password: string, rememberMe: boolean) {
   const identifier = username.trim().toLowerCase();
 
-  const rateLimit = checkRateLimit(identifier, 'login', { maxAttempts: 10, windowMs: 60_000, lockoutMs: 5 * 60_000 });
+  const rateLimit = await checkRateLimit(identifier, 'login', { maxAttempts: 10, windowMs: 60_000, lockoutMs: 5 * 60_000 });
   if (!rateLimit.allowed) {
     return { ok: false, error: 'rate-limited' as const, retryAfterMs: rateLimit.retryAfterMs };
   }
@@ -41,7 +41,7 @@ export async function localLogin(username: string, password: string, rememberMe:
     return null;
   }
 
-  resetRateLimit(identifier, 'login');
+  await resetRateLimit(identifier, 'login');
 
   const token = JWT.sign(
     { userId: user.id, username: user.username, role: user.role, modules: getModulesForRole(user.role), schoolId: user.schoolId, tokenVersion: user.tokenVersion },
@@ -105,7 +105,7 @@ export async function localRegister(data: {
   const username = email.split('@')[0];
   const schoolCode = validated.schoolCode.trim().toLowerCase();
 
-  const rateLimit = checkRateLimit(email, 'register', { maxAttempts: 5, windowMs: 60 * 60_000, lockoutMs: 60 * 60_000 });
+  const rateLimit = await checkRateLimit(email, 'register', { maxAttempts: 5, windowMs: 60 * 60_000, lockoutMs: 60 * 60_000 });
   if (!rateLimit.allowed) {
     return { ok: false, error: 'rate-limited' as const };
   }

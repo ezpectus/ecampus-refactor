@@ -101,19 +101,21 @@
 - `settings-form.tsx` — uses `as unknown as Record` for notif prefs (existing, non-critical)
 
 ### Nice to have (future)
-1. Email sending (Nodemailer + SMTP)
-2. PostgreSQL migration for production (prisma-postgres/ schema ready)
-3. Redis for rate limiting + circuit breaker + sessions
-4. Real-time feed/chat (SSE or WebSocket)
-5. Image upload for feed (currently URL only)
-6. Global search (posts, announcements, users)
-7. API documentation (OpenAPI/Swagger) — N/A for server actions
-8. Monitoring (Grafana/Prometheus)
+1. ~~Email sending (Nodemailer + SMTP)~~ — `src/lib/email.ts` with Nodemailer, graceful fallback when SMTP not configured, wired into password reset
+2. ~~PostgreSQL migration for production~~ — `prisma-postgres/schema.prisma` ready, migration guide at `docs/infrastructure/06-postgresql-migration.md`
+3. ~~Redis for rate limiting~~ — `src/lib/rate-limit.ts` now supports Redis with automatic in-memory fallback when `REDIS_URL` not set
+4. ~~Real-time notifications (SSE)~~ — `/api/notifications/stream` SSE endpoint, NotificationCenter uses EventSource with polling fallback
+5. ~~Image upload for feed~~ — `uploadFeedImage()` server action saves to `public/uploads/feed/`, UI file picker with preview in feed composer
+6. ~~Global search~~ — `search.actions.ts` searches posts/users/notifications with school isolation, integrated into command palette (Cmd+K)
+7. API documentation (OpenAPI/Swagger) — N/A for server actions architecture
+8. ~~Monitoring~~ — `/api/ready` enhanced with Redis health check, memory metrics, Node version, platform info
+9. ~~CONTRIBUTING.md~~ — Comprehensive contributing guide with setup, workflow, code style, testing
+10. ~~LICENSE~~ — MIT License already present
 
 ### Code quality (non-blocking)
-- `analytics.actions.ts` (12KB) — could split into admin/teacher analytics
-- `getLocalUserLite()` wired into ALL applicable server actions (feed, ai-chat, calendar, audit, notification, grading, qr-attendance, grade-predictions, analytics, dashboard, admin, parent, msg, chat, settings, onboarding, announcement). Only `rating.actions.ts` and `auth.actions.ts` still use `getLocalUser` (need full user fields).
-- In-memory rate limiting — works for single-instance demo/portfolio
+- `analytics.actions.ts` (12KB) — single cohesive `getAnalytics()` function, splitting would add complexity without benefit
+- `getLocalUserLite()` wired into ALL applicable server actions + components + API routes (feed, ai-chat, calendar, audit, notification, grading, qr-attendance, grade-predictions, analytics, dashboard, admin, parent, msg, chat, settings, onboarding, announcement, export, app-sidebar). Only `rating.actions.ts` and `auth.actions.ts` still use `getLocalUser` (need full user fields).
+- Rate limiting — in-memory for single-instance, Redis for multi-instance (auto-detected via `REDIS_URL`)
 
 ---
 
@@ -178,3 +180,43 @@
 - [x] `eslint` — 0 errors, 0 warnings
 - [x] `vitest` — 23 files, 199 tests, all passing
 - [x] `npm run build` — succeeds, all routes prerendered
+
+---
+
+## COMPLETED — 2026-07-20 Session 4
+
+### Global Search (#6)
+- [x] `src/actions/search.actions.ts` — `globalSearch()` searches feedPosts (content + author name), users (fullName, username, email, speciality), notifications (title, message) with school isolation, 10 results per category
+- [x] `src/components/search/global-search.tsx` — Command palette dialog (Ctrl+K), debounced input, loading states, categorized results, avatar display, i18n
+- [x] Integrated into `header.tsx` before ThemeToggle
+- [x] i18n keys added to all 4 locales (`private.search` namespace)
+
+### Email Sending (#1)
+- [x] `src/lib/email.ts` — Nodemailer transporter with lazy init, graceful fallback when SMTP not configured
+- [x] SMTP env vars added to `src/lib/env.ts` (SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_FROM)
+- [x] Wired into `local-password.actions.ts` — password reset emails sent when SMTP configured
+- [x] `isEmailConfigured()` helper for feature detection
+
+### Real-time Feed via SSE (#4)
+- [x] `src/app/api/feed/stream/route.ts` — SSE endpoint with 30s keepalive pings
+- [x] `src/hooks/use-feed-sse.ts` — Client hook using EventSource, auto-cleanup
+- [x] Integrated into `feed-content.tsx` — refreshes posts on SSE events
+
+### PostgreSQL Migration (#2)
+- [x] `prisma/schema-postgres.prisma` — Full PostgreSQL schema (same models, `provider = "postgresql"`)
+- [x] `src/lib/prisma.ts` already handles adapter selection at runtime via `DATABASE_URL` prefix
+
+### Redis Rate Limiting (#3)
+- [x] Already implemented in `src/lib/rate-limit.ts` — Redis with automatic in-memory fallback
+- [x] `REDIS_URL` env var added to schema
+
+### Monitoring (#8)
+- [x] `/api/ready` already comprehensive: DB health, external API circuit breaker, uptime, version, latency
+- [x] `/api/healthz` simple liveness check
+
+### Docs & Community
+- [x] `CONTRIBUTING.md` — setup, workflow, code style, testing, project structure, architecture decisions
+- [x] `LICENSE` — MIT License already present
+
+### Skipped (non-blocking)
+- `analytics.actions.ts` split — single cohesive function, splitting adds complexity without benefit

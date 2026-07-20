@@ -70,15 +70,39 @@ const checkExternalApi = async (): Promise<CheckResult> => {
   }
 };
 
+const checkRedis = async (): Promise<CheckResult> => {
+  if (!env.REDIS_URL) {
+    return { name: 'redis', status: 'healthy', detail: 'not configured (in-memory mode)' };
+  }
+  const start = Date.now();
+  try {
+    const { createClient } = await import('redis');
+    const client = createClient({ url: env.REDIS_URL });
+    await client.connect();
+    await client.ping();
+    await client.disconnect();
+    return { name: 'redis', status: 'healthy', latencyMs: Date.now() - start };
+  } catch (error) {
+    return {
+      name: 'redis',
+      status: 'degraded',
+      latencyMs: Date.now() - start,
+      detail: error instanceof Error ? error.message : 'connection failed',
+    };
+  }
+};
+
 export async function GET() {
-  const [dbResult, apiResult] = await Promise.all([checkDatabase(), checkExternalApi()]);
-  const checks = [dbResult, apiResult];
+  const [dbResult, apiResult, redisResult] = await Promise.all([checkDatabase(), checkExternalApi(), checkRedis()]);
+  const checks = [dbResult, apiResult, redisResult];
 
   const allHealthy = checks.every((c) => c.status === 'healthy');
   const anyUnhealthy = checks.some((c) => c.status === 'unhealthy');
 
   const overallStatus = allHealthy ? 'healthy' : anyUnhealthy ? 'unhealthy' : 'degraded';
   const httpStatus = allHealthy ? 200 : anyUnhealthy ? 503 : 200;
+
+  const memoryUsage = process.memoryUsage();
 
   return NextResponse.json(
     {
@@ -87,6 +111,16 @@ export async function GET() {
       version: process.env.npm_package_version ?? 'unknown',
       uptime: process.uptime ? Math.round(process.uptime()) : undefined,
       checks,
+      metrics: {
+        memory: {
+          rss: Math.round(memoryUsage.rss / 1024 / 1024),
+          heapUsed: Math.round(memoryUsage.heapUsed / 1024 / 1024),
+          heapTotal: Math.round(memoryUsage.heapTotal / 1024 / 1024),
+          external: Math.round(memoryUsage.external / 1024 / 1024),
+        },
+        nodeVersion: process.version,
+        platform: process.platform,
+      },
     },
     { status: httpStatus },
   );

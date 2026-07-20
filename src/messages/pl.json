@@ -995,6 +995,15 @@
         "password-reset": "Password Reset"
       }
     },
+    "search": {
+      "title": "Search",
+      "placeholder": "Search posts, people, notifications...",
+      "hint": "Type at least 2 characters to search",
+      "no-results": "No results found.",
+      "users": "Users",
+      "posts": "Posts",
+      "notifications": "Notifications"
+    },
     "privacy-consent": {
       "title": "Consent to Publish KPI Personal Data on the Internet",
       "description": "Agreement on the use of personal data on the Intellect portal.",
@@ -1112,6 +1121,8 @@
       "title": "Student Feed",
       "share-something": "Share something",
       "post-placeholder": "What's on your mind?",
+      "upload-image": "Upload Image",
+      "image-uploaded": "Image uploaded",
       "publish": "Publish",
       "like": "Like",
       "unlike": "Unlike",
@@ -1181,12 +1192,16 @@
     }
   },
   "commandPalette": {
-    "placeholder": "Search pages and actions...",
+    "placeholder": "Szukaj stron, postów, osób...",
     "empty": "No results found.",
     "hint": "Search",
     "groups": {
-      "navigation": "Navigation",
-      "modules": "Modules"
+      "navigation": "Nawigacja",
+      "modules": "Moduły",
+      "search": "Wyniki wyszukiwania",
+      "searchPosts": "Posty",
+      "searchUsers": "Użytkownicy",
+      "searchNotifications": "Powiadomienia"
     },
     "items": {
       "grades": "Grades",

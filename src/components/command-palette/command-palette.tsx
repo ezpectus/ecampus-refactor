@@ -1,10 +1,11 @@
 'use client';
 
 import { Command } from 'cmdk';
-import { BarChart3, Contact, FileText, GraduationCap, Shield, Users } from 'lucide-react';
+import { BarChart3, Bell, Contact, FileText, GraduationCap, Shield, Users } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { globalSearch, type SearchResult } from '@/actions/search.actions';
 import { Books, CalendarBlank, ChartBarHorizontal, ChatsTeardrop, EnvelopeSimple, Gear, House, MagnifyingGlassBold, UserCircle } from '@/app/images';
 import { useRouter } from '@/i18n/routing';
 
@@ -17,6 +18,10 @@ type CommandItem = {
 
 export const CommandPalette = () => {
   const [open, setOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<SearchResult | null>(null);
+  const [searching, setSearching] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const router = useRouter();
   const t = useTranslations('global.menu');
   const tCmd = useTranslations('commandPalette');
@@ -41,6 +46,48 @@ export const CommandPalette = () => {
     setOpen(false);
   };
 
+  const performSearch = useCallback(async (query: string) => {
+    if (query.trim().length < 2) {
+      setSearchResults(null);
+      setSearching(false);
+      return;
+    }
+    try {
+      const results = await globalSearch(query);
+      setSearchResults(results);
+    } catch {
+      setSearchResults(null);
+    } finally {
+      setSearching(false);
+    }
+  }, []);
+
+  const handleSearchChange = useCallback((value: string) => {
+    setSearchQuery(value);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (value.trim().length < 2) {
+      setSearchResults(null);
+      setSearching(false);
+      return;
+    }
+    setSearching(true);
+    debounceRef.current = setTimeout(() => void performSearch(value), 300);
+  }, [performSearch]);
+
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!open) {
+      setSearchQuery('');
+      setSearchResults(null);
+      setSearching(false);
+    }
+  }, [open]);
+
   const items: CommandItem[] = [
     { label: t('main'), icon: <House />, action: () => navigate('/'), group: tCmd('groups.navigation') },
     { label: t('profile'), icon: <UserCircle />, action: () => navigate('/profile'), group: tCmd('groups.navigation') },
@@ -59,6 +106,9 @@ export const CommandPalette = () => {
     { label: t('analytics'), icon: <BarChart3 size={16} />, action: () => navigate('/module/analytics'), group: tCmd('groups.navigation') },
   ];
 
+  const hasSearchResults = searchResults && (searchResults.posts.length > 0 || searchResults.users.length > 0 || searchResults.notifications.length > 0);
+  const showSearch = searchQuery.trim().length >= 2;
+
   if (!open) return null;
 
   const groups = Array.from(new Set(items.map((item) => item.group)));
@@ -73,15 +123,70 @@ export const CommandPalette = () => {
           <MagnifyingGlassBold />
           <Command.Input
             placeholder={tCmd('placeholder')}
+            value={searchQuery}
+            onValueChange={handleSearchChange}
             className="h-14 w-full bg-transparent text-sm outline-none placeholder:text-neutral-400"
             autoFocus
           />
+          {searching && <span className="text-xs text-neutral-400">...</span>}
         </div>
         <Command.List className="max-h-[400px] overflow-y-auto p-2">
           <Command.Empty className="py-6 text-center text-sm text-neutral-400">
             {tCmd('empty')}
           </Command.Empty>
-          {groups.map((group) => (
+
+          {showSearch && hasSearchResults && (
+            <>
+              {searchResults.posts.length > 0 && (
+                <Command.Group key="search-posts" heading={tCmd('groups.searchPosts')} className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-neutral-400">
+                  {searchResults.posts.map((post) => (
+                    <Command.Item
+                      key={`post-${post.id}`}
+                      onSelect={() => navigate('/module/feed')}
+                      className="flex cursor-pointer items-center gap-3 rounded-lg px-2 py-2.5 text-sm text-foreground data-[selected=true]:bg-muted"
+                    >
+                      <ChatsTeardrop className="shrink-0 text-neutral-400" width={16} height={16} />
+                      <span className="truncate">{post.content.slice(0, 60)}</span>
+                    </Command.Item>
+                  ))}
+                </Command.Group>
+              )}
+              {searchResults.users.length > 0 && (
+                <Command.Group key="search-users" heading={tCmd('groups.searchUsers')} className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-neutral-400">
+                  {searchResults.users.map((user) => (
+                    <Command.Item
+                      key={`user-${user.id}`}
+                      onSelect={() => navigate(`/module/directory`)}
+                      className="flex cursor-pointer items-center gap-3 rounded-lg px-2 py-2.5 text-sm text-foreground data-[selected=true]:bg-muted"
+                    >
+                      <Users className="shrink-0 text-neutral-400" width={16} height={16} />
+                      <span className="truncate">{user.fullName} <span className="text-neutral-400">@{user.username}</span></span>
+                    </Command.Item>
+                  ))}
+                </Command.Group>
+              )}
+              {searchResults.notifications.length > 0 && (
+                <Command.Group key="search-notifications" heading={tCmd('groups.searchNotifications')} className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-neutral-400">
+                  {searchResults.notifications.map((notif) => (
+                    <Command.Item
+                      key={`notif-${notif.id}`}
+                      onSelect={() => navigate('/notifications')}
+                      className="flex cursor-pointer items-center gap-3 rounded-lg px-2 py-2.5 text-sm text-foreground data-[selected=true]:bg-muted"
+                    >
+                      <Bell className="shrink-0 text-neutral-400" width={16} height={16} />
+                      <span className="truncate">{notif.title}</span>
+                    </Command.Item>
+                  ))}
+                </Command.Group>
+              )}
+            </>
+          )}
+
+          {showSearch && !hasSearchResults && !searching && (
+            <div className="py-6 text-center text-sm text-neutral-400">{tCmd('empty')}</div>
+          )}
+
+          {!showSearch && groups.map((group) => (
             <Command.Group key={group} heading={group} className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-neutral-400">
               {items
                 .filter((item) => item.group === group)

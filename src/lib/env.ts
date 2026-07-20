@@ -51,6 +51,14 @@ const envSchema = z.object({
   NEXT_PUBLIC_FEATURE_ADMIN_PANEL: z.string().optional(),
 
   CRON_SECRET: z.string().optional(),
+
+  SMTP_HOST: z.string().optional(),
+  SMTP_PORT: z.coerce.number().optional().default(587),
+  SMTP_USER: z.string().optional(),
+  SMTP_PASS: z.string().optional(),
+  SMTP_FROM: z.string().optional().default('Student Portal <noreply@localhost>'),
+
+  REDIS_URL: z.string().optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;

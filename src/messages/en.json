@@ -1037,6 +1037,15 @@
         "password-reset": "Password Reset"
       }
     },
+    "search": {
+      "title": "Search",
+      "placeholder": "Search posts, people, notifications...",
+      "hint": "Type at least 2 characters to search",
+      "no-results": "No results found.",
+      "users": "Users",
+      "posts": "Posts",
+      "notifications": "Notifications"
+    },
     "privacy-consent": {
       "title": "Consent to Publish KPI Personal Data on the Internet",
       "description": "Agreement on the use of personal data on the Intellect portal.",
@@ -1205,12 +1214,16 @@
     }
   },
   "commandPalette": {
-    "placeholder": "Search pages and actions...",
+    "placeholder": "Search pages, posts, people...",
     "empty": "No results found.",
     "hint": "Search",
     "groups": {
       "navigation": "Navigation",
-      "modules": "Modules"
+      "modules": "Modules",
+      "search": "Search Results",
+      "searchPosts": "Posts",
+      "searchUsers": "Users",
+      "searchNotifications": "Notifications"
     },
     "items": {
       "grades": "Grades",
@@ -1470,6 +1483,8 @@
       "share-something": "Share something",
       "post-placeholder": "What's on your mind?",
       "image-url-placeholder": "Image URL (optional)",
+      "upload-image": "Upload Image",
+      "image-uploaded": "Image uploaded",
       "post": "Post",
       "post-created": "Post created",
       "post-deleted": "Post deleted",
