@@ -104,7 +104,7 @@ The database is pre-seeded with four test accounts. Use these to log in immediat
 
 ```bash
 # Clone the repo
-git clone https://github.com/yourusername/student-portal.git
+git clone https://github.com/ezpectus/student-portal.git
 cd student-portal
 
 # Copy environment file

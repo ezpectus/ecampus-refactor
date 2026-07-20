@@ -12,8 +12,8 @@ Thank you for your interest in contributing! This document covers the basics.
 
 ```bash
 # Clone and install
-git clone https://github.com/Ezpectus/ecampus-refactor.git
-cd ecampus-refactor
+git clone https://github.com/ezpectus/student-portal.git
+cd student-portal
 npm install
 
 # Set up environment
@@ -90,7 +90,7 @@ src/
 
 ## Reporting Issues
 
-Use the [GitHub issue tracker](https://github.com/Ezpectus/ecampus-refactor/issues). Please include:
+Use the [GitHub issue tracker](https://github.com/ezpectus/student-portal/issues). Please include:
 - Steps to reproduce
 - Expected vs actual behavior
 - Environment details (OS, Node version, browser)
