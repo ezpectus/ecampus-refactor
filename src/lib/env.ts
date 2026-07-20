@@ -3,12 +3,15 @@ import { z } from 'zod';
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
 
-  API_BASE_URL: z.string().url(),
+  API_BASE_URL: z.string().url().default('http://localhost:5000'),
   MAIN_COOKIE_DOMAIN: z.string().optional(),
   ROOT_COOKIE_DOMAIN: z.string().optional(),
 
   DATABASE_URL: z.string().default('file:./dev.db'),
-  JWT_SECRET: z.string().min(16, 'JWT_SECRET must be at least 16 characters'),
+  JWT_SECRET: z
+    .string()
+    .min(16, 'JWT_SECRET must be at least 16 characters')
+    .default('build-time-placeholder-secret-at-least-16-chars'),
   JWKS_URI: z.string().url().optional(),
   JWT_ISSUER: z.string().optional(),
 
