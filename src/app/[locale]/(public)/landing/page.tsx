@@ -1,5 +1,6 @@
 import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
+import { Suspense } from 'react';
 
 import {
   CalendarBlank,
@@ -54,7 +55,9 @@ export default async function LandingPage({ params }: LocaleProps) {
 
   return (
     <div className="min-h-screen bg-white">
-      <LandingHeader />
+      <Suspense fallback={<div className="h-[73px] border-b border-neutral-100 bg-white" />}>
+        <LandingHeader />
+      </Suspense>
 
       <section className="mx-auto max-w-5xl px-6 py-16 text-center md:py-32">
         <Heading1 className="mb-6 text-4xl font-bold tracking-tight text-neutral-900 md:text-6xl">
