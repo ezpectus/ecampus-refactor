@@ -55,12 +55,13 @@ export function DeleteDialog({ selectedRows, isOpen, dispatch }: Props) {
         <DialogFooter className="flex gap-2">
           <Button
             variant="secondary"
+            type="button"
             className="w-full"
             onClick={() => dispatch({ type: 'setOpenedDialog', openedDialog: null })}
           >
             {t('delete-dialog.cancel')}
           </Button>
-          <Button variant="primary" className="w-full" onClick={handleConfirmDelete}>
+          <Button variant="primary" type="button" className="w-full" onClick={handleConfirmDelete}>
             {t('delete-dialog.confirm')}
           </Button>
         </DialogFooter>

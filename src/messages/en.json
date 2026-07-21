@@ -13,6 +13,8 @@
       "description": "An unexpected error occurred. Please try again or refresh the page.",
       "retry": "Try again"
     },
+    "show-password": "Show password",
+    "hide-password": "Hide password",
     "session": {
       "expiring-soon": "Your session will expire in {minutes} min. Please save your work."
     },
@@ -38,7 +40,7 @@
       "title": "Page not found",
       "description": "We're sorry, but we can't find the page you requested. It may have been moved or deleted.",
       "return": "Back to the main page",
-      "footer": "<paragraph>All rights reserved. © {year} Student Portal</paragraph>"
+      "footer": "<paragraph>All rights reserved. © {year} Student Portal by Ezpectus (Denys Stepanenko)</paragraph>"
     },
     "modules": {
       "directory": "Contact list",
@@ -208,7 +210,7 @@
         "studying-certificate": "Studying Certificate"
       }
     },
-    "footer": "<paragraph>© {year} Student Portal</paragraph>"
+    "footer": "<paragraph>© {year} Student Portal by Ezpectus (Denys Stepanenko)</paragraph>"
   },
   "auth": {
     "login": {
@@ -333,7 +335,7 @@
         "loading": "Loading..."
       }
     },
-    "footer": "All rights reserved. © {year} Student Portal"
+    "footer": "All rights reserved. © {year} Student Portal by Ezpectus (Denys Stepanenko)"
   },
   "public": {
     "verification": {
@@ -1277,7 +1279,9 @@
         "sat": "Sat"
       },
       "actions": {
-        "create": "Create Event"
+        "create": "Create Event",
+        "prev-month": "Previous month",
+        "next-month": "Next month"
       },
       "form": {
         "create": "New Event",
@@ -1343,13 +1347,17 @@
       "empty": "No posts yet. Be the first!",
       "delete": "Delete",
       "comment": "Comment",
-      "comment-placeholder": "Write a comment..."
+      "comment-placeholder": "Write a comment...",
+      "like": "Like",
+      "comments": "Comments",
+      "remove-image": "Remove image"
     },
     "ai-chat": {
       "title": "AI Assistant",
       "welcome": "Hi! I'm your study assistant. I can help with exam preparation, time management, motivation and more. What would you like to know?",
       "placeholder": "Ask something...",
       "thinking": "Thinking...",
+      "send": "Send message",
       "suggestions": {
         "exam": "How to prepare for an exam?",
         "grade": "How to improve my grades?",
@@ -1427,7 +1435,10 @@
     },
     "nav": {
       "login": "Sign in",
-      "register": "Get started"
+      "register": "Get started",
+      "aria-label": "Main navigation",
+      "open-menu": "Open menu",
+      "close-menu": "Close menu"
     },
     "hero": {
       "title": "The modern way to manage student life",
@@ -1470,7 +1481,7 @@
       "button": "Create free account"
     },
     "footer": {
-      "copyright": "© {year} Student Portal. All rights reserved."
+      "copyright": "© {year} Student Portal by Ezpectus (Denys Stepanenko). All rights reserved."
     }
   },
   "commandPalette": {
@@ -1685,7 +1696,9 @@
         "sat": "Sat"
       },
       "actions": {
-        "create": "Create Event"
+        "create": "Create Event",
+        "prev-month": "Previous month",
+        "next-month": "Next month"
       },
       "form": {
         "create": "New Event",
@@ -1751,13 +1764,17 @@
       "empty": "No posts yet. Be the first!",
       "delete": "Delete",
       "comment": "Comment",
-      "comment-placeholder": "Write a comment..."
+      "comment-placeholder": "Write a comment...",
+      "like": "Like",
+      "comments": "Comments",
+      "remove-image": "Remove image"
     },
     "ai-chat": {
       "title": "AI Assistant",
       "welcome": "Hi! I'm your study assistant. I can help with exam preparation, time management, motivation and more. What would you like to know?",
       "placeholder": "Ask something...",
       "thinking": "Thinking...",
+      "send": "Send message",
       "suggestions": {
         "exam": "How to prepare for an exam?",
         "grade": "How to improve my grades?",

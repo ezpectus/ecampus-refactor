@@ -28,7 +28,7 @@ interface ProfilePictureProps extends VariantProps<typeof avatarVariants> {
 export const ProfilePicture = ({ size = 'base', src }: ProfilePictureProps) => {
   return (
     <Avatar className={avatarVariants({ size })}>
-      <AvatarImage src={src} />
+      <AvatarImage src={src} alt="Profile picture" />
       <AvatarFallback>
         <CircleUserRound className={`${avatarVariants({ size })} text-basic-blue`} strokeWidth={1} />
       </AvatarFallback>

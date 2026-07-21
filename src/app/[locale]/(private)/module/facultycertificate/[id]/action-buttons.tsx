@@ -49,6 +49,7 @@ export default function ActionButtons({ certificate }: Props) {
     <div className="flex flex-col-reverse flex-wrap gap-3 md:flex-row md:justify-end">
       <Button
         variant="secondary"
+        type="button"
         className="mt-6 w-full md:w-[145px]"
         icon={<Printer />}
         disabled={shouldDisablePrintButton}
@@ -58,6 +59,7 @@ export default function ActionButtons({ certificate }: Props) {
       </Button>
       <Button
         variant="secondary"
+        type="button"
         className="mt-6 w-full md:w-[145px]"
         size="small"
         disabled={shouldDisableSignButton}
@@ -72,6 +74,7 @@ export default function ActionButtons({ certificate }: Props) {
         triggerButton={
           <Button
             variant="primary"
+            type="button"
             className="mt-6 w-full bg-red-500 hover:bg-red-600 active:border-red-700 active:bg-red-700 md:w-[145px]"
             icon={<X />}
             disabled={shouldDisableRejectButton}
@@ -81,6 +84,7 @@ export default function ActionButtons({ certificate }: Props) {
         }
       />
       <Button
+        type="button"
         onClick={() => handleUpdateCertificate(certificate.id, { approve: true, reason: '' })}
         disabled={shouldDisableApproveButton}
         variant="primary"

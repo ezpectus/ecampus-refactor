@@ -63,6 +63,7 @@ export function PrivacyConsentDialog() {
 
         <DialogFooter>
           <Button
+            type="button"
             onClick={handleAccept}
             loading={isPending}
             disabled={isPending}

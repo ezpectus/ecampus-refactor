@@ -98,6 +98,7 @@ export const AnnouncementsTable = ({ items, onDelete }: Props) => {
                   <Button
                     variant="tertiary"
                     size="small"
+                    type="button"
                     aria-label={t('actions.delete')}
                     onClick={() => onDelete(item)}
                   >

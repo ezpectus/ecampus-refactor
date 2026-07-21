@@ -34,6 +34,8 @@ export const ChatCreateDialog = ({ users, onClose, onCreate }: Props) => {
         name.trim(),
         selectedMembers.map((m) => Number(m.value)),
       );
+    } catch {
+      /* error handled by parent */
     } finally {
       setIsCreating(false);
     }
@@ -47,8 +49,9 @@ export const ChatCreateDialog = ({ users, onClose, onCreate }: Props) => {
         </DialogHeader>
         <div className="flex flex-col gap-4">
           <div>
-            <label className="mb-1 block text-sm font-medium">{t('room-name')}</label>
+            <label htmlFor="chat-room-name" className="mb-1 block text-sm font-medium">{t('room-name')}</label>
             <Input
+              id="chat-room-name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder={t('room-name-placeholder')}
@@ -56,7 +59,7 @@ export const ChatCreateDialog = ({ users, onClose, onCreate }: Props) => {
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium">{t('members')}</label>
+            <label htmlFor="chat-members" className="mb-1 block text-sm font-medium">{t('members')}</label>
             <MultipleSelector
               value={selectedMembers}
               options={users.map((u) => ({ value: u.id.toString(), label: `${u.name} (${u.role})` }))}
@@ -66,10 +69,10 @@ export const ChatCreateDialog = ({ users, onClose, onCreate }: Props) => {
             />
           </div>
           <div className="flex justify-end gap-2">
-            <Button variant="tertiary" onClick={onClose}>
+            <Button variant="tertiary" type="button" onClick={onClose}>
               {t('cancel')}
             </Button>
-            <Button onClick={handleCreate} loading={isCreating} disabled={!name.trim() || selectedMembers.length === 0}>
+            <Button type="button" onClick={handleCreate} loading={isCreating} disabled={!name.trim() || selectedMembers.length === 0}>
               {t('create')}
             </Button>
           </div>

@@ -14,11 +14,11 @@ export const ExportButtons = () => {
 
   return (
     <div className="flex gap-2">
-      <Button variant="tertiary" size="small" onClick={() => handleExport('grades')}>
+      <Button variant="tertiary" size="small" type="button" onClick={() => handleExport('grades')}>
         <Download className="mr-1 h-4 w-4" />
         {t('export-grades')}
       </Button>
-      <Button variant="tertiary" size="small" onClick={() => handleExport('attendance')}>
+      <Button variant="tertiary" size="small" type="button" onClick={() => handleExport('attendance')}>
         <Download className="mr-1 h-4 w-4" />
         {t('export-attendance')}
       </Button>

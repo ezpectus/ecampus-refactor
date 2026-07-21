@@ -18,7 +18,7 @@ export default function LocaleError({ error, reset }: { error: Error & { digest?
     <div className="flex min-h-screen flex-col items-center justify-center gap-4 p-6">
       <Heading2>{t('title')}</Heading2>
       <Paragraph>{t('description')}</Paragraph>
-      <Button variant="primary" onClick={reset}>
+      <Button variant="primary" type="button" onClick={reset}>
         {t('retry')}
       </Button>
     </div>

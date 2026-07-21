@@ -61,12 +61,16 @@ export const ChatContent = () => {
 
   useEffect(() => {
     let isCancelled = false;
-    getChatRooms().then((result) => {
-      if (!isCancelled) {
-        setRooms(result as ChatRoom[]);
-        setIsLoadingRooms(false);
-      }
-    });
+    getChatRooms()
+      .then((result) => {
+        if (!isCancelled) {
+          setRooms(result as ChatRoom[]);
+          setIsLoadingRooms(false);
+        }
+      })
+      .catch(() => {
+        if (!isCancelled) setIsLoadingRooms(false);
+      });
     return () => {
       isCancelled = true;
     };
@@ -76,12 +80,16 @@ export const ChatContent = () => {
     if (!selectedRoomId) return;
     let isCancelled = false;
     setIsLoadingMessages(true);
-    getChatMessages(selectedRoomId).then((result) => {
-      if (!isCancelled) {
-        setMessages(result as ChatMessageItem[]);
-        setIsLoadingMessages(false);
-      }
-    });
+    getChatMessages(selectedRoomId)
+      .then((result) => {
+        if (!isCancelled) {
+          setMessages(result as ChatMessageItem[]);
+          setIsLoadingMessages(false);
+        }
+      })
+      .catch(() => {
+        if (!isCancelled) setIsLoadingMessages(false);
+      });
     return () => {
       isCancelled = true;
     };
@@ -89,9 +97,13 @@ export const ChatContent = () => {
 
   useChatSSE(selectedRoomId, () => {
     if (!selectedRoomId) return;
-    getChatMessages(selectedRoomId).then((result) => {
-      setMessages(result as ChatMessageItem[]);
-    });
+    getChatMessages(selectedRoomId)
+      .then((result) => {
+        setMessages(result as ChatMessageItem[]);
+      })
+      .catch(() => {
+        /* ignore SSE refresh errors */
+      });
   });
 
   const handleSendMessage = async () => {
@@ -110,9 +122,13 @@ export const ChatContent = () => {
   };
 
   const handleOpenCreate = async () => {
-    const users = await getAvailableChatUsers();
-    setAvailableUsers(users as AvailableUser[]);
-    setShowCreateDialog(true);
+    try {
+      const users = await getAvailableChatUsers();
+      setAvailableUsers(users as AvailableUser[]);
+      setShowCreateDialog(true);
+    } catch {
+      errorToast();
+    }
   };
 
   const handleCreateRoom = async (name: string, memberIds: number[]) => {
@@ -128,11 +144,11 @@ export const ChatContent = () => {
   };
 
   return (
-    <div className="flex h-[calc(100vh-8rem)] gap-4">
-      <div className="flex w-72 flex-col gap-2">
+    <div className="flex h-[calc(100vh-8rem)] flex-col gap-4 md:flex-row">
+      <div className="flex flex-col gap-2 md:w-72">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">{t('rooms')}</h2>
-          <Button size="small" onClick={handleOpenCreate}>
+          <Button size="small" type="button" onClick={handleOpenCreate}>
             {t('create.button')}
           </Button>
         </div>
@@ -161,7 +177,7 @@ export const ChatContent = () => {
                 placeholder={t('message-placeholder')}
                 disabled={isSending}
               />
-              <Button onClick={handleSendMessage} loading={isSending} disabled={!messageInput.trim()}>
+              <Button type="button" onClick={handleSendMessage} loading={isSending} disabled={!messageInput.trim()}>
                 {t('send')}
               </Button>
             </div>

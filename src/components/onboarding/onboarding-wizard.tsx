@@ -26,6 +26,7 @@ export const OnboardingWizard = () => {
   const { errorToast } = useServerErrorToast();
   const [step, setStep] = useState(0);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [isFinishing, setIsFinishing] = useState(false);
 
   const academicSchema = z.object({
     faculty: z.string().min(1, { message: t('validation.faculty-required') }),
@@ -94,6 +95,7 @@ export const OnboardingWizard = () => {
   };
 
   const handleFinish = async () => {
+    setIsFinishing(true);
     try {
       const academicData = academicForm.getValues();
       const personalData = personalForm.getValues();
@@ -125,6 +127,8 @@ export const OnboardingWizard = () => {
       router.push('/');
     } catch {
       errorToast();
+    } finally {
+      setIsFinishing(false);
     }
   };
 
@@ -299,24 +303,24 @@ export const OnboardingWizard = () => {
           )}
 
           <div className="mt-8 flex items-center justify-between">
-            <Button variant="tertiary" size="medium" onClick={handleBack} disabled={step === 0}>
+            <Button variant="tertiary" size="medium" type="button" onClick={handleBack} disabled={step === 0}>
               <ChevronLeft className="mr-1 h-4 w-4" />
               {t('button.back')}
             </Button>
 
             <div className="flex gap-2">
               {step < TOTAL_STEPS - 1 && (
-                <Button variant="tertiary" size="medium" onClick={handleSkip}>
+                <Button variant="tertiary" size="medium" type="button" onClick={handleSkip}>
                   {t('button.skip')}
                 </Button>
               )}
               {step < TOTAL_STEPS - 1 ? (
-                <Button size="medium" onClick={handleNext}>
+                <Button size="medium" type="button" onClick={handleNext}>
                   {t('button.next')}
                   <ChevronRight className="ml-1 h-4 w-4" />
                 </Button>
               ) : (
-                <Button size="medium" onClick={handleFinish}>
+                <Button size="medium" type="button" onClick={handleFinish} loading={isFinishing}>
                   <Check className="mr-1 h-4 w-4" />
                   {t('button.finish')}
                 </Button>

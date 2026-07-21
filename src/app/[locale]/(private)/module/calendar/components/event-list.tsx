@@ -34,7 +34,7 @@ export const EventList = ({ events, onEdit }: Props) => {
             </span>
             {event.location && <span className="text-muted-foreground text-xs">{event.location}</span>}
           </div>
-          <Button variant="tertiary" size="small" onClick={() => onEdit(event)}>
+          <Button variant="tertiary" size="small" type="button" aria-label="Edit event" onClick={() => onEdit(event)}>
             <PencilRegular className="h-4 w-4" />
           </Button>
         </div>

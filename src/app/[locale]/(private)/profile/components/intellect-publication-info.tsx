@@ -90,12 +90,13 @@ export function IntellectPublicationInfo({ user }: Props) {
 
       <div className="flex justify-end gap-2">
         <Show when={isEditing}>
-          <Button className="w-fit" variant="secondary" size={isMobile ? 'medium' : 'big'} onClick={handleCancel}>
+          <Button className="w-fit" variant="secondary" type="button" size={isMobile ? 'medium' : 'big'} onClick={handleCancel}>
             {t('button.cancel')}
           </Button>
         </Show>
         <Button
           className="w-fit"
+          type="button"
           loading={loading}
           variant={isEditing ? 'primary' : 'secondary'}
           size={isMobile ? 'medium' : 'big'}

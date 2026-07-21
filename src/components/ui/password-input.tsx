@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { EyeClosedRegular, EyeRegular } from '@/app/images';
@@ -8,6 +9,7 @@ import { Input, InputProps } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
 const PasswordInput = ({ className, type, ref, ...props }: InputProps) => {
+  const t = useTranslations('global');
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -23,7 +25,7 @@ const PasswordInput = ({ className, type, ref, ...props }: InputProps) => {
         size="medium"
         className="absolute inset-y-[2px] right-[2px] flex items-center rounded-[6px] px-3 hover:bg-transparent hover:text-neutral-800"
         onClick={togglePasswordVisibility}
-        aria-label={showPassword ? 'Hide password' : 'Show password'}
+        aria-label={showPassword ? t('hide-password') : t('show-password')}
         tabIndex={-1}
       >
         {showPassword ? <EyeClosedRegular className="h-4 w-4" /> : <EyeRegular className="h-4 w-4" />}

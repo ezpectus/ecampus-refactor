@@ -68,7 +68,7 @@ export const AiChatContent = () => {
           <div ref={scrollRef} className="flex-1 overflow-y-auto">
             <div className="flex flex-col gap-3 pr-4">
               {messages.map((msg, i) => (
-                <div key={i} className={`flex gap-2 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
+                <div key={`${msg.role}-${i}-${msg.content.slice(0, 20)}`} className={`flex gap-2 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
                   <Avatar className="h-8 w-8 shrink-0">
                     <AvatarFallback>{msg.role === 'user' ? 'Я' : 'AI'}</AvatarFallback>
                   </Avatar>
@@ -97,6 +97,7 @@ export const AiChatContent = () => {
               {SUGGESTIONS.map((key) => (
                 <button
                   key={key}
+                  type="button"
                   onClick={() => handleSend(t(`suggestions.${key}`))}
                   className="bg-muted hover:bg-accent text-muted-foreground rounded-full px-3 py-1.5 text-xs transition-colors"
                 >
@@ -119,7 +120,7 @@ export const AiChatContent = () => {
               placeholder={t('placeholder')}
               disabled={loading}
             />
-            <Button onClick={() => handleSend()} loading={loading} disabled={!input.trim()}>
+            <Button type="button" onClick={() => handleSend()} loading={loading} disabled={!input.trim()} aria-label={t('send')}>
               <Send className="h-4 w-4" />
             </Button>
           </div>

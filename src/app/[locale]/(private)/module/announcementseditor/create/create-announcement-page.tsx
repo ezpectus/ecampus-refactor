@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 
 import { createAnnouncement } from '@/actions/announcement.actions';
+import { useServerErrorToast } from '@/hooks/use-server-error-toast';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from '@/i18n/routing';
 
@@ -18,15 +19,20 @@ interface Props {
 export function CreateAnnouncementPage({ rolesData, studyFormsData, coursesData }: Props) {
   const t = useTranslations('private.announcementseditor');
   const { toast } = useToast();
+  const { errorToast } = useServerErrorToast();
   const router = useRouter();
 
   const handleSubmit = async (values: AnnouncementFormValues) => {
-    const id = await createAnnouncement(toAnnouncementCreate(values));
-    toast({
-      title: t('success.title'),
-      description: t('success.message', { id }),
-    });
-    router.push(LIST_PATH);
+    try {
+      const id = await createAnnouncement(toAnnouncementCreate(values));
+      toast({
+        title: t('success.title'),
+        description: t('success.message', { id }),
+      });
+      router.push(LIST_PATH);
+    } catch {
+      errorToast();
+    }
   };
 
   return (

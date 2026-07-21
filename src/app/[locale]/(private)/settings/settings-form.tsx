@@ -249,6 +249,7 @@ export function SettingsForm({ user }: Props) {
           <Button
             variant="secondary"
             size="medium"
+            type="button"
             className="mt-4"
             icon={<LogOut className="h-4 w-4" />}
             onClick={handleLogoutAllDevices}

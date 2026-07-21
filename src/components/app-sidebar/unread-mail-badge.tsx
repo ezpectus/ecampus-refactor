@@ -13,8 +13,12 @@ export const UnreadMailBadge = () => {
     let cancelled = false;
 
     const fetchCount = async () => {
-      const n = await getUnreadMailCount();
-      if (!cancelled) setCount(n);
+      try {
+        const n = await getUnreadMailCount();
+        if (!cancelled) setCount(n);
+      } catch {
+        if (!cancelled) setCount(0);
+      }
     };
 
     fetchCount();

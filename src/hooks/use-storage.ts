@@ -1,6 +1,6 @@
 'use client';
 
-import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 
 type DefaultValue<T> = T | (() => T);
 
@@ -15,8 +15,11 @@ export const useLocalStorage = <T extends Object>(
     return defaultValue;
   });
 
+  const isInitialReadComplete = useRef(false);
+
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    isInitialReadComplete.current = true;
     try {
       const storageValue = window.localStorage.getItem(key);
       if (storageValue) {
@@ -29,6 +32,10 @@ export const useLocalStorage = <T extends Object>(
 
   useEffect(() => {
     if (typeof window === 'undefined') {
+      return;
+    }
+
+    if (!isInitialReadComplete.current) {
       return;
     }
 

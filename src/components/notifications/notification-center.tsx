@@ -103,7 +103,7 @@ export const NotificationCenter = () => {
             <p className="text-muted-foreground text-xs">{t('unread', { count: unreadCount })}</p>
           </div>
           {unreadCount > 0 && (
-            <Button variant="tertiary" size="small" onClick={handleReadAll} aria-label={t('mark-all')}>
+            <Button variant="tertiary" size="small" type="button" onClick={handleReadAll} aria-label={t('mark-all')}>
               <CheckCheck size={16} />
             </Button>
           )}
@@ -134,7 +134,7 @@ export const NotificationCenter = () => {
           <Button variant="tertiary" size="small" asChild>
             <Link href="/notifications">{t('page-title')}</Link>
           </Button>
-          <Button variant="tertiary" size="small" onClick={() => void refresh()}>
+          <Button variant="tertiary" size="small" type="button" onClick={() => void refresh()}>
             {t('refresh')}
           </Button>
         </div>

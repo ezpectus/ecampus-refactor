@@ -28,10 +28,10 @@ export const DeleteConfirmDialog = ({ title, onClose, onConfirm }: Props) => {
           <AlertDialogDescription>{t('description', { title })}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <Button variant="secondary" onClick={onClose}>
+          <Button variant="secondary" type="button" onClick={onClose}>
             {t('cancel')}
           </Button>
-          <Button variant="primary" onClick={onConfirm}>
+          <Button variant="primary" type="button" onClick={onConfirm}>
             {t('confirm')}
           </Button>
         </AlertDialogFooter>

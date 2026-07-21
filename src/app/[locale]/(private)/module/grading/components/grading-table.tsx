@@ -35,13 +35,16 @@ export const GradingTable = ({ courseName }: Props) => {
       .then((result) => {
         if (!isCancelled) setStudents(result);
       })
+      .catch(() => {
+        if (!isCancelled) errorToast();
+      })
       .finally(() => {
         if (!isCancelled) setLoading(false);
       });
     return () => {
       isCancelled = true;
     };
-  }, [courseName]);
+  }, [courseName, errorToast]);
 
   const handleSave = async (student: CourseStudent) => {
     const newGrade = parseFloat(editValue);
@@ -125,10 +128,10 @@ export const GradingTable = ({ courseName }: Props) => {
             <TableCell>
               {editingId === student.id ? (
                 <div className="flex gap-1">
-                  <Button size="small" variant="primary" onClick={() => handleSave(student)} data-testid="grade-save">
+                  <Button size="small" variant="primary" type="button" onClick={() => handleSave(student)} data-testid="grade-save">
                     {t('actions.save')}
                   </Button>
-                  <Button size="small" variant="tertiary" onClick={() => setEditingId(null)}>
+                  <Button size="small" variant="tertiary" type="button" onClick={() => setEditingId(null)}>
                     {t('actions.cancel')}
                   </Button>
                 </div>
@@ -136,6 +139,7 @@ export const GradingTable = ({ courseName }: Props) => {
                 <Button
                   size="small"
                   variant="tertiary"
+                  type="button"
                   onClick={() => {
                     setEditingId(student.id);
                     setEditValue(String(student.grade));

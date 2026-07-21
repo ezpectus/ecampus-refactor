@@ -107,10 +107,10 @@ export const AdminTable = memo(function AdminTable({ items, totalCount, onView, 
               </TableCell>
               <TableCell>
                 <div className="flex justify-end gap-1">
-                  <Button variant="tertiary" size="small" onClick={() => onView(user.id)} aria-label={t('view')}>
+                  <Button variant="tertiary" size="small" type="button" onClick={() => onView(user.id)} aria-label={t('view')}>
                     <Eye size={16} />
                   </Button>
-                  <Button variant="tertiary" size="small" onClick={() => onDelete(user.id)} aria-label={t('delete')}>
+                  <Button variant="tertiary" size="small" type="button" onClick={() => onDelete(user.id)} aria-label={t('delete')}>
                     <Trash size={16} />
                   </Button>
                 </div>

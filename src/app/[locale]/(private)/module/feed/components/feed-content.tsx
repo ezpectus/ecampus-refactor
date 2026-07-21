@@ -1,5 +1,6 @@
 'use client';
 
+import { X } from 'lucide-react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -48,10 +49,15 @@ export const FeedContent = ({ currentUserId, isAdmin }: Props) => {
   const { paginatedItems } = usePagination(PAGE_SIZE_DEFAULT, posts);
 
   const loadPosts = useCallback(async () => {
-    const result = await getFeedPosts();
-    setPosts(result);
-    setLoading(false);
-  }, []);
+    try {
+      const result = await getFeedPosts();
+      setPosts(result);
+    } catch {
+      errorToast();
+    } finally {
+      setLoading(false);
+    }
+  }, [errorToast]);
 
   useEffect(() => {
     loadPosts();
@@ -136,7 +142,7 @@ export const FeedContent = ({ currentUserId, isAdmin }: Props) => {
             rows={3}
           />
           <div className="flex items-center gap-2">
-            <Button variant="tertiary" size="small" onClick={() => fileInputRef.current?.click()} loading={uploading}>
+            <Button variant="tertiary" size="small" type="button" onClick={() => fileInputRef.current?.click()} loading={uploading}>
               {t('upload-image')}
             </Button>
             <input
@@ -150,20 +156,20 @@ export const FeedContent = ({ currentUserId, isAdmin }: Props) => {
               <div className="flex items-center gap-2">
                 <Image
                   src={postImage}
-                  alt=""
+                  alt="Post image preview"
                   width={40}
                   height={40}
                   className="h-10 w-10 rounded object-cover"
                   unoptimized
                 />
-                <Button variant="tertiary" size="small" onClick={() => setPostImage('')}>
-                  ✕
+                <Button variant="tertiary" size="small" type="button" onClick={() => setPostImage('')} aria-label={t('remove-image')}>
+                  <X className="h-4 w-4" />
                 </Button>
               </div>
             )}
           </div>
           <div className="flex justify-end">
-            <Button onClick={handlePost} loading={submitting} disabled={!postContent.trim()}>
+            <Button type="button" onClick={handlePost} loading={submitting} disabled={!postContent.trim()}>
               {t('post')}
             </Button>
           </div>

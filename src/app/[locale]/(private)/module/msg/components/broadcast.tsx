@@ -108,7 +108,7 @@ export function Broadcast({ groupOptions }: { groupOptions: EntityIdName[] }) {
             )}
           />
           <div className="flex justify-end">
-            <Button type="submit" variant="primary" size="medium" icon={<Send className="h-4 w-4" />}>
+            <Button type="submit" variant="primary" size="medium" icon={<Send className="h-4 w-4" />} loading={form.formState.isSubmitting}>
               {t('form.send')}
             </Button>
           </div>

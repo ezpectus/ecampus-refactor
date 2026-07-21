@@ -1,7 +1,7 @@
 'use client';
 
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 
 import type { CalendarEvent } from '@/actions/calendar.actions';
@@ -36,6 +36,7 @@ const isEventOnDay = (event: CalendarEvent, day: Date) => {
 
 export const CalendarView = ({ events }: Props) => {
   const t = useTranslations('private.calendar');
+  const locale = useLocale();
 
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
   const [today, setToday] = useState<Date | null>(null);
@@ -120,22 +121,8 @@ export const CalendarView = ({ events }: Props) => {
 
   const monthLabel = useMemo(() => {
     if (!currentDate) return '';
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
-    return `${months[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
-  }, [currentDate]);
+    return currentDate.toLocaleDateString(locale, { month: 'long', year: 'numeric' });
+  }, [currentDate, locale]);
 
   if (!currentDate) {
     return (
@@ -155,15 +142,15 @@ export const CalendarView = ({ events }: Props) => {
     <div className="flex flex-col gap-[20px]">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Button variant="secondary" size="small" onClick={handlePrevMonth}>
+          <Button variant="secondary" size="small" type="button" onClick={handlePrevMonth} aria-label={t('actions.prev-month')}>
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <span className="text-lg font-semibold capitalize">{monthLabel}</span>
-          <Button variant="secondary" size="small" onClick={handleNextMonth}>
+          <Button variant="secondary" size="small" type="button" onClick={handleNextMonth} aria-label={t('actions.next-month')}>
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
-        <Button size="small" onClick={handleCreateClick}>
+        <Button size="small" type="button" onClick={handleCreateClick}>
           <Plus className="mr-1 h-4 w-4" />
           {t('actions.create')}
         </Button>
@@ -193,6 +180,7 @@ export const CalendarView = ({ events }: Props) => {
                 return (
                   <button
                     key={index}
+                    type="button"
                     onClick={() => handleDayClick(day)}
                     className={`hover:bg-accent min-h-[80px] rounded-lg border p-1 text-left transition-colors ${
                       isToday ? 'border-primary' : 'border-border'
@@ -242,7 +230,7 @@ export const CalendarView = ({ events }: Props) => {
             <Card className="mt-[20px]">
               <CardHeader>
                 <CardTitle>
-                  {selectedDate?.toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' })}
+                  {selectedDate?.toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' })}
                 </CardTitle>
               </CardHeader>
               <CardContent>

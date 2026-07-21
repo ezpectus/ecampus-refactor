@@ -52,7 +52,7 @@ export default function SessionTable({ termResults }: { termResults: TermResults
   return (
     <Card className="rounded-b-6 bg-card text-card-foreground col-span-full w-full p-6 xl:col-span-5">
       <div className="mb-4 flex items-center justify-end">
-        <Button variant="tertiary" size="small" onClick={handleExportCsv}>
+        <Button variant="tertiary" size="small" type="button" onClick={handleExportCsv}>
           <Download className="h-4 w-4" />
           CSV
         </Button>

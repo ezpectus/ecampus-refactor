@@ -26,6 +26,7 @@ export const LocaleSwitch = () => {
       href={{ pathname, search: searchparams.toString() }}
       locale={nextLocale}
       className="flex items-center gap-[6px] text-end"
+      aria-label={`Switch language to ${localeLabels[nextLocale] ?? 'English'}`}
     >
       <span className="hidden text-neutral-600 md:block">{localeLabels[nextLocale] ?? 'English'}</span>
       <span className="text-xs font-medium text-neutral-500 uppercase">{nextLocale}</span>

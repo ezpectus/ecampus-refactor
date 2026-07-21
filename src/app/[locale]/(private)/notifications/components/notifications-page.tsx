@@ -64,26 +64,39 @@ export function NotificationsPage({ initialItems, initialUnreadCount, total, pag
   const hasMore = loadedCount < total;
 
   const handleRead = async (id: number) => {
-    const result = await markNotificationRead(id);
-    if (!result.ok) return;
-    setItems((current) => current.map((item) => (item.id === id ? { ...item, read: true } : item)));
-    setUnreadCount((count) => Math.max(0, count - 1));
+    try {
+      const result = await markNotificationRead(id);
+      if (!result.ok) return;
+      setItems((current) => current.map((item) => (item.id === id ? { ...item, read: true } : item)));
+      setUnreadCount((count) => Math.max(0, count - 1));
+    } catch {
+      /* ignore */
+    }
   };
 
   const handleReadAll = async () => {
-    const result = await markAllNotificationsRead();
-    if (!result.ok) return;
-    setItems((current) => current.map((item) => ({ ...item, read: true })));
-    setUnreadCount(0);
+    try {
+      const result = await markAllNotificationsRead();
+      if (!result.ok) return;
+      setItems((current) => current.map((item) => ({ ...item, read: true })));
+      setUnreadCount(0);
+    } catch {
+      /* ignore */
+    }
   };
 
   const handleLoadMore = useCallback(async () => {
     setLoading(true);
-    const nextPage = Math.floor(loadedCount / pageSize) + 1;
-    const result = await getNotifications(nextPage, pageSize);
-    setItems((current) => [...current, ...result.items]);
-    setLoadedCount((count) => count + result.items.length);
-    setLoading(false);
+    try {
+      const nextPage = Math.floor(loadedCount / pageSize) + 1;
+      const result = await getNotifications(nextPage, pageSize);
+      setItems((current) => [...current, ...result.items]);
+      setLoadedCount((count) => count + result.items.length);
+    } catch {
+      /* ignore */
+    } finally {
+      setLoading(false);
+    }
   }, [loadedCount, pageSize]);
 
   return (
@@ -98,7 +111,7 @@ export function NotificationsPage({ initialItems, initialUnreadCount, total, pag
           )}
         </div>
         {unreadCount > 0 && (
-          <Button variant="tertiary" size="small" onClick={() => void handleReadAll()}>
+          <Button variant="tertiary" size="small" type="button" onClick={() => void handleReadAll()}>
             <CheckCheck size={16} className="mr-1" />
             {t('mark-all')}
           </Button>
@@ -151,6 +164,7 @@ export function NotificationsPage({ initialItems, initialUnreadCount, total, pag
                 <Button
                   variant="tertiary"
                   size="small"
+                  type="button"
                   className="shrink-0"
                   onClick={() => void handleRead(item.id)}
                   aria-label={t('mark-read')}
@@ -163,7 +177,7 @@ export function NotificationsPage({ initialItems, initialUnreadCount, total, pag
 
           {hasMore && (
             <div className="flex justify-center pt-4">
-              <Button variant="secondary" onClick={() => void handleLoadMore()} disabled={loading}>
+              <Button variant="secondary" type="button" onClick={() => void handleLoadMore()} disabled={loading}>
                 {loading ? <Skeleton className="h-4 w-20" /> : t('show-more')}
               </Button>
             </div>

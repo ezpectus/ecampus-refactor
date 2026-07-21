@@ -63,7 +63,7 @@ export function PhotoUploader({ photoSrc, onFileUpload }: PhotoUploaderProps) {
       {error && <Paragraph className="text-status-danger-300 m-0">{error}</Paragraph>}
       <div className="mt-4 flex items-center gap-4">
         <ProfilePicture size="xl" src={photoPreview} />
-        <Button className="h-fit" variant="secondary" onClick={handleFileUploadClick}>
+        <Button className="h-fit" variant="secondary" type="button" onClick={handleFileUploadClick}>
           {t('button.edit')}
         </Button>
       </div>

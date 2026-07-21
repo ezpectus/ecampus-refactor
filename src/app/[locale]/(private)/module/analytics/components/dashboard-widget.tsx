@@ -365,7 +365,7 @@ export const DashboardWidget = ({ id, data, editMode }: Props) => {
             <div className="flex items-center justify-between">
               <CardTitle>{t('charts.at-risk-students')}</CardTitle>
               {!editMode && (
-                <Button size="small" onClick={() => {}}>
+                <Button size="small" type="button" onClick={() => {}} aria-label={t('warnings.send')}>
                   <Bell className="mr-1 h-4 w-4" />
                   {t('warnings.send')}
                 </Button>

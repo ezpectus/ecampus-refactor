@@ -29,13 +29,27 @@ export const ChildDetail = ({ child, onBack }: Props) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isCancelled = false;
     setLoading(true);
     Promise.all([getChildCourses(child.studentId), getChildAttendance(child.studentId)])
       .then(([c, a]) => {
-        setCourses(c);
-        setAttendance(a);
+        if (!isCancelled) {
+          setCourses(c);
+          setAttendance(a);
+        }
       })
-      .finally(() => setLoading(false));
+      .catch(() => {
+        if (!isCancelled) {
+          setCourses([]);
+          setAttendance([]);
+        }
+      })
+      .finally(() => {
+        if (!isCancelled) setLoading(false);
+      });
+    return () => {
+      isCancelled = true;
+    };
   }, [child.studentId]);
 
   const attendanceData = attendance.map((a) => ({
@@ -47,7 +61,7 @@ export const ChildDetail = ({ child, onBack }: Props) => {
   return (
     <div className="flex flex-col gap-[20px]">
       <div className="flex items-center gap-4">
-        <Button variant="tertiary" size="small" onClick={onBack} icon={<ArrowLeft className="h-4 w-4" />}>
+        <Button variant="tertiary" size="small" type="button" onClick={onBack} icon={<ArrowLeft className="h-4 w-4" />}>
           {t('back')}
         </Button>
         <div>

@@ -2,7 +2,7 @@
 
 import { QrCode } from 'lucide-react';
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 import { generateAttendanceQR } from '@/actions/qr-attendance.actions';
@@ -17,6 +17,7 @@ interface Props {
 
 export const QrAttendanceGenerator = ({ courseName }: Props) => {
   const t = useTranslations('private.grading.qr');
+  const locale = useLocale();
   const { errorToast } = useServerErrorToast();
   const { toast } = useToast();
   const [token, setToken] = useState<string | null>(null);
@@ -52,7 +53,7 @@ export const QrAttendanceGenerator = ({ courseName }: Props) => {
   };
 
   const qrUrl = token
-    ? `${typeof window !== 'undefined' ? window.location.origin : ''}/uk/attendance/scan?token=${token}`
+    ? `${typeof window !== 'undefined' ? window.location.origin : ''}/${locale}/attendance/scan?token=${token}`
     : '';
 
   return (
@@ -78,14 +79,14 @@ export const QrAttendanceGenerator = ({ courseName }: Props) => {
             <p className="text-muted-foreground text-sm">
               {t('expires-in')} {Math.floor(secondsLeft / 60)}:{(secondsLeft % 60).toString().padStart(2, '0')}
             </p>
-            <Button variant="tertiary" size="small" onClick={handleGenerate} loading={loading}>
+            <Button variant="tertiary" size="small" type="button" onClick={handleGenerate} loading={loading}>
               {t('regenerate')}
             </Button>
           </>
         ) : (
           <>
             <p className="text-muted-foreground text-center text-sm">{t('description')}</p>
-            <Button onClick={handleGenerate} loading={loading}>
+            <Button type="button" onClick={handleGenerate} loading={loading}>
               {t('generate')}
             </Button>
           </>

@@ -20,7 +20,7 @@ export default function ModuleError({ reset }: { error: Error & { digest?: strin
     <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 p-6">
       <Heading2>{t('title')}</Heading2>
       <Paragraph>{t('description')}</Paragraph>
-      <Button variant="primary" onClick={reset}>
+      <Button variant="primary" type="button" onClick={reset}>
         {t('retry')}
       </Button>
     </div>

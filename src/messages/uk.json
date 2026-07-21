@@ -13,6 +13,8 @@
       "description": "Сталася неочікувана помилка. Спробуйте ще раз або оновіть сторінку.",
       "retry": "Спробувати ще раз"
     },
+    "show-password": "Показати пароль",
+    "hide-password": "Приховати пароль",
     "session": {
       "expiring-soon": "Ваш сеанс завершиться через {minutes} хв. Збережіть свої дані."
     },
@@ -38,7 +40,7 @@
       "title": "Сторінку не знайдено",
       "description": "Вибачте, але ми не можемо знайти запитувану сторінку. Можливо, її було переміщено або видалено.",
       "return": "Повернутися на головну сторінку",
-      "footer": "<paragraph>Усі права захищено. © {year} Student Portal</paragraph>"
+      "footer": "<paragraph>Усі права захищено. © {year} Student Portal by Ezpectus (Denys Stepanenko)</paragraph>"
     },
     "modules": {
       "directory": "Список контактів",
@@ -208,7 +210,7 @@
         "studying-certificate": "Довідка про навчання"
       }
     },
-    "footer": "<paragraph>© {year} Student Portal</paragraph>"
+    "footer": "<paragraph>© {year} Student Portal by Ezpectus (Denys Stepanenko)</paragraph>"
   },
   "auth": {
     "login": {
@@ -333,7 +335,7 @@
         "loading": "Завантаження..."
       }
     },
-    "footer": "Усі права захищені. © {year} Student Portal"
+    "footer": "Усі права захищені. © {year} Student Portal by Ezpectus (Denys Stepanenko)"
   },
   "public": {
     "verification": {
@@ -1277,7 +1279,9 @@
         "sat": "Сб"
       },
       "actions": {
-        "create": "Створити подію"
+        "create": "Створити подію",
+        "prev-month": "Попередній місяць",
+        "next-month": "Наступний місяць"
       },
       "form": {
         "create": "Нова подія",
@@ -1343,13 +1347,17 @@
       "empty": "Поки що немає дописів. Будьте першим!",
       "delete": "Видалити",
       "comment": "Коментар",
-      "comment-placeholder": "Напишіть коментар..."
+      "comment-placeholder": "Напишіть коментар...",
+      "like": "Подобається",
+      "comments": "Коментарі",
+      "remove-image": "Видалити зображення"
     },
     "ai-chat": {
       "title": "AI-асистент",
       "welcome": "Привіт! Я твій навчальний асистент. Можу допомогти з порадами щодо підготовки до іспитів, тайм-менеджменту, мотивації та іншого. Про що б ти хотів дізнатися?",
       "placeholder": "Запитай щось...",
       "thinking": "Думаю...",
+      "send": "Надіслати повідомлення",
       "suggestions": {
         "exam": "Як підготуватися до іспиту?",
         "grade": "Як покращити оцінки?",
@@ -1427,7 +1435,10 @@
     },
     "nav": {
       "login": "Увійти",
-      "register": "Почати"
+      "register": "Почати",
+      "aria-label": "Основна навігація",
+      "open-menu": "Відкрити меню",
+      "close-menu": "Закрити меню"
     },
     "hero": {
       "title": "Сучасний спосіб керувати студентським життям",
@@ -1470,7 +1481,7 @@
       "button": "Створити безкоштовний акаунт"
     },
     "footer": {
-      "copyright": "© {year} Student Portal. Всі права захищені."
+      "copyright": "© {year} Student Portal by Ezpectus (Denys Stepanenko). Всі права захищені."
     }
   },
   "commandPalette": {
@@ -1685,7 +1696,9 @@
         "sat": "Сб"
       },
       "actions": {
-        "create": "Створити подію"
+        "create": "Створити подію",
+        "prev-month": "Попередній місяць",
+        "next-month": "Наступний місяць"
       },
       "form": {
         "create": "Нова подія",
@@ -1751,13 +1764,17 @@
       "empty": "Поки що немає дописів. Будьте першим!",
       "delete": "Видалити",
       "comment": "Коментар",
-      "comment-placeholder": "Напишіть коментар..."
+      "comment-placeholder": "Напишіть коментар...",
+      "like": "Подобається",
+      "comments": "Коментарі",
+      "remove-image": "Видалити зображення"
     },
     "ai-chat": {
       "title": "AI-асистент",
       "welcome": "Привіт! Я твій навчальний асистент. Можу допомогти з порадами щодо підготовки до іспитів, тайм-менеджменту, мотивації та іншого. Про що б ти хотів дізнатися?",
       "placeholder": "Запитай щось...",
       "thinking": "Думаю...",
+      "send": "Надіслати повідомлення",
       "suggestions": {
         "exam": "Як підготуватися до іспиту?",
         "grade": "Як покращити оцінки?",

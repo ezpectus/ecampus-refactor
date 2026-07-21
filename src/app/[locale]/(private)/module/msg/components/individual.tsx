@@ -95,27 +95,35 @@ export function Individual({ groupOptions }: Props) {
   useEffect(() => {
     if (recipientType === 'parent') {
       let isCancelled = false;
-      getParentOptionsForTeacher().then((parents) => {
-        if (!isCancelled) {
-          setParentOptions(parents);
-        }
-      });
+      getParentOptionsForTeacher()
+        .then((parents) => {
+          if (!isCancelled) {
+            setParentOptions(parents);
+          }
+        })
+        .catch(() => {
+          if (!isCancelled) errorToast();
+        });
       return () => {
         isCancelled = true;
       };
     }
     return undefined;
-  }, [recipientType]);
+  }, [recipientType, errorToast]);
 
   useEffect(() => {
     if (recipientType === 'student' && selectedGroups.length > 0) {
       let isCancelled = false;
       const groupIds = selectedGroups.map((g) => Number(g.value));
-      getStudentOptions(groupIds).then((students) => {
-        if (!isCancelled) {
-          setUserOptions(students);
-        }
-      });
+      getStudentOptions(groupIds)
+        .then((students) => {
+          if (!isCancelled) {
+            setUserOptions(students);
+          }
+        })
+        .catch(() => {
+          if (!isCancelled) errorToast();
+        });
       return () => {
         isCancelled = true;
       };
@@ -124,17 +132,21 @@ export function Individual({ groupOptions }: Props) {
     }
 
     return undefined;
-  }, [selectedGroups, recipientType]);
+  }, [selectedGroups, recipientType, errorToast]);
 
   const handleEmployeeSearch = useCallback(async (value: string) => {
     if (value.length < 5) {
       return [];
     }
-    const employees = await getEmployeeOptions(value);
-    return employees.map((employee) => ({
-      value: employee.id.toString(),
-      label: employee.name,
-    }));
+    try {
+      const employees = await getEmployeeOptions(value);
+      return employees.map((employee) => ({
+        value: employee.id.toString(),
+        label: employee.name,
+      }));
+    } catch {
+      return [];
+    }
   }, []);
 
   return (
@@ -247,7 +259,7 @@ export function Individual({ groupOptions }: Props) {
         />
 
         <div className="flex justify-end">
-          <Button type="submit" variant="primary" size="medium" icon={<Send className="h-4 w-4" />}>
+          <Button type="submit" variant="primary" size="medium" icon={<Send className="h-4 w-4" />} loading={form.formState.isSubmitting}>
             {t('form.send')}
           </Button>
         </div>

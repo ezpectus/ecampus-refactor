@@ -48,7 +48,7 @@ export function HistoryTable({ certificates }: Props) {
     <Card className="rounded-b-6 bg-card text-card-foreground col-span-full flex w-full flex-[2] basis-4/7 flex-col gap-4 p-4 sm:gap-6 sm:p-6 md:p-9 xl:col-span-5">
       <div className="flex items-center justify-between">
         <Heading6>{tTable('title')}</Heading6>
-        <Button variant="tertiary" size="small" onClick={handleExportCsv}>
+        <Button variant="tertiary" size="small" type="button" onClick={handleExportCsv}>
           <Download className="h-4 w-4" />
           CSV
         </Button>
@@ -82,7 +82,7 @@ export function HistoryTable({ certificates }: Props) {
                   </TableCell>
                   <TableCell className="w-[100px]">
                     {shouldShowDownloadButton && (
-                      <Button variant="secondary" onClick={() => handleDownload(certificate.id)}>
+                      <Button variant="secondary" type="button" onClick={() => handleDownload(certificate.id)}>
                         {tTable('download')}
                       </Button>
                     )}

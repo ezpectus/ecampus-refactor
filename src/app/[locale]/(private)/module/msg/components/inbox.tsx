@@ -99,11 +99,18 @@ export default function Inbox({ mails, filter }: Props) {
         (id) => !state.mails.find((message) => message.id === id)?.isImportant,
       );
       await markAsImportant(state.selectedRows, isImportant);
+      dispatch({
+        type: 'setMails',
+        mails: state.mails.map((m) =>
+          state.selectedRows.includes(m.id) ? { ...m, isImportant } : m,
+        ),
+      });
+      dispatch({ type: 'setSelectedRows', selectedRows: [] });
       toast({
         title: t('toast.success-title-mark-as-important'),
         description: t('toast.success-description-mark-as-important'),
       });
-    } catch (error) {
+    } catch {
       toast({
         title: t('toast.error-title-mark-as-important'),
         description: t('toast.error-description-mark-as-important'),

@@ -73,10 +73,10 @@ export const CustomDashboard = ({ data }: Props) => {
         </div>
         {editMode && (
           <div className="flex gap-2">
-            <Button variant="tertiary" size="small" onClick={handleReset}>
+            <Button variant="tertiary" size="small" type="button" onClick={handleReset}>
               {t('dashboard.reset')}
             </Button>
-            <Button size="small" onClick={() => setEditMode(false)}>
+            <Button size="small" type="button" onClick={() => setEditMode(false)}>
               {t('dashboard.save')}
             </Button>
           </div>

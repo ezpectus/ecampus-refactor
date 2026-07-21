@@ -16,6 +16,7 @@ export const ThemeToggle = () => {
     <Button
       variant="tertiary"
       size="small"
+      type="button"
       onClick={toggle}
       aria-label={`Theme: ${theme}. Switch theme`}
       title={`Theme: ${theme}`}

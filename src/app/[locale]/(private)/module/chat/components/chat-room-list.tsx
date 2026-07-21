@@ -44,6 +44,7 @@ export const ChatRoomList = memo(function ChatRoomList({ rooms, selectedId, onSe
         {rooms.map((room) => (
           <button
             key={room.id}
+            type="button"
             onClick={() => onSelect(room.id)}
             className={`hover:bg-accent flex flex-col gap-1 rounded-lg border p-3 text-left transition-colors ${
               selectedId === room.id ? 'border-primary bg-accent' : 'border-border'

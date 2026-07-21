@@ -73,7 +73,7 @@ export function EditableField({
             onChange={(e) => setCurrentValue(e.target.value)}
             placeholder={placeholder}
           />
-          <Button size={size} onClick={handleSave}>
+          <Button size={size} type="button" onClick={handleSave}>
             {t('button.save')}
           </Button>
         </div>
@@ -90,6 +90,7 @@ export function EditableField({
                 <TooltipTrigger asChild>
                   <Button
                     variant="tertiary"
+                    type="button"
                     className="size-6"
                     icon={<PencilBold className="text-basic-blue" />}
                     aria-label={tTooltip('edit')}
@@ -110,6 +111,7 @@ export function EditableField({
                       <AlertDialogTrigger asChild>
                         <Button
                           variant="tertiary"
+                          type="button"
                           className="size-6"
                           icon={<XBold className="text-status-danger-300" />}
                           aria-label={tTooltip('delete')}

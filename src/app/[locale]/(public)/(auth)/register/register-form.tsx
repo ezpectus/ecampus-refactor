@@ -159,10 +159,15 @@ export const RegisterForm = () => {
         </Link>
       </form>
       <DemoCredentials
-        onSelect={(_username, password) => {
+        onSelect={(username, password, role, fullName) => {
+          form.setValue('name', fullName ?? '');
+          form.setValue('email', `${username}@demo.edu`);
           form.setValue('schoolCode', 'demo');
           form.setValue('password', password);
           form.setValue('passwordConfirm', password);
+          if (role === 'STUDENT' || role === 'TEACHER') {
+            form.setValue('role', role);
+          }
         }}
       />
     </Form>

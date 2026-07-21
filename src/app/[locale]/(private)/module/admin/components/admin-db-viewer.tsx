@@ -53,6 +53,9 @@ export const AdminDbViewer = ({ initialStats }: Props) => {
       setRows(result.items as Row[]);
       setTotal(result.total);
       setPage(nextPage);
+    } catch {
+      setRows([]);
+      setTotal(0);
     } finally {
       setLoading(false);
     }
@@ -65,8 +68,15 @@ export const AdminDbViewer = ({ initialStats }: Props) => {
   const refresh = async () => {
     setLoading(true);
     try {
-      const [nextStats] = await Promise.all([getDbStats(), loadTable(activeTable, page)]);
+      const [nextStats, tableData] = await Promise.all([
+        getDbStats(),
+        getDbTableData(activeTable, page, pageSize),
+      ]);
       setStats(nextStats);
+      setRows(tableData.items as Row[]);
+      setTotal(tableData.total);
+    } catch {
+      setRows([]);
     } finally {
       setLoading(false);
     }
@@ -82,7 +92,7 @@ export const AdminDbViewer = ({ initialStats }: Props) => {
           <Database size={20} />
           {t('title')}
         </CardTitle>
-        <Button variant="tertiary" size="small" onClick={refresh} loading={loading}>
+        <Button variant="tertiary" size="small" type="button" onClick={refresh} loading={loading}>
           <RefreshCw size={16} />
           {t('refresh')}
         </Button>
@@ -138,6 +148,7 @@ export const AdminDbViewer = ({ initialStats }: Props) => {
                   <Button
                     variant="tertiary"
                     size="small"
+                    type="button"
                     disabled={page <= 1 || loading}
                     onClick={() => loadTable(activeTable, page - 1)}
                   >
@@ -149,6 +160,7 @@ export const AdminDbViewer = ({ initialStats }: Props) => {
                   <Button
                     variant="tertiary"
                     size="small"
+                    type="button"
                     disabled={page >= maxPage || loading}
                     onClick={() => loadTable(activeTable, page + 1)}
                   >

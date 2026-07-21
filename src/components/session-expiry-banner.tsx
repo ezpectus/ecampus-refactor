@@ -18,14 +18,18 @@ export const SessionExpiryBanner = () => {
     let mounted = true;
 
     const checkExpiry = async () => {
-      const exp = await getSessionExpiry();
-      if (!mounted || !exp) return;
+      try {
+        const exp = await getSessionExpiry();
+        if (!mounted || !exp) return;
 
-      const ms = exp * 1000 - Date.now();
-      setRemainingMs(ms);
+        const ms = exp * 1000 - Date.now();
+        setRemainingMs(ms);
 
-      if (ms <= 0) {
-        await logout();
+        if (ms <= 0) {
+          await logout();
+        }
+      } catch {
+        if (mounted) setRemainingMs(null);
       }
     };
 

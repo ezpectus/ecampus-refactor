@@ -38,6 +38,7 @@ export const DashboardCharts = ({ gpaTrend, gradeDistribution, attendanceData }:
           <Button
             variant="tertiary"
             size="small"
+            type="button"
             icon={<Download className="h-4 w-4" />}
             onClick={() =>
               exportToCsv(
@@ -122,6 +123,7 @@ export const DashboardCharts = ({ gpaTrend, gradeDistribution, attendanceData }:
           <Button
             variant="tertiary"
             size="small"
+            type="button"
             icon={<Download className="h-4 w-4" />}
             onClick={() =>
               exportToCsv(

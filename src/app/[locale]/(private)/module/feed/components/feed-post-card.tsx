@@ -41,7 +41,7 @@ export const FeedPostCard = ({ post, currentUserId, isAdmin, onLike, onComment, 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Avatar className="h-10 w-10">
-              <AvatarImage src={post.authorPhoto || undefined} />
+              <AvatarImage src={post.authorPhoto || undefined} alt={post.authorName} />
               <AvatarFallback>{post.authorName.charAt(0)}</AvatarFallback>
             </Avatar>
             <div>
@@ -52,6 +52,7 @@ export const FeedPostCard = ({ post, currentUserId, isAdmin, onLike, onComment, 
           <Show when={canDelete}>
             <button
               onClick={onDelete}
+              type="button"
               className="text-muted-foreground hover:text-destructive"
               aria-label={t('delete')}
             >
@@ -64,12 +65,14 @@ export const FeedPostCard = ({ post, currentUserId, isAdmin, onLike, onComment, 
         <p className="text-sm whitespace-pre-wrap">{post.content}</p>
         <Show when={!!post.imageUrl}>
           <div className="relative max-h-96 w-full overflow-hidden rounded-lg">
-            <Image src={post.imageUrl!} alt="" fill className="object-cover" sizes="(max-width: 768px) 100vw, 672px" />
+            <Image src={post.imageUrl!} alt={post.content.slice(0, 100)} fill className="object-cover" sizes="(max-width: 768px) 100vw, 672px" />
           </div>
         </Show>
         <div className="flex items-center gap-4 border-t pt-3">
           <button
             onClick={onLike}
+            type="button"
+            aria-label={t('like')}
             className={`flex items-center gap-1.5 text-sm transition-colors ${
               post.likedByMe ? 'text-red-500' : 'text-muted-foreground hover:text-red-500'
             }`}
@@ -79,6 +82,8 @@ export const FeedPostCard = ({ post, currentUserId, isAdmin, onLike, onComment, 
           </button>
           <button
             onClick={() => setShowComments(!showComments)}
+            type="button"
+            aria-label={t('comments')}
             className="text-muted-foreground hover:text-foreground flex items-center gap-1.5 text-sm"
           >
             <MessageCircle className="h-4 w-4" />
@@ -111,7 +116,7 @@ export const FeedPostCard = ({ post, currentUserId, isAdmin, onLike, onComment, 
                 placeholder={t('comment-placeholder')}
                 maxLength={1000}
               />
-              <Button size="small" onClick={handleComment} disabled={!commentText.trim()}>
+              <Button size="small" type="button" onClick={handleComment} disabled={!commentText.trim()}>
                 {t('comment')}
               </Button>
             </div>

@@ -6,16 +6,25 @@ import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
-interface Props {
-  onSelect?: (username: string, password: string) => void;
+interface DemoUser {
+  key: string;
+  username: string;
+  password: string;
+  role: 'STUDENT' | 'TEACHER' | 'ADMIN' | 'PARENT';
+  fullName: string;
+  icon: typeof Shield;
 }
 
-const DEMO_USERS = [
-  { key: 'admin', username: 'admin', password: 'test12345', icon: Shield },
-  { key: 'teacher', username: 'teacher', password: 'test12345', icon: Presentation },
-  { key: 'student', username: 'student', password: 'test12345', icon: GraduationCap },
-  { key: 'parent', username: 'parent', password: 'test12345', icon: Users },
-] as const;
+interface Props {
+  onSelect?: (username: string, password: string, role?: string, fullName?: string) => void;
+}
+
+const DEMO_USERS: DemoUser[] = [
+  { key: 'admin', username: 'admin', password: 'test12345', role: 'ADMIN', fullName: 'Admin User', icon: Shield },
+  { key: 'teacher', username: 'teacher', password: 'test12345', role: 'TEACHER', fullName: 'Teacher User', icon: Presentation },
+  { key: 'student', username: 'student', password: 'test12345', role: 'STUDENT', fullName: 'Student User', icon: GraduationCap },
+  { key: 'parent', username: 'parent', password: 'test12345', role: 'PARENT', fullName: 'Parent User', icon: Users },
+];
 
 export const DemoCredentials = ({ onSelect }: Props) => {
   const t = useTranslations('auth.demo');
@@ -33,14 +42,14 @@ export const DemoCredentials = ({ onSelect }: Props) => {
           </div>
         </div>
         <div className="grid gap-2 sm:grid-cols-4">
-          {DEMO_USERS.map(({ key, username, password, icon: Icon }) => (
+          {DEMO_USERS.map(({ key, username, password, role, fullName, icon: Icon }) => (
             <Button
               key={key}
               type="button"
               variant="tertiary"
               size="small"
               className="border-border bg-card h-auto justify-start gap-2 border px-3 py-2 text-left"
-              onClick={() => onSelect?.(username, password)}
+              onClick={() => onSelect?.(username, password, role, fullName)}
             >
               <Icon size={16} />
               <span className="min-w-0">

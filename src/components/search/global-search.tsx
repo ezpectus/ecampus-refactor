@@ -36,9 +36,14 @@ export function GlobalSearch() {
       return;
     }
     setLoading(true);
-    const res = await globalSearch(q);
-    setResults(res);
-    setLoading(false);
+    try {
+      const res = await globalSearch(q);
+      setResults(res);
+    } catch {
+      setResults(null);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -61,6 +66,7 @@ export function GlobalSearch() {
         variant="tertiary"
         size="small"
         className="gap-2"
+        type="button"
         onClick={() => setOpen(true)}
         aria-label={t('placeholder')}
       >

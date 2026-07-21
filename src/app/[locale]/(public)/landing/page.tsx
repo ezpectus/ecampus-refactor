@@ -1,6 +1,5 @@
 import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
-import { Suspense } from 'react';
 
 import {
   CalendarBlank,
@@ -10,13 +9,13 @@ import {
   GraduationCap,
   UserCircle,
 } from '@/app/images';
-import { Logo } from '@/components/logo';
 import { Heading1, Heading2, Heading3 } from '@/components/typography/headers';
 import { Paragraph } from '@/components/typography/paragraph';
 import { Button } from '@/components/ui/button';
-import { LocaleSwitch } from '@/components/ui/locale-switch';
 import { Link } from '@/i18n/routing';
 import { LocaleProps } from '@/types/locale-props';
+
+import { LandingHeader } from './landing-header';
 
 const INTL_NAMESPACE = 'landing';
 
@@ -55,26 +54,9 @@ export default async function LandingPage({ params }: LocaleProps) {
 
   return (
     <div className="min-h-screen bg-white">
-      <header className="flex items-center justify-between px-6 py-4 md:px-12">
-        <Logo />
-        <div className="flex items-center gap-4">
-          <Suspense fallback={<span className="text-xs text-neutral-500 uppercase">···</span>}>
-            <LocaleSwitch />
-          </Suspense>
-          <Link href="/login">
-            <Button variant="secondary" size="small">
-              {t('nav.login')}
-            </Button>
-          </Link>
-          <Link href="/register">
-            <Button variant="primary" size="small">
-              {t('nav.register')}
-            </Button>
-          </Link>
-        </div>
-      </header>
+      <LandingHeader />
 
-      <section className="mx-auto max-w-5xl px-6 py-20 text-center md:py-32">
+      <section className="mx-auto max-w-5xl px-6 py-16 text-center md:py-32">
         <Heading1 className="mb-6 text-4xl font-bold tracking-tight text-neutral-900 md:text-6xl">
           {t('hero.title')}
         </Heading1>

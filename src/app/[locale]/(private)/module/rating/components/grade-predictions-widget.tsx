@@ -28,12 +28,16 @@ export const GradePredictionsWidget = () => {
 
   useEffect(() => {
     let isCancelled = false;
-    getGradePredictions().then((result) => {
-      if (!isCancelled) {
-        setData(result);
-        setLoading(false);
-      }
-    });
+    getGradePredictions()
+      .then((result) => {
+        if (!isCancelled) {
+          setData(result);
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (!isCancelled) setLoading(false);
+      });
     return () => {
       isCancelled = true;
     };
