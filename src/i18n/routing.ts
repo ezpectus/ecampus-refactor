@@ -4,13 +4,11 @@ import { defineRouting } from 'next-intl/routing';
 export enum LOCALE {
   UK = 'uk',
   EN = 'en',
-  PL = 'pl',
-  DE = 'de',
 }
 
-export const LOCALES = ['uk', 'en', 'pl', 'de'];
+export const LOCALES = ['uk', 'en'];
 
-export const DEFAULT_LOCALE = 'uk';
+export const DEFAULT_LOCALE = 'en';
 
 export const routing = defineRouting({
   locales: LOCALES,

@@ -17,13 +17,11 @@ export const LocaleSwitch = () => {
   const pathname = usePathname();
   const searchparams = useSearchParams();
 
-  const localeOrder: LOCALE[] = [LOCALE.UK, LOCALE.EN, LOCALE.PL, LOCALE.DE];
+  const localeOrder: LOCALE[] = [LOCALE.UK, LOCALE.EN];
 
   const localeLabels: Record<string, string> = {
     uk: 'Українська',
     en: 'English',
-    pl: 'Polski',
-    de: 'Deutsch',
   };
 
   return (

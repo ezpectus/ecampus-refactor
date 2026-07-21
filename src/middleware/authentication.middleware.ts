@@ -18,7 +18,7 @@ const isAuthenticated = async (request: NextRequest) => {
 
 const isLocaleRoot = (request: NextRequest) => {
   const pathSegments = request.nextUrl.pathname.split('/').filter(Boolean);
-  return pathSegments.length === 1 && ['uk', 'en', 'pl', 'de'].includes(pathSegments[0]);
+  return pathSegments.length === 1 && ['uk', 'en'].includes(pathSegments[0]);
 };
 
 const gotoLanding = (request: NextRequest) => {
