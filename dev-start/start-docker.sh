@@ -18,9 +18,11 @@ open_terminal() {
   local title="$1"
   shift
   if command -v gnome-terminal >/dev/null 2>&1; then
-    gnome-terminal --title="$title" -- bash -lc "$*; exec bash"
+    gnome-terminal --title="Student Portal - $title" -- bash -lc "$*; exec bash"
   elif command -v osascript >/dev/null 2>&1; then
     osascript -e "tell application \"Terminal\" to do script \"cd '$PWD' && $*\""
+  elif command -v x-terminal-emulator >/dev/null 2>&1; then
+    x-terminal-emulator -e bash -lc "$*; exec bash"
   else
     echo "[$title] Run in another terminal: $*"
   fi
@@ -28,10 +30,10 @@ open_terminal() {
 
 echo " Opening CLI terminals..."
 
-open_terminal "Docker"        "echo '\n DOCKER — Building and starting containers\n App: http://localhost:3000\n DB:  localhost:5432\n' && docker compose up --build && echo '\n Stopping...' && docker compose down"
-open_terminal "Docker Logs"   "echo '\n DOCKER LOGS — live stream\n' && docker compose logs -f"
-open_terminal "Postgres Logs" "echo '\n POSTGRES LOGS — live stream\n' && docker compose logs -f postgres"
-open_terminal "Info"          "echo '\n INFO — Docker Dashboard\n App:       http://localhost:3000\n Postgres:  localhost:5432\n Adminer:   http://localhost:8080\n Accounts: admin / teacher / student — test12345\n Stack: Next.js 15.5 / React 19.2 / Prisma 7.8\n Docker: PostgreSQL 17 Alpine\n' && read -r"
+open_terminal "Docker"        "echo '\n STUDENT PORTAL — DOCKER\n Building and starting containers\n App: http://localhost:3000\n DB:  localhost:5432\n' && docker compose up --build && echo '\n Stopping...' && docker compose down"
+open_terminal "Docker Logs"   "echo '\n STUDENT PORTAL — DOCKER LOGS\n live stream\n' && docker compose logs -f"
+open_terminal "Postgres Logs" "echo '\n STUDENT PORTAL — POSTGRES LOGS\n live stream\n' && docker compose logs -f postgres"
+open_terminal "Info"          "echo '\n STUDENT PORTAL — INFO\n Docker Dashboard\n\n App:       http://localhost:3000\n Postgres:  localhost:5432\n Adminer:   http://localhost:8080 (docker compose --profile dev up)\n\n Accounts: admin / teacher / student — test12345\n\n Stack: Next.js 15.5 / React 19.2 / Prisma 7.8\n Docker: PostgreSQL 17 Alpine\n' && read -r"
 
 cat <<'INFO'
 

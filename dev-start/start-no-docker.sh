@@ -4,25 +4,27 @@ cd "$(dirname "$0")/.."
 
 if [[ ! -d node_modules ]]; then
   echo '[setup] Installing dependencies...'
-  npm install
+  npm install || exit 1
 fi
 if [[ ! -f prisma/dev.db ]]; then
   echo '[setup] Creating SQLite database...'
-  npm run db:generate
-  npm run db:push
-  npm run db:seed
+  npm run db:generate || exit 1
+  npm run db:push || exit 1
+  npm run db:seed || exit 1
 fi
 if [[ ! -d src/generated/prisma ]]; then
-  npm run db:generate
+  npm run db:generate || exit 1
 fi
 
 open_terminal() {
   local title="$1"
   shift
   if command -v gnome-terminal >/dev/null 2>&1; then
-    gnome-terminal --title="$title" -- bash -lc "$*; exec bash"
+    gnome-terminal --title="Student Portal - $title" -- bash -lc "$*; exec bash"
   elif command -v osascript >/dev/null 2>&1; then
     osascript -e "tell application \"Terminal\" to do script \"cd '$PWD' && $*\""
+  elif command -v x-terminal-emulator >/dev/null 2>&1; then
+    x-terminal-emulator -e bash -lc "$*; exec bash"
   else
     echo "[$title] Run in another terminal: $*"
   fi
@@ -30,12 +32,12 @@ open_terminal() {
 
 echo " Opening 6 CLI terminals..."
 
-open_terminal "Frontend"   "echo '\n FRONTEND — Next.js Dev Server (Turbopack)\n http://localhost:3000\n' && npm run dev"
-open_terminal "Backend"    "echo '\n BACKEND — API Health Monitor\n' && node scripts/health-watch.cjs"
-open_terminal "TypeCheck"  "echo '\n TYPECHECK — TypeScript Watch\n' && npx tsc --noEmit --watch"
-open_terminal "Database"   "echo '\n DATABASE — Prisma Studio\n http://localhost:5555\n' && npm run db:studio"
-open_terminal "Tests"      "echo '\n TESTS — Vitest Watch\n q=quit a=all f=filter\n' && npm run test:watch"
-open_terminal "Info"       "echo '\n INFO — Student Portal Dashboard\n Frontend:      http://localhost:3000\n Prisma Studio: http://localhost:5555\n Accounts: admin / teacher / student — test12345\n Stack: Next.js 15.5 / React 19.2 / Prisma 7.8\n' && read -r"
+open_terminal "Frontend"   "echo '\n STUDENT PORTAL — FRONTEND\n Next.js Dev Server\n http://localhost:3000\n' && npm run dev"
+open_terminal "Backend"    "echo '\n STUDENT PORTAL — BACKEND\n API Health Monitor\n' && node scripts/health-watch.cjs"
+open_terminal "TypeCheck"  "echo '\n STUDENT PORTAL — TYPECHECK\n TypeScript Watch\n' && npx tsc --noEmit --watch"
+open_terminal "Database"   "echo '\n STUDENT PORTAL — DATABASE\n Prisma Studio\n http://localhost:5555\n' && npm run db:studio"
+open_terminal "Tests"      "echo '\n STUDENT PORTAL — TESTS\n Vitest Watch\n q=quit  a=all  f=filter\n' && npm run test:watch"
+open_terminal "Info"       "echo '\n STUDENT PORTAL — INFO\n Dashboard\n\n Frontend:      http://localhost:3000\n Prisma Studio: http://localhost:5555\n\n Accounts: admin / teacher / student — test12345\n\n npm run test:quick  - tsc+lint+vitest\n npm run test:all    - full suite\n npm run db:push     - apply schema\n npm run db:seed     - seed data\n npm run build       - prod build\n\n Stack: Next.js 15.5 / React 19.2 / Prisma 7.8\n Branch: '$(git branch --show-current 2>/dev/null || echo unknown)'\n' && read -r"
 
 cat <<'INFO'
 
